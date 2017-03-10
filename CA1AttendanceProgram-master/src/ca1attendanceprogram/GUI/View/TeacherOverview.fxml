@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="587.0" prefWidth="540.0" stylesheets="@../View/MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca1attendanceprogram.GUI.Controller.TeacherOverviewController">
+   <children>
+      <HBox layoutY="654.0" prefHeight="0.0" prefWidth="534.0" styleClass="hBox" />
+      <TableView fx:id="tblAllLessons" layoutX="11.0" layoutY="70.0" prefHeight="442.0" prefWidth="519.0">
+        <columns>
+          <TableColumn fx:id="clmName" maxWidth="1.7976931348623157E308" prefWidth="227.0" text="Name" />
+          <TableColumn fx:id="clmAbsence" maxWidth="1.7976931348623157E308" prefWidth="74.0" text="Absence" />
+            <TableColumn fx:id="clmAttending" maxWidth="1.7976931348623157E308" prefWidth="217.0" text="Attending" />
+        </columns>
+      </TableView>
+      <ComboBox fx:id="CBLesson" layoutX="36.0" layoutY="23.0" prefHeight="31.0" prefWidth="201.0" promptText="Choose a lesson" />
+      <HBox layoutY="533.0" prefHeight="54.0" prefWidth="540.0" styleClass="hBox">
+         <children>
+            <Button mnemonicParsing="false" onAction="#mercyButton" prefHeight="37.0" prefWidth="98.0" text="Mercy!" textFill="WHITE" />
+            <Button mnemonicParsing="false" onAction="#smiteButton" prefHeight="37.0" prefWidth="102.0" text="Smite!" textFill="WHITE" />
+            <Button fx:id="btnLogOff" mnemonicParsing="false" onAction="#logOff" prefHeight="37.0" prefWidth="140.0" text="Log off" textFill="WHITE" />
+         </children>
+         <padding>
+            <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
+         </padding>
+      </HBox>
+   </children>
+</AnchorPane>
