@@ -99,6 +99,7 @@ public class LoginController implements Initializable
         //LOGIN_MANAGER.LoginChecker(txtUsername.getText(), txtPassword.getText());
 
         person = LOGIN_MANAGER.LoginChecker(txtUsername.getText().trim(), txtPassword.getText().trim());
+        
         if (loginState != LOGGED_IN
                 && person != null)
           {
