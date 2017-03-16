@@ -43,7 +43,7 @@ public class LessonHandler
             String query = "INSERT INTO [Lessons](datetime, students) VALUES (?, ?)";
             PreparedStatement stmt = con.prepareStatement(query);
             cal.setTimeZone(TimeZone.getTimeZone("GMT+1:00"));
-            stmt.setDate(1, new java.sql.Date(cal.getTimeInMillis()));
+            stmt.setTimestamp(1, new java.sql.Timestamp(cal.getTimeInMillis()));
             stmt.setString(2, "Name");
             stmt.execute();
             System.out.println(query);
