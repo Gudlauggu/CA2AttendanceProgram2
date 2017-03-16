@@ -26,22 +26,23 @@ public class StudentLoginHandler
 
     public Student LoginChecker(String username, String password)
       {
-          for (ArrayList<String> string : sh.getStudUsername())
+          for (String string : sh.getStudUsername())
             {
-              
-            if (string.get(0).equals(username))
+                System.out.println(string);
+            if (string.equals(username))
               {
-                if (sh.checkRightPassword(Integer.parseInt(string.get(1)), password))
+                if (sh.checkRightPassword(string, password))
                   {
-                    ArrayList<String> oneStudent = sh.getStudent(string.get(1));
+                    ArrayList<String> oneStudent = sh.getStudent(string);
                     int id = Integer.parseInt(oneStudent.get(0));
                     String name = oneStudent.get(1);
                     String studentUsername = oneStudent.get(2);
                     String Email = oneStudent.get(3);
                     String studentPassword = oneStudent.get(4);
+                    int aClass = Integer.parseInt(oneStudent.get(5));
                     
                             //UserName, Email, id, password, name
-                    Student thisStudent = new Student(studentUsername,Email, id, studentPassword, name);
+                    Student thisStudent = new Student(studentUsername,Email, id, studentPassword, name,aClass);
                     return thisStudent;
                     
                   }

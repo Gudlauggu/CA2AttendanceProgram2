@@ -7,6 +7,7 @@ package ca1attendanceprogram.DAL;
 
 import ca1attendanceprogram.BE.Student;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
  * @author gudla
  */
 public class StudentHandler
-{
+  {
 
     SQLConnectionManager conManager;
 
@@ -102,7 +103,7 @@ public class StudentHandler
           }
       }
 
-    public ArrayList<ArrayList<String>> getStudUsername()
+    public ArrayList<String> getStudUsername()
       {
         try (Connection con = conManager.getConnection())
           {
@@ -110,16 +111,12 @@ public class StudentHandler
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
 
-            ArrayList<ArrayList<String>> students = new ArrayList<>();
+            ArrayList<String> studUsername = new ArrayList<>();
             while (rs.next())
               {
-                                
-                ArrayList<String> oneStudent =  new ArrayList<>();
-                oneStudent.add(rs.getString("username"));
-                oneStudent.add(rs.getString("id"));
-                students.add(oneStudent);
+                studUsername.add(rs.getString("username"));
               }
-            return students;
+            return studUsername;
           } catch (SQLException sqle)
           {
             System.err.println(sqle);
@@ -176,46 +173,45 @@ public class StudentHandler
           }
       }
 
-    public boolean checkRightPassword(int id, String password)
+    public boolean checkRightPassword(String username, String password)
       {
         try (Connection con = conManager.getConnection())
           {
-              System.out.println("ID = "+ id);
-            String query = "SELECT * FROM [Student] WHERE id = " + id;
-              System.out.println(query);
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(query); 
+            String query = "SELECT * FROM [Student] WHERE username = ?";
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
             rs.next();
-            System.out.println(rs.getString("id"));
-              
+
+            System.out.println(rs.getString("password"));
             return password.equals(rs.getString("password"));
-          } 
-        catch (SQLException sqle)
+          } catch (SQLException sqle)
           {
             System.err.println(sqle);
             return false;
           }
       }
 
-    public ArrayList<String> getStudent(String id)
+    public ArrayList<String> getStudent(String username)
       {
         try (Connection con = conManager.getConnection())
           {
-            String query = "SELECT * FROM [Student] WHERE id =" + id;
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
+            String query = "SELECT * FROM [Student] WHERE username = ?";
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
 
-            ArrayList<String> students = new ArrayList<>();
+            ArrayList<String> oneStudent = new ArrayList<>();
             while (rs.next())
               {
-                students.add(rs.getString("id"));
-                students.add(rs.getString("Name"));
-                students.add(rs.getString("username"));
-                students.add(rs.getString("email"));
-                students.add(rs.getString("password"));
-
+                oneStudent.add(rs.getString("id"));
+                oneStudent.add(rs.getString("name"));
+                oneStudent.add(rs.getString("username"));
+                oneStudent.add(rs.getString("email"));
+                oneStudent.add(rs.getString("password"));
+                oneStudent.add(rs.getString("classid"));
               }
-            return students;
+            return oneStudent;
           } catch (SQLException sqle)
           {
             System.err.println(sqle);
@@ -223,4 +219,4 @@ public class StudentHandler
           }
       }
 
-}
+  }

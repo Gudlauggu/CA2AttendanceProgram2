@@ -5,74 +5,67 @@
  */
 package ca1attendanceprogram.BE;
 
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Random;
 
 /**
  *
  * @author Mechaa
  */
-public class Lesson {
+public class Lesson
+  {
 
-    private String teacher;
     private ArrayList<Student> students = new ArrayList();
-    private Date date;
-    private String name;
+    private Calendar cal;
+    private int lessonId;
+    private int courseId;
 
-    public Lesson(String teacher, String name) {
-        Random rand = new Random();
-        this.teacher = teacher;
+    public Lesson(int lessonId, int courseId, Calendar cal)
+      {
+        this.lessonId = lessonId;
+        this.courseId = courseId;
+        this.cal = cal;
+      }
 
-        Calendar cal = Calendar.getInstance();
-        int month = rand.nextInt(12);
-        int year;
-        while (month < 3 && month > 7) {
-            month = rand.nextInt(12);
-        }
-        if (month < 4) {
-            year = 2017;
-        } else {
-            year = 2016;
-        }
-
-        cal.set(year, month, rand.nextInt(28) + 1); //Year, month and day of month
-        date = cal.getTime();
-        this.name = name;
-    }
-
-    public String getTeacher() {
-        return teacher;
-    }
-
-    public ArrayList<Student> getStudents() {
+    public ArrayList<Student> getStudents()
+      {
         return students;
-    }
+      }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setTeacher(String teacher) {
-        this.teacher = teacher;
-    }
-
-    public void setStudents(ArrayList<Student> students) {
+    public void setStudents(ArrayList<Student> students)
+      {
         this.students = students;
-    }
+      }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
+    public Calendar getCal()
+      {
+        return cal;
+      }
 
-    public String getName() {
-        return name;
-    }
+    public void setCal(Calendar cal)
+      {
+        this.cal = cal;
+      }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public int getLessonId()
+      {
+        return lessonId;
+      }
 
-}
+    public void setLessonId(int lessonId)
+      {
+        this.lessonId = lessonId;
+      }
+
+    public int getCourseId()
+      {
+        return courseId;
+      }
+
+    public void setCourseId(int courseId)
+      {
+        this.courseId = courseId;
+      }
+    
+  }

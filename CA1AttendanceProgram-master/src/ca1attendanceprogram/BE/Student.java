@@ -16,18 +16,12 @@ public class Student extends Person {
 
     private String absencePercentage;
     private String attendingTest;
+    private int aClass;
 
-    public Student(String username, String email, int id, String password, String name) {
+    public Student(String username, String email, int id, String password, String name, int aClass) {
         super(username, email, id, password, name);
-        Random rand = new Random();
-        absencePercentage = rand.nextInt(101) + "";
-       if (rand.nextInt(2) == 1) {
-            attendingTest = "Absent";
-        } else if (rand.nextInt(2) == 0) {
-            attendingTest = "Attending";
-        } else {
-            attendingTest = "Absent(Mercy Requested)";
-       }
+        this.aClass=aClass;
+        
     }
 
     public String getAttendingTest() {

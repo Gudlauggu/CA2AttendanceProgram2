@@ -94,4 +94,25 @@ and open the template in the editor.
     -fx-background-insets: 0;
     -fx-background-radius: 1;
 }
+.toggle-button{
+    -fx-background-color: #666666;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+.toggle-button:selected{
+    -fx-background-color: #444444;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+.toggle-button:selected:hover{
+    -fx-background-color: #555555;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+.toggle-button:hover{
+
+    -fx-background-color: #777777;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
 

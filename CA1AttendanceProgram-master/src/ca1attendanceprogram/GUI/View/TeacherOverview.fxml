@@ -5,6 +5,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
@@ -23,6 +24,7 @@
          <children>
             <Button mnemonicParsing="false" onAction="#mercyButton" prefHeight="37.0" prefWidth="98.0" text="Mercy!" textFill="WHITE" />
             <Button mnemonicParsing="false" onAction="#smiteButton" prefHeight="37.0" prefWidth="102.0" text="Smite!" textFill="WHITE" />
+            <ToggleButton mnemonicParsing="false" text="Start Lesson" textFill="WHITE" />
             <Button fx:id="btnLogOff" mnemonicParsing="false" onAction="#logOff" prefHeight="37.0" prefWidth="140.0" text="Log off" textFill="WHITE" />
          </children>
          <padding>

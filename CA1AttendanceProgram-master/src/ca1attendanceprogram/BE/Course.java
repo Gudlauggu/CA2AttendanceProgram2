@@ -5,6 +5,8 @@
  */
 package ca1attendanceprogram.BE;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Peder
@@ -14,6 +16,7 @@ public class Course
 
     private String name;
     private int id;
+    ArrayList<Lesson> lessons = new ArrayList();
 
     public Course(String name, int id)
     {
@@ -40,5 +43,16 @@ public class Course
     {
         this.name = name;
     }
+
+    public void setLessons(ArrayList<Lesson> lessons)
+      {
+        this.lessons = lessons;
+      }
+
+    public ArrayList<Lesson> getLessons()
+      {
+        return lessons;
+      }
+    
 
 }

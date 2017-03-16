@@ -21,7 +21,7 @@ public class StudentManager
         return studHandler.getAllStudents();
     }
     
-    public ArrayList<ArrayList<String>> getStudUsernames() {
+    public ArrayList<String> getStudUsernames() {
         return studHandler.getStudUsername();
     }
     

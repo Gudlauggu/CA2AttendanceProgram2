@@ -62,8 +62,6 @@ public class AbsenceOverviewController implements Initializable {
 
     @FXML
     private void sendRequest(ActionEvent event) {
-        lessons.get(tblAllAbsence.getSelectionModel().getSelectedIndex()).setName(
-                tblAllAbsence.getSelectionModel().getSelectedItem().getName()+"(Mercy Requested)");
         tblAllAbsence.refresh();
         
     }

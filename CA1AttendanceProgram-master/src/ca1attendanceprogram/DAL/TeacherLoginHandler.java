@@ -5,7 +5,6 @@
  */
 package ca1attendanceprogram.DAL;
 
-
 import ca1attendanceprogram.BE.Teacher;
 import java.util.ArrayList;
 
@@ -15,9 +14,9 @@ import java.util.ArrayList;
  */
 public class TeacherLoginHandler
 {
-    TeacherHandler th = new TeacherHandler();
+    TeacherHandler sh = new TeacherHandler();
     
-    private ArrayList<Teacher> teacher = new ArrayList();
+    private ArrayList<Teacher> student = new ArrayList();
 
     public TeacherLoginHandler()
       {
@@ -27,22 +26,22 @@ public class TeacherLoginHandler
 
     public Teacher LoginChecker(String username, String password)
       {
-          for (ArrayList<String> string : th.getTeachUsername())
+          for (String string : sh.getTeachUsername())
             {
-              
-            if (string.get(0).equals(username))
+                System.out.println(string);
+            if (string.equals(username))
               {
-                if (th.checkRightPassword(Integer.parseInt(string.get(1)), password))
+                if (sh.checkRightPassword(string, password))
                   {
-                    ArrayList<String> oneTeacher = th.getTeacher(string.get(1));
-                    int id = Integer.parseInt(oneTeacher.get(0));
+                    ArrayList<String> oneTeacher = sh.getTeacher(string);
+                    int id = Integer.parseInt(oneTeacher.get(0  ));
                     String name = oneTeacher.get(1);
-                    String teacherUsername = oneTeacher.get(2);
+                    String teachUsername = oneTeacher.get(2);
                     String Email = oneTeacher.get(3);
-                    String teacherPassword = oneTeacher.get(4);
+                    String teachPassword = oneTeacher.get(4);
                     
-                            //UserName, Email, id, password, name
-                    Teacher thisTeacher = new Teacher(teacherUsername, Email, id, teacherPassword, name);
+                            //String username, String email, int id, String password, String name
+                    Teacher thisTeacher = new Teacher(teachUsername,Email, id, teachPassword, name);
                     return thisTeacher;
                     
                   }

@@ -6,10 +6,11 @@
 package ca1attendanceprogram.GUI.Controller;
 
 import ca1attendanceprogram.BE.Student;
+import ca1attendanceprogram.BE.Teacher;
+import ca1attendanceprogram.GUI.Model.LessonModel;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Random;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -34,7 +35,8 @@ import javafx.stage.StageStyle;
  *
  * @author Mecaa
  */
-public class TeacherOverviewController implements Initializable {
+public class TeacherOverviewController implements Initializable
+  {
 
     @FXML
     private TableView<Student> tblAllLessons;
@@ -51,21 +53,25 @@ public class TeacherOverviewController implements Initializable {
     private static ObservableList<Student> students
             = FXCollections.observableArrayList();
     //private static final StudentManager STUDENT_MANAGER = new StudentManager();
+    private Teacher teacher = null;
+    private LessonModel lessonModel = new LessonModel();
 
     /**
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        
+    public void initialize(URL url, ResourceBundle rb)
+      {
+
         updateFields();
         cbChoicer();
         addListener();
 
-    }
+      }
 
     @FXML
-    private void logOff(ActionEvent event) throws IOException {
+    private void logOff(ActionEvent event) throws IOException
+      {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca1attendanceprogram/GUI/View/Login.fxml"));
         Parent root = loader.load();
         Stage subStage = new Stage();
@@ -74,9 +80,10 @@ public class TeacherOverviewController implements Initializable {
         subStage.show();
         Stage stage = (Stage) btnLogOff.getScene().getWindow();
         stage.close();
-    }
+      }
 
-    private void updateFields() {
+    private void updateFields()
+      {
         clmName.setCellValueFactory(
                 new PropertyValueFactory("name"));
         clmAbsence.setCellValueFactory(
@@ -84,62 +91,57 @@ public class TeacherOverviewController implements Initializable {
         clmAttending.setCellValueFactory(
                 new PropertyValueFactory("attendingTest"));
 
-    }
+      }
 
-//    private void makeAStudent() {
-//        tblAllLessons.getItems().clear();
-//        students.clear();
-//
-//        Random rand = new Random();
-//        int repeatTimes = rand.nextInt(20);
-//        
-//        for (int i = 0; i < repeatTimes; i++) {
-//            int test = rand.nextInt(1000);
-//            while (STUDENT_MANAGER.getStudents().size() < test) {
-//                test = rand.nextInt(1000);
-//            }
-//            students.add(STUDENT_MANAGER.getStudents().get(test));
-//        }
-//        tblAllLessons.setItems(students);
-//    }
+    public void setTeacher(Teacher teacher)
+      {
+        this.teacher = teacher;
+        lessonModel.LessonGetter(teacher.getId());
+      }
 
-    public void addListener() {
-        CBLesson.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue ov, Number value, Number new_value) {
+    public void addListener()
+      {
+        CBLesson.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>()
+          {
+            public void changed(ObservableValue ov, Number value, Number new_value)
+              {
                 CBLesson.getSelectionModel().select(new_value.intValue());
                 tblAllLessons.getItems().clear();
-//                makeAStudent();
                 updateFields();
                 tblAllLessons.refresh();
-            }
+              }
 
-        });
-    }
+          });
+      }
 
     private void cbChoicer()//Sets the items in the choicebox
-    {
+      {
         ObservableList<String> groups = FXCollections.observableArrayList("SCO", "ITO", "SDE");
         CBLesson.setItems(groups);
-    }
+      }
 
     @FXML
-    private void mercyButton(ActionEvent event) {
+    private void mercyButton(ActionEvent event)
+      {
         Student student = tblAllLessons.getSelectionModel().getSelectedItem();
-        if (student.getAttendingTest().equals("Absent(Mercy Requested)")) {
+        if (student.getAttendingTest().equals("Absent(Mercy Requested)"))
+          {
             student.setAttendingTest("Attending");
             tblAllLessons.refresh();
-        }
-    }
+          }
+      }
 
     @FXML
-    private void smiteButton(ActionEvent event) {
+    private void smiteButton(ActionEvent event)
+      {
 
         Student student = tblAllLessons.getSelectionModel().getSelectedItem();
         String status = student.getAttendingTest();
-        if (status.equals("Attending") || status.equals("Absent(Mercy Requested)")) {
+        if (status.equals("Attending") || status.equals("Absent(Mercy Requested)"))
+          {
             student.setAttendingTest("Absent");
             tblAllLessons.refresh();
-        }
-    }
+          }
+      }
 
-}
+  }
