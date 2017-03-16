@@ -5,7 +5,7 @@
  */
 package ca1attendanceprogram.BLL;
 
-
+import ca1attendanceprogram.BE.Person;
 import ca1attendanceprogram.BE.Student;
 import ca1attendanceprogram.BE.Teacher;
 import ca1attendanceprogram.DAL.StudentLoginHandler;
@@ -17,16 +17,20 @@ import ca1attendanceprogram.DAL.TeacherLoginHandler;
  */
 public class LoginManager
 {
-    private StudentLoginHandler studentLoginHandler = new StudentLoginHandler();
 
-    public Student LoginChecker(String username, String password) {
-        return studentLoginHandler.LoginChecker(username, password);    
-    }
-    
+    private StudentLoginHandler studentLoginHandler = new StudentLoginHandler();
     private TeacherLoginHandler teacherLoginHandler = new TeacherLoginHandler();
-    
-    public Teacher LoginChercker(String username, String password)
+
+    public Person LoginChecker(String username, String password)
       {
-        return teacherLoginHandler.LoginChecker(username, password);
+
+        if (studentLoginHandler.LoginChecker(username, password) != null)
+          {
+            return studentLoginHandler.LoginChecker(username, password);
+          } else
+          {
+            return teacherLoginHandler.LoginChecker(username, password);
+          }
       }
+
 }
