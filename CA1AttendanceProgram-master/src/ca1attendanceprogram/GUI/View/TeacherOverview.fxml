@@ -14,9 +14,9 @@
       <HBox layoutY="654.0" prefHeight="0.0" prefWidth="534.0" styleClass="hBox" />
       <TableView fx:id="tblAllLessons" layoutX="11.0" layoutY="70.0" prefHeight="442.0" prefWidth="519.0">
         <columns>
-          <TableColumn fx:id="clmName" maxWidth="1.7976931348623157E308" prefWidth="227.0" text="Name" />
-          <TableColumn fx:id="clmAbsence" maxWidth="1.7976931348623157E308" prefWidth="74.0" text="Absence" />
-            <TableColumn fx:id="clmAttending" maxWidth="1.7976931348623157E308" prefWidth="217.0" text="Attending" />
+            <TableColumn prefWidth="150.0" text="Lesson" />
+          <TableColumn fx:id="clmName" maxWidth="1.7976931348623157E308" prefWidth="210.0" text="Name" />
+            <TableColumn fx:id="clmAttending" maxWidth="1.7976931348623157E308" prefWidth="158.0" text="Attending" />
         </columns>
       </TableView>
       <ComboBox fx:id="CBLesson" layoutX="36.0" layoutY="23.0" prefHeight="31.0" prefWidth="201.0" promptText="Choose a lesson" />
