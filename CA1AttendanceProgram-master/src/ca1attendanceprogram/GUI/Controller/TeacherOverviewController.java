@@ -57,7 +57,7 @@ public class TeacherOverviewController implements Initializable
     //private static final StudentManager STUDENT_MANAGER = new StudentManager();
     private Teacher teacher = null;
     private LessonModel lessonModel = new LessonModel();
-
+    private String allCourses = "All Courses";
     /**
      * Initializes the controller class.
      */
@@ -109,9 +109,11 @@ public class TeacherOverviewController implements Initializable
             public void changed(ObservableValue ov, Number value, Number new_value)
               {
                 CBLesson.getSelectionModel().select(new_value.intValue());
+                String crntCourse = CBLesson.getSelectionModel().getSelectedItem();
+                if(crntCourse.equals(allCourses)){
                 tblAllLessons.getItems().clear();
-                updateFields();
-                tblAllLessons.refresh();
+                
+                }
               }
 
           });
@@ -120,7 +122,7 @@ public class TeacherOverviewController implements Initializable
     private void cbChoicer(Teacher teacher)//Sets the items in the choicebox
       {
         ArrayList<String> courseString = new ArrayList();
-        courseString.add("All Courses");
+        courseString.add(allCourses);
           for (Course course : teacher.getCourses())
             {
               courseString.add(course.getName());
