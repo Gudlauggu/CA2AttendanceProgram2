@@ -7,7 +7,9 @@ package ca1attendanceprogram.GUI.Model;
 
 import ca1attendanceprogram.BE.Course;
 import ca1attendanceprogram.BE.Lesson;
+import ca1attendanceprogram.BE.Teacher;
 import ca1attendanceprogram.BLL.LessonManager;
+import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -17,11 +19,19 @@ import javafx.collections.ObservableList;
  */
 public class LessonModel
   {
+
     private LessonManager lessonManager = new LessonManager();
+
+    public ObservableList<Course> LessonIntoObservable(Teacher teacher)
+      {
+        ObservableList<Course> lessons = FXCollections.observableArrayList();
+        lessons.addAll(teacher.getCourses());
+        return lessons;
+      }
+    public void setCoursesForTeacher(Teacher teacher){
+    ArrayList<Course> courses = new ArrayList();
+    courses.addAll(lessonManager.teacherLessons(teacher));
+    teacher.setCourses(courses);
     
-    public ObservableList<Course> LessonGetter(int teacherid){
-     ObservableList<Course> lessons = FXCollections.observableArrayList();
-     lessons.addAll(lessonManager.teacherLessons(teacherid));
-     return lessons;
     }
   }

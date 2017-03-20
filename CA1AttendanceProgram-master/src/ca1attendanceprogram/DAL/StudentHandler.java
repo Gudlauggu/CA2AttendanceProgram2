@@ -48,7 +48,8 @@ public class StudentHandler
                 students.add(studentString);
               }
             return students;
-          } catch (SQLException sqle)
+          }
+        catch (SQLException sqle)
           {
             System.err.println(sqle);
             return null;
@@ -72,7 +73,8 @@ public class StudentHandler
                 students.add(studentString);
               }
             return students;
-          } catch (SQLException sqle)
+          }
+        catch (SQLException sqle)
           {
             System.err.println(sqle);
             return null;
@@ -96,7 +98,8 @@ public class StudentHandler
                 students.add(studentString);
               }
             return students;
-          } catch (SQLException sqle)
+          }
+        catch (SQLException sqle)
           {
             System.err.println(sqle);
             return null;
@@ -117,7 +120,8 @@ public class StudentHandler
                 studUsername.add(rs.getString("username"));
               }
             return studUsername;
-          } catch (SQLException sqle)
+          }
+        catch (SQLException sqle)
           {
             System.err.println(sqle);
             return null;
@@ -142,7 +146,8 @@ public class StudentHandler
                 students.add(studentString);
               }
             return students;
-          } catch (SQLException sqle)
+          }
+        catch (SQLException sqle)
           {
             System.err.println(sqle);
             return null;
@@ -166,7 +171,8 @@ public class StudentHandler
                 students.add(studentString);
               }
             return students;
-          } catch (SQLException sqle)
+          }
+        catch (SQLException sqle)
           {
             System.err.println(sqle);
             return null;
@@ -185,38 +191,60 @@ public class StudentHandler
 
             System.out.println(rs.getString("password"));
             return password.equals(rs.getString("password"));
-          } catch (SQLException sqle)
+          }
+        catch (SQLException sqle)
           {
             System.err.println(sqle);
             return false;
           }
       }
 
-    public ArrayList<String> getStudent(String username)
+    public Student getStudentBasedOnUsername(String username)
       {
         try (Connection con = conManager.getConnection())
           {
             String query = "SELECT * FROM [Student] WHERE username = ?";
-            PreparedStatement stmt = con.prepareStatement(query);
-            stmt.setString(1, username);
-            ResultSet rs = stmt.executeQuery();
+            PreparedStatement pstmt = con.prepareStatement(query);
+            pstmt.setString(1, username);
 
-            ArrayList<String> oneStudent = new ArrayList<>();
-            while (rs.next())
-              {
-                oneStudent.add(rs.getString("id"));
-                oneStudent.add(rs.getString("name"));
-                oneStudent.add(rs.getString("username"));
-                oneStudent.add(rs.getString("email"));
-                oneStudent.add(rs.getString("password"));
-                oneStudent.add(rs.getString("classid"));
-              }
-            return oneStudent;
-          } catch (SQLException sqle)
+            return getStudentFromResults(pstmt);
+          }
+        catch (SQLException sqle)
           {
             System.err.println(sqle);
             return null;
           }
+      }
+
+    public Student getStudentBasedOnId(int id)
+      {
+        try (Connection con = conManager.getConnection())
+          {
+            String query = "SELECT * FROM [Student] WHERE id = ?";
+            PreparedStatement pstmt = con.prepareStatement(query);
+            pstmt.setInt(1, id);
+            return getStudentFromResults(pstmt);
+          }
+        catch (SQLException sqle)
+          {
+            System.err.println(sqle);
+            return null;
+          }
+      }
+
+    public Student getStudentFromResults(PreparedStatement pstmt) throws SQLException
+      {
+        ResultSet rs = pstmt.executeQuery();
+        rs.next();
+        int idStud = rs.getInt("id");
+        String nameStud = rs.getString("name");
+        String usernameStud = rs.getString("username");
+        String emailStud = rs.getString("email");
+        String passwordStud = rs.getString("password");
+        int classId = rs.getInt("classid");
+
+        Student student = new Student(usernameStud, emailStud, idStud, passwordStud, nameStud, classId);
+        return student;
       }
 
   }

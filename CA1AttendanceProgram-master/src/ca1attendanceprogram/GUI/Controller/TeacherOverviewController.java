@@ -5,12 +5,14 @@
  */
 package ca1attendanceprogram.GUI.Controller;
 
+import ca1attendanceprogram.BE.Course;
 import ca1attendanceprogram.BE.Student;
 import ca1attendanceprogram.BE.Teacher;
 import ca1attendanceprogram.GUI.Model.LessonModel;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -64,8 +66,6 @@ public class TeacherOverviewController implements Initializable
       {
 
         updateFields();
-        cbChoicer();
-        addListener();
 
       }
 
@@ -93,10 +93,13 @@ public class TeacherOverviewController implements Initializable
 
       }
 
-    public void setTeacher(Teacher teacher)
+    public void AltInitilizer(Teacher teacher)
       {
         this.teacher = teacher;
-        lessonModel.LessonGetter(teacher.getId());
+        lessonModel.setCoursesForTeacher(teacher);
+        lessonModel.LessonIntoObservable(teacher);
+        cbChoicer(teacher);
+        addListener();
       }
 
     public void addListener()
@@ -114,9 +117,15 @@ public class TeacherOverviewController implements Initializable
           });
       }
 
-    private void cbChoicer()//Sets the items in the choicebox
+    private void cbChoicer(Teacher teacher)//Sets the items in the choicebox
       {
-        ObservableList<String> groups = FXCollections.observableArrayList("SCO", "ITO", "SDE");
+        ArrayList<String> courseString = new ArrayList();
+        courseString.add("All Courses");
+          for (Course course : teacher.getCourses())
+            {
+              courseString.add(course.getName());
+            }
+        ObservableList<String> groups = FXCollections.observableArrayList(courseString);
         CBLesson.setItems(groups);
       }
 
@@ -142,6 +151,11 @@ public class TeacherOverviewController implements Initializable
             student.setAttendingTest("Absent");
             tblAllLessons.refresh();
           }
+      }
+
+    @FXML
+    private void startLesson(ActionEvent event)
+      {
       }
 
   }

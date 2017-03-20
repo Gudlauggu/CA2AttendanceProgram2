@@ -35,19 +35,19 @@ public class TeacherHandler
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
 
-            ArrayList<String> students = new ArrayList<>();
+            ArrayList<String> teachers = new ArrayList<>();
             while (rs.next())
               {
-                String studentString = "";
-                studentString += rs.getString("id") + " ";
-                studentString += rs.getString("Name") + " ";
-                studentString += rs.getString("username") + " ";
-                studentString += rs.getString("email") + " ";
-                studentString += rs.getString("password");
+                String teacherString = "";
+                teacherString += rs.getString("id") + " ";
+                teacherString += rs.getString("Name") + " ";
+                teacherString += rs.getString("username") + " ";
+                teacherString += rs.getString("email") + " ";
+                teacherString += rs.getString("password");
 
-                students.add(studentString);
+                teachers.add(teacherString);
               }
-            return students;
+            return teachers;
           } catch (SQLException sqle)
           {
             System.err.println(sqle);
@@ -63,15 +63,15 @@ public class TeacherHandler
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
 
-            ArrayList<String> students = new ArrayList<>();
+            ArrayList<String> teachers = new ArrayList<>();
             while (rs.next())
               {
-                String studentString = "";
-                studentString += rs.getString("id");
+                String teacherString = "";
+                teacherString += rs.getString("id");
 
-                students.add(studentString);
+                teachers.add(teacherString);
               }
-            return students;
+            return teachers;
           } catch (SQLException sqle)
           {
             System.err.println(sqle);
@@ -87,15 +87,15 @@ public class TeacherHandler
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
 
-            ArrayList<String> students = new ArrayList<>();
+            ArrayList<String> teachers = new ArrayList<>();
             while (rs.next())
               {
-                String studentString = "";
-                studentString += rs.getString("Name");
+                String teacherString = "";
+                teacherString += rs.getString("Name");
 
-                students.add(studentString);
+                teachers.add(teacherString);
               }
-            return students;
+            return teachers;
           } catch (SQLException sqle)
           {
             System.err.println(sqle);
@@ -132,16 +132,16 @@ public class TeacherHandler
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
 
-            ArrayList<String> students = new ArrayList<>();
+            ArrayList<String> teachers = new ArrayList<>();
             while (rs.next())
               {
-                String studentString = "";
+                String teacherString = "";
 
-                studentString += rs.getString("email");
+                teacherString += rs.getString("email");
 
-                students.add(studentString);
+                teachers.add(teacherString);
               }
-            return students;
+            return teachers;
           } catch (SQLException sqle)
           {
             System.err.println(sqle);
@@ -157,15 +157,15 @@ public class TeacherHandler
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
 
-            ArrayList<String> students = new ArrayList<>();
+            ArrayList<String> teachers = new ArrayList<>();
             while (rs.next())
               {
-                String studentString = "";
-                studentString += rs.getString("password");
+                String teacherString = "";
+                teacherString += rs.getString("password");
 
-                students.add(studentString);
+                teachers.add(teacherString);
               }
-            return students;
+            return teachers;
           } catch (SQLException sqle)
           {
             System.err.println(sqle);
