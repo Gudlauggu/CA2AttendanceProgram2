@@ -5,6 +5,9 @@
  */
 package ca1attendanceprogram.GUI.Controller;
 
+import ca1attendanceprogram.BE.Person;
+import ca1attendanceprogram.BE.Student;
+import ca1attendanceprogram.GUI.Model.StudentModel;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -35,11 +38,21 @@ public class ChangePasswordViewController implements Initializable
     @FXML
     private TextField txtNewPassAgain;
     @FXML
-    private TextField txtEmailConfirm;
-    @FXML
     private Button btnCancel;
     @FXML
     private Button btnChange;
+    
+    
+    @FXML
+    private TextField txtUsername;
+    
+    // 0 = not logged int // 1 = logged in // 2 = wrong password, not logged in
+    private static final int NOT_LOGGED_IN = 1;
+    private static final int LOGGED_IN = 2;
+    private static final int WRONG_PASSWORD = 3;
+    private int loginState = NOT_LOGGED_IN;
+    private static final StudentModel STUDENT_MODEL = new StudentModel();
+    private Person person = null;
 
     /**
      * Initializes the controller class.
@@ -53,6 +66,51 @@ public class ChangePasswordViewController implements Initializable
     @FXML
     private void cancelEvent(ActionEvent event) throws IOException
       {
+        showLoginWindow();
+      }
+
+    @FXML
+    private void changePass(ActionEvent event) throws IOException
+      {
+        if (person == null)
+          {
+            person = loginChecker();
+            
+          }
+        if (loginState != LOGGED_IN
+                && person != null)
+          {
+            
+            if (checkIfSame() != true)
+              {
+                  
+                STUDENT_MODEL.changePassword(txtNewPass.getText().trim(), txtUsername.getText().trim());
+                showLoginWindow();
+                System.out.println("password been changed!");
+                
+              }
+          }
+          
+      }
+    
+    private boolean checkIfSame()
+      {
+        if (txtNewPass.getText().trim() == txtNewPassAgain.getText().trim())
+          {
+            return true;
+          }
+        else
+            return false;
+      }
+    
+    private Student loginChecker()
+      {
+        return STUDENT_MODEL.LoginChecker(txtUsername.getText().trim(), txtOldPass.getText().trim());
+
+      }
+    
+    private void showLoginWindow() throws IOException
+      {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca1attendanceprogram/GUI/View/Login.fxml"));
         Parent root = loader.load();
         Stage subStage = new Stage();
@@ -62,5 +120,6 @@ public class ChangePasswordViewController implements Initializable
         Stage stage = (Stage) btnCancel.getScene().getWindow();
         stage.close();
       }
+    
     
 }

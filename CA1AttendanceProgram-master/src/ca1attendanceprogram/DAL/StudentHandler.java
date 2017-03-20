@@ -198,6 +198,23 @@ public class StudentHandler
             return false;
           }
       }
+    
+    public void changePassword(String password, String username)
+      {
+        try (Connection con = conManager.getConnection())
+          {
+            String sqlQuery = "UPDATE Student SET password=? WHERE username=?";
+            PreparedStatement pstmt = con.prepareStatement(sqlQuery);
+            
+            pstmt.setString(1, password);
+            pstmt.setString(2, username);
+            pstmt.execute();
+          }
+        catch(SQLException sqle)
+          {
+              System.err.println(sqle);
+          }
+      }
 
     public Student getStudentBasedOnUsername(String username)
       {

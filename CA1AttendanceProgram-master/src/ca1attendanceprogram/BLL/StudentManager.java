@@ -7,6 +7,7 @@ package ca1attendanceprogram.BLL;
 
 import ca1attendanceprogram.BE.Student;
 import ca1attendanceprogram.DAL.StudentHandler;
+import ca1attendanceprogram.DAL.StudentLoginHandler;
 import java.util.ArrayList;
 
 /**
@@ -16,6 +17,8 @@ import java.util.ArrayList;
 public class StudentManager
 {
     private static StudentHandler studHandler = new StudentHandler();
+    private static StudentLoginHandler studLogHandler = new StudentLoginHandler();
+    
 
     public ArrayList<String> getAllStudents() {
         return studHandler.getAllStudents();
@@ -39,4 +42,17 @@ public class StudentManager
     public ArrayList<String> getStudNames() {
         return studHandler.getStudName();
     }
+
+   public void changePassword(String password, String username)
+     {
+       studHandler.changePassword(password, username);
+     }
+   
+   public Student LoginChecker(String username, String password)
+     {
+       return studLogHandler.LoginChecker(username, password);
+     }
+    
+    
+    
 }
