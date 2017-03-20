@@ -67,7 +67,7 @@ public class LessonHandler
             List<Course> courses = getCourses(con, teacher.getId());
             for (Course course : courses)
               {
-                String query2 = "SELECT * FROM [Lesson] WHERE id = ?";
+                String query2 = "SELECT * FROM [Lesson] WHERE lessonid = ?";
                 PreparedStatement pstmtLessons = con.prepareStatement(query2);
                 pstmtLessons.setInt(1, course.getId());
                 ResultSet rsLesson = pstmtLessons.executeQuery();

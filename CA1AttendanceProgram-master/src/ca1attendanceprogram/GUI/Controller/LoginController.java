@@ -119,7 +119,7 @@ public class LoginController implements Initializable
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca1attendanceprogram/GUI/View/TeacherOverview.fxml"));
                 Parent root = loader.load();
                 TeacherOverviewController tController = (TeacherOverviewController) loader.getController();
-                tController.setTeacher((Teacher) person);
+                tController.AltInitilizer((Teacher) person);
                 System.out.println(person.getName());
 
                 Stage subStage = new Stage();
