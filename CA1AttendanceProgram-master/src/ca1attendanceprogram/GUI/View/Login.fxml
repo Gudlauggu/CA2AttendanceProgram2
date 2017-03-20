@@ -23,6 +23,7 @@
             </Button>
             <Button fx:id="btnClose" mnemonicParsing="false" onAction="#closeEvent" prefHeight="37.0" prefWidth="140.0" text="Quit" textFill="WHITE" />
                 <Button id="hiddenButton" fx:id="btnHiddenButton" alignment="CENTER" mnemonicParsing="false" onAction="#HiddenButtonEvent" prefHeight="37.0" prefWidth="182.0" text="Forgotten Password?" textFill="WHITE" visible="false" />
+            <Button id="hiddenButton" fx:id="btnChangePassword" alignment="CENTER" layoutX="311.0" layoutY="17.0" mnemonicParsing="false" onAction="#ChangePassword" prefHeight="37.0" prefWidth="182.0" text="Change password" textFill="WHITE" visible="false" />
          </children>
          <padding>
             <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
