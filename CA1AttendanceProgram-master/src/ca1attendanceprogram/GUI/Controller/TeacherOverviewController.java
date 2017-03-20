@@ -96,7 +96,7 @@ public class TeacherOverviewController implements Initializable
     public void setTeacher(Teacher teacher)
       {
         this.teacher = teacher;
-        lessonModel.LessonGetter(teacher.getId());
+        lessonModel.LessonGetter(teacher);
       }
 
     public void addListener()
@@ -142,6 +142,11 @@ public class TeacherOverviewController implements Initializable
             student.setAttendingTest("Absent");
             tblAllLessons.refresh();
           }
+      }
+
+    @FXML
+    private void startLesson(ActionEvent event)
+      {
       }
 
   }

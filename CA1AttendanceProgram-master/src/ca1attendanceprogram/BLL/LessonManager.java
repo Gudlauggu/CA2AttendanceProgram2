@@ -6,9 +6,9 @@
 package ca1attendanceprogram.BLL;
 
 import ca1attendanceprogram.BE.Course;
-import ca1attendanceprogram.BE.Lesson;
+import ca1attendanceprogram.BE.Teacher;
 import ca1attendanceprogram.DAL.LessonHandler;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -16,8 +16,11 @@ import java.util.ArrayList;
  */
 public class LessonManager
   {
+
     private LessonHandler lHandler = new LessonHandler();
-       public ArrayList<Course> teacherLessons(int teacherid){
-       return lHandler.getLessons(teacherid);
-       }
+
+    public List<Course> teacherLessons(Teacher teacher)
+      {
+        return lHandler.getLessons(teacher);
+      }
   }

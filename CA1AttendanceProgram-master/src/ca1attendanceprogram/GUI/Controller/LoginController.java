@@ -75,6 +75,7 @@ public class LoginController implements Initializable
     private static final int LOGGED_IN = 2;
     private static final int WRONG_PASSWORD = 3;
     private static final int LOGGED_IN_TEACHER = 4;
+    private static final int TRYING_LOGIN = 5;
     private int loginState = NOT_LOGGED_IN;
     private static final LoginManager LOGIN_MANAGER = new LoginManager();
     private static final StudentManager STUDENT_MANAGER = new StudentManager();
@@ -98,11 +99,10 @@ public class LoginController implements Initializable
     @FXML
     private void loginEvent(ActionEvent event) throws IOException
       {
-        //Test Login
-        //LOGIN_MANAGER.LoginChecker(txtUsername.getText(), txtPassword.getText());
-
-        person = LOGIN_MANAGER.LoginChecker(txtUsername.getText().trim(), txtPassword.getText().trim());
-
+        if (person == null)
+          {
+            person = LOGIN_MANAGER.LoginChecker(txtUsername.getText().trim(), txtPassword.getText().trim());
+          }
         if (loginState != LOGGED_IN
                 && person != null)
           {
@@ -112,7 +112,8 @@ public class LoginController implements Initializable
                 //saveUsername();
                 loginState = LOGGED_IN;
                 activeState();
-              } else if (person.getClass() == Teacher.class)
+              }
+            else if (person.getClass() == Teacher.class)
               {
                 //saveUsername();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca1attendanceprogram/GUI/View/TeacherOverview.fxml"));
@@ -131,18 +132,21 @@ public class LoginController implements Initializable
                 stage.close();
 
               }
-          } else if (loginState != LOGGED_IN && person == null)
+          }
+        else if (loginState != LOGGED_IN && person == null)
           {
 
             loginState = WRONG_PASSWORD;
             activeState();
-          } else if (loginState == LOGGED_IN)
+          }
+        else if (loginState == LOGGED_IN)
           {
             if (btnLogin.getText().equals("Attend Class"))
               {
                 lblAttending.setVisible(true);
                 btnLogin.setText("Leave Class");
-              } else if (btnLogin.getText().equals("Leave Class"))
+              }
+            else if (btnLogin.getText().equals("Leave Class"))
               {
                 lblAttending.setVisible(false);
                 btnLogin.setText("Attend Class");
@@ -168,7 +172,7 @@ public class LoginController implements Initializable
             loginState = NOT_LOGGED_IN;
             activeState();
             lblAttending.setVisible(false);
-
+            person = null;
           }
       }
 
@@ -213,6 +217,7 @@ public class LoginController implements Initializable
                 break;
             case LOGGED_IN_TEACHER:
                 break;
+
           }
       }
 
@@ -231,7 +236,8 @@ public class LoginController implements Initializable
             Stage stage = (Stage) btnHiddenButton.getScene().getWindow();
             stage.close();
 
-          } else if (loginState == WRONG_PASSWORD)
+          }
+        else if (loginState == WRONG_PASSWORD)
           {
             Alert alert = new Alert(AlertType.CONFIRMATION);
             alert.setTitle("Forgotten Password");
@@ -243,7 +249,8 @@ public class LoginController implements Initializable
               {
                 lblConfirmation.setVisible(true);
                 lblConfirmation.setText("A password has been send to your e-mail.");
-              } else
+              }
+            else
               {
                 // ... user chose CANCEL or closed the dialog
                 //Do nothing

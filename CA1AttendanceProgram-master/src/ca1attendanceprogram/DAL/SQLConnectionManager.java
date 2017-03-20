@@ -15,7 +15,7 @@ import java.sql.Connection;
  */
 public class SQLConnectionManager
 {
-    private SQLServerDataSource ds = new SQLServerDataSource();
+    private static SQLServerDataSource DS = new SQLServerDataSource();
 
     public SQLConnectionManager()
       {
@@ -24,16 +24,16 @@ public class SQLConnectionManager
     
     public Connection getConnection() throws SQLServerException
       {
-        return ds.getConnection();
+        return DS.getConnection();
       }
     
     
     private void setupDataSource()
       {
-        ds.setDatabaseName("Kahani_Attendance");
-        ds.setUser("CS2016B_11");
-        ds.setPassword("CS2016B_11");
-        ds.setPortNumber(1433);
-        ds.setServerName("10.176.111.31");
+        DS.setDatabaseName("Kahani_Attendance");
+        DS.setUser("CS2016B_11");
+        DS.setPassword("CS2016B_11");
+        DS.setPortNumber(1433);
+        DS.setServerName("10.176.111.31");
       }
 }

@@ -67,5 +67,5 @@ public class Lesson
       {
         this.courseId = courseId;
       }
-    
+
   }

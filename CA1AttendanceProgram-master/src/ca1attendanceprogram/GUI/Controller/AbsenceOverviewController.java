@@ -33,7 +33,8 @@ import javafx.stage.StageStyle;
  *
  * @author Mechaa
  */
-public class AbsenceOverviewController implements Initializable {
+public class AbsenceOverviewController implements Initializable
+  {
 
     @FXML
     private TableView<Lesson> tblAllAbsence;
@@ -54,20 +55,23 @@ public class AbsenceOverviewController implements Initializable {
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb)
+      {
 
         updateFields();
 
-    }
+      }
 
     @FXML
-    private void sendRequest(ActionEvent event) {
+    private void sendRequest(ActionEvent event)
+      {
         tblAllAbsence.refresh();
-        
-    }
+
+      }
 
     @FXML
-    private void logOff(ActionEvent event) throws IOException {
+    private void logOff(ActionEvent event) throws IOException
+      {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca1attendanceprogram/GUI/View/Login.fxml"));
         Parent root = loader.load();
         Stage subStage = new Stage();
@@ -76,18 +80,22 @@ public class AbsenceOverviewController implements Initializable {
         subStage.show();
         Stage stage = (Stage) btnLogOff.getScene().getWindow();
         stage.close();
-    }
+      }
 
-    private void updateFields() {
+    private void updateFields()
+      {
         //lessons.addAll(lessonManager.getLessons());
         tblAllAbsence.setItems(lessons);
         clmTeacher.setCellValueFactory(
                 new PropertyValueFactory("teacher"));
+
+//        clmTeacher.setCellValueFactory(
+//                cellData-> cellData.getValue().getLessonId());
         clmDate.setCellValueFactory(
                 new PropertyValueFactory("date"));
         clmClass.setCellValueFactory(
                 new PropertyValueFactory("name"));
-        
-    }
 
-}
+      }
+
+  }
