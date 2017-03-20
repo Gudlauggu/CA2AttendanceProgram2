@@ -21,6 +21,6 @@ public class LessonManager
 
     public List<Course> teacherLessons(Teacher teacher)
       {
-        return lHandler.getLessons(teacher);
+        return lHandler.getLessonsFromTeacher(teacher);
       }
   }
