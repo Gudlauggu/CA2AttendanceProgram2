@@ -83,7 +83,6 @@ public class LoginController implements Initializable
     private static final StudentManager STUDENT_MANAGER = new StudentManager();
     //private static final UsernameManager USER_MANAGER = new UsernameManager();
     private Person person = null;
-    
 
     @Override
     public void initialize(URL url, ResourceBundle rb)
@@ -175,12 +174,8 @@ public class LoginController implements Initializable
             loginState = NOT_LOGGED_IN;
             activeState();
             lblAttending.setVisible(false);
-<<<<<<< HEAD
             btnChangePassword.setVisible(false);
-
-=======
             person = null;
->>>>>>> origin/master
           }
       }
 
@@ -286,18 +281,17 @@ public class LoginController implements Initializable
     private void ChangePassword(ActionEvent event) throws IOException
       {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca1attendanceprogram/GUI/View/ChangePasswordView.fxml"));
-                Parent root = loader.load();
-                ChangePasswordViewController passController = (ChangePasswordViewController) loader.getController();
-                
+        Parent root = loader.load();
+        ChangePasswordViewController passController = (ChangePasswordViewController) loader.getController();
 
-                Stage subStage = new Stage();
-                subStage.setScene(new Scene(root));
+        Stage subStage = new Stage();
+        subStage.setScene(new Scene(root));
 
-                subStage.initStyle(StageStyle.UNDECORATED);
+        subStage.initStyle(StageStyle.UNDECORATED);
 
-                subStage.show();
-                Stage stage = (Stage) btnChangePassword.getScene().getWindow();
-                stage.close();
+        subStage.show();
+        Stage stage = (Stage) btnChangePassword.getScene().getWindow();
+        stage.close();
 
       }
 
