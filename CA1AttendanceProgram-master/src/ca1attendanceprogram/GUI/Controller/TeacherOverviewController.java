@@ -44,7 +44,6 @@ public class TeacherOverviewController implements Initializable
     private TableView<Student> tblAllLessons;
     @FXML
     private TableColumn<Student, String> clmName;
-    @FXML
     private TableColumn<Student, String> clmAbsence;
     @FXML
     private TableColumn<Student, String> clmAttending;
@@ -58,6 +57,8 @@ public class TeacherOverviewController implements Initializable
     private Teacher teacher = null;
     private LessonModel lessonModel = new LessonModel();
     private String allCourses = "All Courses";
+    @FXML
+    private Button btnChangePass;
     /**
      * Initializes the controller class.
      */
@@ -158,6 +159,23 @@ public class TeacherOverviewController implements Initializable
     @FXML
     private void startLesson(ActionEvent event)
       {
+      }
+
+    @FXML
+    private void openChangePass(ActionEvent event) throws IOException
+      {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca1attendanceprogram/GUI/View/ChangePasswordView.fxml"));
+        Parent root = loader.load();
+        ChangePasswordViewController passController = (ChangePasswordViewController) loader.getController();
+
+        Stage subStage = new Stage();
+        subStage.setScene(new Scene(root));
+
+        subStage.initStyle(StageStyle.UNDECORATED);
+
+        subStage.show();
+        Stage stage = (Stage) btnChangePass.getScene().getWindow();
+        stage.close();
       }
 
   }
