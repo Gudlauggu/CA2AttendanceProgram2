@@ -25,7 +25,8 @@
             <Button mnemonicParsing="false" onAction="#mercyButton" prefHeight="37.0" prefWidth="98.0" text="Mercy!" textFill="WHITE" />
             <Button mnemonicParsing="false" onAction="#smiteButton" prefHeight="37.0" prefWidth="102.0" text="Smite!" textFill="WHITE" />
             <ToggleButton mnemonicParsing="false" onAction="#startLesson" text="Start Lesson" textFill="WHITE" />
-            <Button fx:id="btnLogOff" mnemonicParsing="false" onAction="#logOff" prefHeight="37.0" prefWidth="140.0" text="Log off" textFill="WHITE" />
+            <Button fx:id="btnLogOff" mnemonicParsing="false" onAction="#logOff" prefHeight="44.0" prefWidth="99.0" text="Log off" textFill="WHITE" />
+            <Button fx:id="btnChangePass" layoutX="346.0" layoutY="17.0" mnemonicParsing="false" onAction="#openChangePass" prefHeight="44.0" prefWidth="99.0" text="Change Password" textFill="WHITE" />
          </children>
          <padding>
             <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
