@@ -28,10 +28,23 @@ public class LessonModel
         lessons.addAll(teacher.getCourses());
         return lessons;
       }
-    public void setCoursesForTeacher(Teacher teacher){
-    ArrayList<Course> courses = new ArrayList();
-    courses.addAll(lessonManager.teacherLessons(teacher));
-    teacher.setCourses(courses);
-    
-    }
+
+    public void setCoursesForTeacher(Teacher teacher)
+      {
+        ArrayList<Course> courses = new ArrayList();
+        courses.addAll(lessonManager.teacherLessons(teacher));
+        teacher.setCourses(courses);
+
+      }
+
+    public boolean createLesson(Teacher teacher, String courseName)
+      {
+          for (Course course : teacher.getCourses())
+            {
+              if(course.getName().equals(courseName)){
+              return lessonManager.createLesson(course);
+              }
+            }
+          return false;
+      }
   }

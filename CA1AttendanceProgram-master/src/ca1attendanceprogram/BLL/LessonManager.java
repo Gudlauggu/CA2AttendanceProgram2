@@ -23,4 +23,7 @@ public class LessonManager
       {
         return lHandler.getLessonsFromTeacher(teacher);
       }
+    public boolean createLesson(Course course){
+        return lHandler.createNewLesson(course);
+    }
   }
