@@ -9,9 +9,7 @@ import ca1attendanceprogram.BE.Course;
 import ca1attendanceprogram.BE.Lesson;
 import ca1attendanceprogram.BE.Student;
 import ca1attendanceprogram.BE.Teacher;
-import com.microsoft.sqlserver.jdbc.SQLServerException;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,34 +30,12 @@ public class LessonHandler
 
     SQLConnectionManager conManager;
     Calendar cal;
-    java.util.Date d;
 
+            StudentHandler sh = new StudentHandler();
     public LessonHandler()
       {
         this.conManager = new SQLConnectionManager();
       }
-
-    public void LessonCreator()
-      {
-        try (Connection con = conManager.getConnection())
-          {
-//
-//            cal = Calendar.getInstance();
-//            d = new java.util.Date();
-//            cal.setTimeInMillis(d.getTime());
-//            String query = "INSERT INTO [Lesson](datetime, students) VALUES (?, ?)";
-//            PreparedStatement stmt = con.prepareStatement(query);
-//            cal.setTimeZone(TimeZone.getTimeZone("GMT+1:00"));
-//            stmt.setTimestamp(1, new java.sql.Timestamp(cal.getTimeInMillis()));
-//            stmt.setString(2, "Name");
-//            stmt.execute();
-          }
-        catch (SQLException ex)
-          {
-            Logger.getLogger(LessonHandler.class.getName()).log(Level.SEVERE, null, ex);
-          }
-      }
-
     public List<Course> getLessonsFromTeacher(Teacher teacher)
       {
         try (Connection con = conManager.getConnection())
@@ -78,11 +54,11 @@ public class LessonHandler
                     calendar.setTimeInMillis(timestamp.getTime());
                     Lesson lesson = new Lesson(rsLesson.getInt("lessonid"),
                             rsLesson.getInt("courseid"), calendar);
-                    lesson.setStudents((ArrayList)getStudentsInLessons(con, lesson));
+                    lesson.setStudents((ArrayList) getStudentsInLessons(con, lesson));
                     course.getLessons().add(lesson);
-                    
+
                   }
-                
+
               }
 
             return courses;
@@ -95,7 +71,6 @@ public class LessonHandler
           }
       }
 
-    
     private List<Course> getCourses(Connection con, int teacherid) throws SQLException
       {
         String query = "SELECT * FROM [Course] WHERE teacherid=?";
@@ -109,8 +84,10 @@ public class LessonHandler
           }
         return courses;
       }
-    private List<Student> getStudentsInLessons(Connection con,Lesson lesson) throws SQLException{
-       String query = "SELECT * FROM [StudentLesson] WHERE lessonid=?";
+
+    private List<Student> getStudentsInLessons(Connection con, Lesson lesson) throws SQLException
+      {
+        String query = "SELECT * FROM [StudentLesson] WHERE lessonid=?";
         PreparedStatement pstmt = con.prepareStatement(query);
         pstmt.setInt(1, lesson.getLessonId());
         ResultSet rs = pstmt.executeQuery();
@@ -119,13 +96,58 @@ public class LessonHandler
           {
             studentsid.add(rs.getInt("studentid"));
           }
-        ArrayList<Student>students = new ArrayList();
+        ArrayList<Student> students = new ArrayList();
         for (Integer integer : studentsid)
           {
-            StudentHandler sh = new StudentHandler();
             students.add(sh.getStudentBasedOnId(integer));
-            
+
           }
         return students;
-    }
+      }
+
+    public boolean createNewLesson(Course course, Teacher teacher)
+      {
+        try (Connection con = conManager.getConnection())
+          {
+            int classid = getClassIdFromCourse(course, con);
+            String query = "INSERT INTO [lesson] (datetime,courseid) VALUES (?,?)";
+            PreparedStatement pstmt = con.prepareStatement(query);
+            
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeZone(TimeZone.getTimeZone("GMT+1:00"));
+            Timestamp timestamp = new java.sql.Timestamp(cal.getTimeInMillis());
+            pstmt.setTimestamp(1, timestamp);
+            pstmt.setInt(2, course.getId());
+            pstmt.execute();
+            query = "SELECT TOP 1 FROM [lesson] WHERE datetime = ?";
+            pstmt = con.prepareStatement(query);
+            pstmt.setTimestamp(1, timestamp);
+            ResultSet rs = pstmt.executeQuery();
+            int lessonid = rs.getInt("lessonid");
+              for (Integer integer : sh.getAllStudentIdBasedOnClass(classid, con))
+                {
+                  query = "INSERT INTO [studentlesson] (lessonid,studentid,attending)VALUES(?,?,?)";
+                  pstmt = con.prepareStatement(query);
+                  pstmt.setInt(1, lessonid);
+                  pstmt.setInt(2, integer);
+                  pstmt.setInt(3, 0);
+                }
+;
+          }
+        catch (SQLException ex)
+          {
+            Logger.getLogger(LessonHandler.class.getName()).log(Level.SEVERE, null, ex);
+          }
+        return false;
+      }
+
+    private int getClassIdFromCourse(Course course, Connection con) throws SQLException
+      {
+        String query = "SELECT * FROM [Course] WHERE id = ?";
+        PreparedStatement pstmt = con.prepareStatement(query);
+        pstmt.setInt(1, course.getId());
+        ResultSet rs = pstmt.executeQuery();
+        rs.next();
+        return rs.getInt("classid");
+      }
   }

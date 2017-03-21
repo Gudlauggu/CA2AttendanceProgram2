@@ -263,5 +263,16 @@ public class StudentHandler
         Student student = new Student(usernameStud, emailStud, idStud, passwordStud, nameStud, classId);
         return student;
       }
+    public ArrayList<Integer> getAllStudentIdBasedOnClass(int classid, Connection con) throws SQLException{
+        String  query = "SELECT * FROM [student] WHERE classid = ?";
+        PreparedStatement pstmt = con.prepareStatement(query);
+        pstmt.setInt(1, classid);
+        ResultSet rs = pstmt.executeQuery();
+       ArrayList<Integer> studentsId = new ArrayList();
+        while(rs.next()){
+            studentsId.add(rs.getInt("id"));
+        }
+        return studentsId;
+    }
 
   }
