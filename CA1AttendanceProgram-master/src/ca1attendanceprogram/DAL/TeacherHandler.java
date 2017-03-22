@@ -217,5 +217,22 @@ public class TeacherHandler
             return null;
           }
       }
+    
+    public void changePassword(String password, String username)
+      {
+        try (Connection con = conManager.getConnection())
+          {
+            String sqlQuery = "UPDATE Teacher SET password=? WHERE username=?";
+            PreparedStatement pstmt = con.prepareStatement(sqlQuery);
+            
+            pstmt.setString(1, password);
+            pstmt.setString(2, username);
+            pstmt.execute();
+          }
+        catch(SQLException sqle)
+          {
+              System.err.println(sqle);
+          }
+      }
 
   }
