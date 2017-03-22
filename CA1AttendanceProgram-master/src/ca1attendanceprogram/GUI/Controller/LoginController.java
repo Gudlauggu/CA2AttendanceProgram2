@@ -8,16 +8,14 @@ package ca1attendanceprogram.GUI.Controller;
 import ca1attendanceprogram.BE.*;
 import ca1attendanceprogram.BLL.LoginManager;
 import ca1attendanceprogram.BLL.StudentManager;
-import ca1attendanceprogram.DAL.LessonHandler;
+import ca1attendanceprogram.GUI.Model.LessonModel;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -32,7 +30,6 @@ import javafx.scene.layout.AnchorPane;
 
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.stage.WindowEvent;
 
 /**
  *
@@ -81,9 +78,12 @@ public class LoginController implements Initializable
     private int loginState = NOT_LOGGED_IN;
     private static final LoginManager LOGIN_MANAGER = new LoginManager();
     private static final StudentManager STUDENT_MANAGER = new StudentManager();
+    private static final LessonModel LESSON_MODEL = new LessonModel();
     //private static final UsernameManager USER_MANAGER = new UsernameManager();
     private Person person = null;
-
+    @FXML
+    private Label lblCurrentTeacher;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb)
       {
@@ -197,6 +197,9 @@ public class LoginController implements Initializable
                 lblStudentName.setText(person.getName());
                 boxRemUsername.setDisable(true);
                 btnChangePassword.setVisible(true);
+                Lesson lesson = getNewestLesson();
+                lblCurrentClass.setText(lesson.getLessonName());
+                lblCurrentTeacher.setText(lesson.getTeacherName());
                 break;
             case NOT_LOGGED_IN:
                 txtUsername.setDisable(false);
@@ -294,5 +297,8 @@ public class LoginController implements Initializable
         stage.close();
 
       }
+    private Lesson getNewestLesson(){
+        return LESSON_MODEL.getNewestLesson();
+    }
 
   }

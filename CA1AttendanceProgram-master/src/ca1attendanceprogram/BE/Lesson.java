@@ -20,6 +20,8 @@ public class Lesson
     private Calendar cal;
     private int lessonId;
     private int courseId;
+    private String lessonName;
+    private String teacherName;
 
     public Lesson(int lessonId, int courseId, Calendar cal)
       {
@@ -66,6 +68,26 @@ public class Lesson
     public void setCourseId(int courseId)
       {
         this.courseId = courseId;
+      }
+
+    public String getLessonName()
+      {
+        return lessonName;
+      }
+
+    public void setLessonName(String lessonName)
+      {
+        this.lessonName = lessonName;
+      }
+
+    public String getTeacherName()
+      {
+        return teacherName;
+      }
+
+    public void setTeacherName(String teacherName)
+      {
+        this.teacherName = teacherName;
       }
 
   }

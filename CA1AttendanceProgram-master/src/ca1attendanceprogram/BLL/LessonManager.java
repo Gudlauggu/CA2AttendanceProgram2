@@ -6,6 +6,7 @@
 package ca1attendanceprogram.BLL;
 
 import ca1attendanceprogram.BE.Course;
+import ca1attendanceprogram.BE.Lesson;
 import ca1attendanceprogram.BE.Teacher;
 import ca1attendanceprogram.DAL.LessonHandler;
 import java.util.List;
@@ -26,4 +27,7 @@ public class LessonManager
     public boolean createLesson(Course course){
         return lHandler.createNewLesson(course);
     }
+     public Lesson getNewestLesson(){
+         return lHandler.getNewestLesson();
+     }
   }

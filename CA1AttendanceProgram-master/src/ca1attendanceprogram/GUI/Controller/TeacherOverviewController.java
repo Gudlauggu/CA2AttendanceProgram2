@@ -6,7 +6,9 @@
 package ca1attendanceprogram.GUI.Controller;
 
 import ca1attendanceprogram.BE.Course;
+import ca1attendanceprogram.BE.Lesson;
 import ca1attendanceprogram.BE.Student;
+import ca1attendanceprogram.BE.StudentLesson;
 import ca1attendanceprogram.BE.Teacher;
 import ca1attendanceprogram.GUI.Model.LessonModel;
 
@@ -42,12 +44,13 @@ public class TeacherOverviewController implements Initializable
   {
 
     @FXML
-    private TableView<Student> tblAllLessons;
+    private TableView<StudentLesson> tblAllLessons;
     @FXML
-    private TableColumn<Student, String> clmName;
-    private TableColumn<Student, String> clmAbsence;
+    private TableColumn<StudentLesson, String> clmName;
     @FXML
-    private TableColumn<Student, String> clmAttending;
+    private TableColumn<StudentLesson, String> clmAttending;
+    @FXML
+    private TableColumn<StudentLesson, String> clmLesson;
     @FXML
     private ComboBox<String> CBLesson;
     @FXML
@@ -63,16 +66,13 @@ public class TeacherOverviewController implements Initializable
 
     @FXML
     private ToggleButton btnLesson;
-    @FXML
-    private TableColumn<?, ?> clmLesson;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb)
       {
-
-        
 
       }
 
@@ -94,9 +94,9 @@ public class TeacherOverviewController implements Initializable
         clmName.setCellValueFactory(
                 new PropertyValueFactory("name"));
         clmLesson.setCellValueFactory(
-                new PropertyValueFactory("attendingTest"));
+                new PropertyValueFactory("lessonname"));
         clmAttending.setCellValueFactory(
-                new PropertyValueFactory("attendingTest"));
+                new PropertyValueFactory("attendence"));
 
       }
 
@@ -120,12 +120,16 @@ public class TeacherOverviewController implements Initializable
                 String crntCourse = CBLesson.getSelectionModel().getSelectedItem();
                 if (crntCourse.equals(allCourses))
                   {
+                    tblAllLessons.getItems().clear();
                     btnLesson.setDisable(true);
+                      for (Course course : teacher.getCourses())
+                        {
+                        }
                   }
-                else 
-                {
-                  btnLesson.setDisable(false);
-                }
+                else
+                  {
+                    btnLesson.setDisable(false);
+                  }
               }
 
           });
@@ -146,25 +150,12 @@ public class TeacherOverviewController implements Initializable
     @FXML
     private void mercyButton(ActionEvent event)
       {
-        Student student = tblAllLessons.getSelectionModel().getSelectedItem();
-        if (student.getAttendingTest().equals("Absent(Mercy Requested)"))
-          {
-            student.setAttendingTest("Attending");
-            tblAllLessons.refresh();
-          }
       }
 
     @FXML
     private void smiteButton(ActionEvent event)
       {
 
-        Student student = tblAllLessons.getSelectionModel().getSelectedItem();
-        String status = student.getAttendingTest();
-        if (status.equals("Attending") || status.equals("Absent(Mercy Requested)"))
-          {
-            student.setAttendingTest("Absent");
-            tblAllLessons.refresh();
-          }
       }
 
     @FXML
@@ -173,7 +164,6 @@ public class TeacherOverviewController implements Initializable
         String courseName = CBLesson.getSelectionModel().getSelectedItem();
         lessonModel.createLesson(teacher, courseName);
       }
-
 
     @FXML
     private void openChangePass(ActionEvent event) throws IOException
