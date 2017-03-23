@@ -52,6 +52,11 @@ public class StudentManager
      {
        return studLogHandler.LoginChecker(username, password);
      }
+   
+   public Student getStudentBasedOnUsername(String username)
+     {
+       return studHandler.getStudentBasedOnUsername(username);
+     }
     
     
     

@@ -27,5 +27,10 @@ public class StudentModel
        return studentManager.LoginChecker(username, password);
      }
    
+   public Student getStudentBasedOnUsername(String username)
+     {
+       return studentManager.getStudentBasedOnUsername(username);
+     }
+   
    
 }

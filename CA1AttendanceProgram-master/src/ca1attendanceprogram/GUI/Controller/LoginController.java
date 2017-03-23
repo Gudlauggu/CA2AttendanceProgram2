@@ -286,6 +286,7 @@ public class LoginController implements Initializable
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca1attendanceprogram/GUI/View/ChangePasswordView.fxml"));
         Parent root = loader.load();
         ChangePasswordViewController passController = (ChangePasswordViewController) loader.getController();
+        passController.getStudent((Student) person);
 
         Stage subStage = new Stage();
         subStage.setScene(new Scene(root));
