@@ -31,7 +31,7 @@ public class StudentLessonModel
     public void setStudentLessons(Student student)
     {
         ArrayList<String> studentLesson = new ArrayList();
-        studentLesson.addAll(studenLessonManager.getAllStudentLesssons(student));
+        //studentLesson.addAll(studenLessonManager.getAllStudentLesssons(student));
         student.setAbsencePercentage(studentLesson);
     }
 }

@@ -5,13 +5,8 @@
  */
 package ca1attendanceprogram.BE;
 
-<<<<<<< HEAD
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.logging.Logger;
 
-=======
->>>>>>> origin/master
 /**
  *
  * @author Mecaa
@@ -48,16 +43,11 @@ public class Student extends Person
     public void setAbsencePercentage(String absencePercentage)
       {
         this.absencePercentage = absencePercentage;
-<<<<<<< HEAD
-    }
+      }
 
     public void setAbsencePercentage(ArrayList<String> studentLesson)
-    {
+      {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-=======
       }
->>>>>>> origin/master
 
   }
