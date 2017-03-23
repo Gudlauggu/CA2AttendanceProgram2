@@ -90,6 +90,7 @@ public class LoginController implements Initializable
         // TODO
         Image logo = new Image("file:DATA/BASYDVEST_negativ.png");
         imgLogo.setImage(logo);
+        boxRemUsername.setVisible(false);
         //ArrayList<String> strings = USER_MANAGER.loadProp();
 //        if (!strings.isEmpty()) {
 //            txtUsername.setText(strings.get(0));
