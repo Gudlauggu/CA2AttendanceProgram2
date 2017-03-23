@@ -8,12 +8,16 @@ package ca1attendanceprogram.GUI.Controller;
 import ca1attendanceprogram.BE.Course;
 import ca1attendanceprogram.BE.Person;
 import ca1attendanceprogram.BE.Student;
+import ca1attendanceprogram.BE.StudentLesson;
 import ca1attendanceprogram.BE.Teacher;
+import ca1attendanceprogram.DAL.StudentLessonHandler;
 import ca1attendanceprogram.GUI.Model.LessonModel;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -43,17 +47,21 @@ public class TeacherOverviewController implements Initializable
   {
 
     @FXML
-    private TableView<Student> tblAllLessons;
+    private TableView<StudentLesson> tblAllLessons;
     @FXML
-    private TableColumn<Student, String> clmName;
-    private TableColumn<Student, String> clmAbsence;
+    private TableColumn<StudentLesson, String> clmName;
     @FXML
-    private TableColumn<Student, String> clmAttending;
+    private TableColumn<StudentLesson, String> clmAttending;
+    @FXML
+    private TableColumn<StudentLesson, String> clmLesson;
+    @FXML
+    private TableColumn<StudentLesson, String> clmDate;
+
     @FXML
     private ComboBox<String> CBLesson;
     @FXML
     private Button btnLogOff;
-    private static ObservableList<Student> students
+    private static ObservableList<StudentLesson> studLessons
             = FXCollections.observableArrayList();
     //private static final StudentManager STUDENT_MANAGER = new StudentManager();
     private Teacher teacher = null;
@@ -64,18 +72,14 @@ public class TeacherOverviewController implements Initializable
 
     @FXML
     private ToggleButton btnLesson;
-    @FXML
-    private TableColumn<?, ?> clmLesson;
-    
-    private Person person;
-    /**
-     * Initializes the controller class.
-     */
+
+    //
+    StudentLessonHandler studLessonHandler = new StudentLessonHandler();
+    //
+
     @Override
     public void initialize(URL url, ResourceBundle rb)
       {
-
-        
 
       }
 
@@ -95,11 +99,14 @@ public class TeacherOverviewController implements Initializable
     private void updateFields()
       {
         clmName.setCellValueFactory(
-                new PropertyValueFactory("name"));
+                new PropertyValueFactory("studentName"));
         clmLesson.setCellValueFactory(
-                new PropertyValueFactory("attendingTest"));
+                new PropertyValueFactory("lessonName"));
         clmAttending.setCellValueFactory(
-                new PropertyValueFactory("attendingTest"));
+                new PropertyValueFactory("attendence"));
+
+        clmDate.setCellValueFactory(
+                new PropertyValueFactory("cal"));
 
       }
 
@@ -111,6 +118,7 @@ public class TeacherOverviewController implements Initializable
         cbChoicer(teacher);
         addListener();
         updateFields();
+        tblAllLessons.setItems(studLessons);
       }
 
     public void addListener()
@@ -120,15 +128,31 @@ public class TeacherOverviewController implements Initializable
             public void changed(ObservableValue ov, Number value, Number new_value)
               {
                 CBLesson.getSelectionModel().select(new_value.intValue());
+                studLessons.clear();
                 String crntCourse = CBLesson.getSelectionModel().getSelectedItem();
                 if (crntCourse.equals(allCourses))
                   {
+
                     btnLesson.setDisable(true);
+                    for (Course course : teacher.getCourses())
+                      {
+                        studLessons.addAll(studLessonHandler.getStudentLessonBasedOnCourse(course.getId()));
+                      }
                   }
-                else 
-                {
-                  btnLesson.setDisable(false);
-                }
+                else
+                  {
+                    for (Course course : teacher.getCourses())
+                      {
+                        if (course.getName().equals(crntCourse))
+                          {
+                            studLessons.addAll(studLessonHandler.getStudentLessonBasedOnCourse(course.getId()));
+                          }
+                      }
+                    btnLesson.setDisable(false);
+                    
+                  }
+                clmDate.setSortType(TableColumn.SortType.DESCENDING);
+                tblAllLessons.getSortOrder().add(clmDate);
               }
 
           });
@@ -149,18 +173,18 @@ public class TeacherOverviewController implements Initializable
     @FXML
     private void mercyButton(ActionEvent event)
       {
-        Student student = tblAllLessons.getSelectionModel().getSelectedItem();
+        /*Student student = tblAllLessons.getSelectionModel().getSelectedItem();
         if (student.getAttendingTest().equals("Absent(Mercy Requested)"))
           {
             student.setAttendingTest("Attending");
             tblAllLessons.refresh();
-          }
+          }*/
       }
 
     @FXML
     private void smiteButton(ActionEvent event)
       {
-
+        /*
         Student student = tblAllLessons.getSelectionModel().getSelectedItem();
         String status = student.getAttendingTest();
         if (status.equals("Attending") || status.equals("Absent(Mercy Requested)"))
@@ -168,6 +192,7 @@ public class TeacherOverviewController implements Initializable
             student.setAttendingTest("Absent");
             tblAllLessons.refresh();
           }
+         */
       }
 
     @FXML
@@ -177,14 +202,11 @@ public class TeacherOverviewController implements Initializable
         lessonModel.createLesson(teacher, courseName);
       }
 
-
     @FXML
     private void openChangePass(ActionEvent event) throws IOException
       {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca1attendanceprogram/GUI/View/ChangePasswordView.fxml"));
         Parent root = loader.load();
-        
-        
 
         Stage subStage = new Stage();
         subStage.setScene(new Scene(root));

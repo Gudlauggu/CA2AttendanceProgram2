@@ -171,7 +171,7 @@ public class LessonHandler
             Lesson lesson = new Lesson(rs.getInt("lessonid"), rs.getInt("courseid"), cal);
             query = "SELECT * FROM [course] WHERE id = ?";
             pstmt = con.prepareStatement(query);
-            pstmt.setInt(1, lesson.getCourseId());  
+            pstmt.setInt(1, lesson.getCourseId());
             rs = pstmt.executeQuery();
             rs.next();
             lesson.setLessonName(rs.getString("name"));
@@ -188,5 +188,47 @@ public class LessonHandler
             Logger.getLogger(LessonHandler.class.getName()).log(Level.SEVERE, null, ex);
           }
         return null;
+      }
+
+    public Lesson getOneLessonFromID(int lessonId)
+      {
+        try (Connection con = conManager.getConnection())
+          {
+            String query = "SELECT * FROM [Lesson] WHERE lessonid = ?";
+            PreparedStatement pstmt = con.prepareStatement(query);
+            pstmt.setInt(1, lessonId);
+            Lesson lesson = getLessonFromResult(pstmt);
+            lesson.setLessonName(getCourseNameFromLesson(lesson, con));
+            return lesson;
+          }
+        catch (SQLException sqle)
+          {
+            System.err.println(sqle);
+            return null;
+          }
+      }
+
+    private Lesson getLessonFromResult(PreparedStatement pstmt) throws SQLException
+      {
+        ResultSet rs = pstmt.executeQuery();
+        rs.next();
+        int lessonid = rs.getInt("lessonid");
+        int courseid = rs.getInt("courseid");
+        Timestamp timestamp = rs.getTimestamp("datetime");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timestamp.getTime());
+        Lesson lesson = new Lesson(lessonid, courseid, calendar);
+        return lesson;
+      }
+
+    private String getCourseNameFromLesson(Lesson lesson, Connection con) throws SQLException
+      {
+        String query = "SELECT * FROM [course] where id = ?";
+        PreparedStatement pstmt = con.prepareStatement(query);
+        pstmt.setInt(1, lesson.getCourseId());
+        ResultSet rs = pstmt.executeQuery();
+        rs.next();
+        return rs.getString("name");
+
       }
   }

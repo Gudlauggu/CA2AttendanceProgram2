@@ -18,9 +18,9 @@ public class StudentLessonManager
 
     private final StudentLessonHandler sLHandler = new StudentLessonHandler();
 
-    public ArrayList<String> getAllStudentLesssons(Student student)
+    public ArrayList<String> getAllStudentLesssons()
     {
-        return sLHandler.getAllStudentLessons(student);
+        return sLHandler.getAllStudentLessons();
     }
 
     public ArrayList<String> getLessonId()
