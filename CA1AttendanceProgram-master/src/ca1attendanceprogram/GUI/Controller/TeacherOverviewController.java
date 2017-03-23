@@ -10,6 +10,7 @@ import ca1attendanceprogram.BE.Lesson;
 import ca1attendanceprogram.BE.Student;
 import ca1attendanceprogram.BE.StudentLesson;
 import ca1attendanceprogram.BE.Teacher;
+import ca1attendanceprogram.DAL.StudentLessonHandler;
 import ca1attendanceprogram.GUI.Model.LessonModel;
 
 import java.io.IOException;
@@ -55,7 +56,7 @@ public class TeacherOverviewController implements Initializable
     private ComboBox<String> CBLesson;
     @FXML
     private Button btnLogOff;
-    private static ObservableList<Student> students
+    private static ObservableList<StudentLesson> studLessons
             = FXCollections.observableArrayList();
     //private static final StudentManager STUDENT_MANAGER = new StudentManager();
     private Teacher teacher = null;
@@ -67,9 +68,12 @@ public class TeacherOverviewController implements Initializable
     @FXML
     private ToggleButton btnLesson;
 
-    /**
-     * Initializes the controller class.
+    //test
+    /*
      */
+    StudentLessonHandler studLessonHandler = new StudentLessonHandler();
+    //
+
     @Override
     public void initialize(URL url, ResourceBundle rb)
       {
@@ -92,9 +96,9 @@ public class TeacherOverviewController implements Initializable
     private void updateFields()
       {
         clmName.setCellValueFactory(
-                new PropertyValueFactory("name"));
+                new PropertyValueFactory("studentName"));
         clmLesson.setCellValueFactory(
-                new PropertyValueFactory("lessonname"));
+                new PropertyValueFactory("lessonName"));
         clmAttending.setCellValueFactory(
                 new PropertyValueFactory("attendence"));
 
@@ -108,6 +112,7 @@ public class TeacherOverviewController implements Initializable
         cbChoicer(teacher);
         addListener();
         updateFields();
+        tblAllLessons.setItems(studLessons);
       }
 
     public void addListener()
@@ -117,17 +122,26 @@ public class TeacherOverviewController implements Initializable
             public void changed(ObservableValue ov, Number value, Number new_value)
               {
                 CBLesson.getSelectionModel().select(new_value.intValue());
+                studLessons.clear();
                 String crntCourse = CBLesson.getSelectionModel().getSelectedItem();
                 if (crntCourse.equals(allCourses))
                   {
-                    tblAllLessons.getItems().clear();
+                    
                     btnLesson.setDisable(true);
-                      for (Course course : teacher.getCourses())
-                        {
-                        }
+                    for (Course course : teacher.getCourses())
+                      {
+                        studLessons.addAll(studLessonHandler.getStudentLessonBasedOnCourse(course.getId()));
+                      }
                   }
                 else
                   {
+                    for (Course course : teacher.getCourses())
+                      {
+                        if (course.getName().equals(crntCourse))
+                          {
+                            studLessons.addAll(studLessonHandler.getStudentLessonBasedOnCourse(course.getId()));
+                          }
+                      }
                     btnLesson.setDisable(false);
                   }
               }

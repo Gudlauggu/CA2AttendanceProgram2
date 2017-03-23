@@ -20,6 +20,15 @@ public class StudentLesson
     private final static String ABSENT= "Absent";
     private final static String ATTENDING = "Attending";
     private final static String MERCY_REQUESTED ="Absent(Mercy Requested)";
+
+    public StudentLesson(Student student, Lesson lesson, int attendint)
+      {
+        this.student = student;
+        setStudentName();
+        this.lesson = lesson;
+        setLessonName();
+        setAttendence(attendint);
+      }
     
     public Student getStudent()
       {
