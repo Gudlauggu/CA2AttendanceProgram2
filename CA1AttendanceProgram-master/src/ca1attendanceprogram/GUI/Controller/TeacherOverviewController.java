@@ -6,6 +6,7 @@
 package ca1attendanceprogram.GUI.Controller;
 
 import ca1attendanceprogram.BE.Course;
+import ca1attendanceprogram.BE.Person;
 import ca1attendanceprogram.BE.Student;
 import ca1attendanceprogram.BE.Teacher;
 import ca1attendanceprogram.GUI.Model.LessonModel;
@@ -65,6 +66,8 @@ public class TeacherOverviewController implements Initializable
     private ToggleButton btnLesson;
     @FXML
     private TableColumn<?, ?> clmLesson;
+    
+    private Person person;
     /**
      * Initializes the controller class.
      */
@@ -180,7 +183,8 @@ public class TeacherOverviewController implements Initializable
       {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca1attendanceprogram/GUI/View/ChangePasswordView.fxml"));
         Parent root = loader.load();
-        ChangePasswordViewController passController = (ChangePasswordViewController) loader.getController();
+        
+        
 
         Stage subStage = new Stage();
         subStage.setScene(new Scene(root));

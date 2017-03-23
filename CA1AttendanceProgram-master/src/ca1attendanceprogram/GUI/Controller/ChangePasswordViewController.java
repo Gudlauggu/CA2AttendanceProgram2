@@ -25,6 +25,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -58,7 +59,9 @@ public class ChangePasswordViewController implements Initializable
     private static final StudentModel STUDENT_MODEL = new StudentModel();
     private static final TeacherModel TEACHER_MODEL = new TeacherModel();
     private static final LoginModel LOGIN_MODEL = new LoginModel();
-    private Person person = null;
+    private Person person;
+    private Student student;
+    private Teacher teacher;
 
     /**
      * Initializes the controller class.
@@ -66,6 +69,8 @@ public class ChangePasswordViewController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
       {
+      
+        
         // TODO
       }
 
@@ -87,7 +92,7 @@ public class ChangePasswordViewController implements Initializable
                 && person != null)
           {
 
-            if (checkIfSame() != true)
+            if (checkIfSame() == true)
               {
                 if (person.getClass() == Student.class)
                   {
@@ -103,7 +108,7 @@ public class ChangePasswordViewController implements Initializable
                     System.out.println("Teacher password has been changed!");
                     showLoginWindow();
                   }
-              } else if (checkIfSame() != false)
+              } else if (checkIfSame() == false)
               {
 
                 Alert alert = new Alert(AlertType.INFORMATION);
@@ -131,7 +136,7 @@ public class ChangePasswordViewController implements Initializable
 
     private boolean checkIfSame()
       {
-        if (txtNewPass.getText().trim() == txtNewPassAgain.getText().trim())
+        if (txtNewPass.getText().trim().equals(txtNewPassAgain.getText().trim()) )
           {
             return true;
           } else
@@ -157,5 +162,24 @@ public class ChangePasswordViewController implements Initializable
         Stage stage = (Stage) btnCancel.getScene().getWindow();
         stage.close();
       }
-
+    
+    public void checkWichPerson()
+      {
+        
+      }
+    
+    public void getStudent (Student student)
+      {
+        this.student = student;
+        
+        
+      }
+    
+    public void getTeacher(Teacher teacher)
+      {
+        this.teacher = teacher;
+      }
+    
+     
+          
 }
