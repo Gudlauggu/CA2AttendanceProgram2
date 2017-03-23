@@ -5,6 +5,8 @@
  */
 package ca1attendanceprogram.GUI.Model;
 
+import ca1attendanceprogram.BE.Course;
+import ca1attendanceprogram.BE.Lesson;
 import ca1attendanceprogram.BE.Student;
 import ca1attendanceprogram.BE.StudentLesson;
 import ca1attendanceprogram.BLL.StudentLessonManager;
@@ -17,21 +19,71 @@ import javafx.collections.ObservableList;
  * @author Peder
  */
 public class StudentLessonModel
-{
+  {
 
-    private final StudentLessonManager studenLessonManager = new StudentLessonManager();
+    private final StudentLessonManager studentLessonManager = new StudentLessonManager();
 
-    public ObservableList<String> StudentLessonIntoObservable(Student student)
-    {
-        ObservableList<String> studentLessons = FXCollections.observableArrayList();
-        studentLessons.addAll(student.getAbsencePercentage());
-        return studentLessons;
-    }
+    public StudentLesson getOneStudentLessonFromLessonAndStudent(Student student, Lesson lesson)
+      {
+        return studentLessonManager.getOneStudentLessonFromLessonAndStudent(student, lesson);
+      }
 
-    public void setStudentLessons(Student student)
-    {
-        ArrayList<String> studentLesson = new ArrayList();
-        //studentLesson.addAll(studenLessonManager.getAllStudentLesssons(student));
-        student.setAbsencePercentage(studentLesson);
-    }
-}
+    public ArrayList<StudentLesson> getStudentLessonBasedOnStudent(Student student)
+      {
+        return studentLessonManager.getStudentLessonBasedOnStudent(student);
+      }
+
+    public ArrayList<StudentLesson> getStudentLessonBasedOnCourse(Course course)
+      {
+        return studentLessonManager.getStudentLessonBasedOnCourse(course);
+      }
+
+    public void setStudentAttendence(StudentLesson studLess, int attendid)
+      {
+        studentLessonManager.setStudentAttendence(studLess, attendid);
+      }
+
+    public String getAllAbsenceAsPercentage(Student student)
+      {
+        ArrayList<StudentLesson> studLessons = getStudentLessonBasedOnStudent(student);
+        double absentNumber = 0;
+        for (StudentLesson studentLesson : studLessons)
+          {
+            if (studentLesson.getAttendint() != 1)
+              {
+                absentNumber += 1;
+              }
+          }
+
+        double percent;
+        percent = (absentNumber / studLessons.size()) * 100;
+        percent = (double) Math.round(percent * 10d) / 10d;
+        return percent + "%";
+      }
+
+    public String getAbsenceForCurrentCourse(Student student, Lesson lesson)
+      {
+        ArrayList<Lesson> lessons = new LessonModel().getAllCourseLessonsFromLessonAndStudent(student, lesson);
+        ArrayList<StudentLesson> studLessons = getStudentLessonBasedOnStudent(student);
+        double absentNumber = 0;
+        for (StudentLesson studentLesson : studLessons)
+          {
+            for (Lesson les : lessons)
+              {
+                if (studentLesson.getLesson().getLessonId() == les.getLessonId())
+                  {
+                    if (studentLesson.getAttendint() != 1)
+                      {
+                        absentNumber += 1;
+                      }
+                  }
+              }
+
+          }
+
+        double percent;
+        percent = (absentNumber / studLessons.size()) * 100;
+        percent = (double) Math.round(percent * 10d) / 10d;
+        return percent + "%";
+      }
+  }

@@ -29,16 +29,16 @@
             <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
          </padding>
       </HBox>
-      <AnchorPane fx:id="ancAttendence" layoutX="278.0" layoutY="12.0" prefHeight="186.0" prefWidth="308.0" visible="false">
+      <AnchorPane fx:id="ancAttendence" layoutX="239.0" layoutY="21.0" prefHeight="186.0" prefWidth="308.0" visible="false">
          <children>
-            <Label layoutX="14.0" layoutY="155.0" prefHeight="30.0" prefWidth="162.0" text="Attendence(All Lessons):" textFill="WHITE" />
-            <Label fx:id="lblAttendenceAll" alignment="TOP_RIGHT" layoutX="138.0" layoutY="159.0" prefHeight="23.0" prefWidth="100.0" text="99%" textFill="WHITE" />
+            <Label layoutX="14.0" layoutY="155.0" prefHeight="30.0" prefWidth="162.0" text="Absence in all lessons" textFill="WHITE" />
+            <Label fx:id="lblAttendenceAll" alignment="TOP_RIGHT" layoutX="186.0" layoutY="155.0" prefHeight="23.0" prefWidth="100.0" text="99%" textFill="WHITE" />
             <Label layoutX="14.0" layoutY="87.0" prefHeight="26.0" prefWidth="162.0" styleClass="label-headline" text="Current Lesson:" textFill="WHITE" />
             <Label fx:id="lblCurrentClass" layoutX="155.0" layoutY="88.0" prefHeight="18.0" prefWidth="131.0" styleClass="label-headline" text="SCO" textFill="WHITE" />
-            <Label layoutX="14.0" layoutY="137.0" prefHeight="18.0" prefWidth="162.0" text="Attendence:" textFill="WHITE" />
-            <Label fx:id="lblClassAttendance" alignment="CENTER_RIGHT" layoutX="89.0" layoutY="137.0" prefHeight="18.0" prefWidth="147.0" text="30%" textFill="WHITE" />
+            <Label layoutX="14.0" layoutY="137.0" prefHeight="18.0" prefWidth="162.0" text="Absence in current lesson" textFill="WHITE" />
+            <Label fx:id="lblClassAttendance" alignment="CENTER_RIGHT" layoutX="139.0" layoutY="133.0" prefHeight="18.0" prefWidth="147.0" text="30%" textFill="WHITE" />
             <Label layoutX="14.0" layoutY="118.0" text="Teacher:" textFill="WHITE" />
-            <Label fx:id="lblCurrentTeacher" alignment="CENTER_RIGHT" layoutX="70.0" layoutY="118.0" prefHeight="14.0" prefWidth="162.0" text="Jeppe Moritz Led" textFill="WHITE" />
+            <Label fx:id="lblCurrentTeacher" alignment="CENTER_RIGHT" layoutX="124.0" layoutY="114.0" prefHeight="14.0" prefWidth="162.0" text="Jeppe Moritz Led" textFill="WHITE" />
             <Label fx:id="lblStudentName" alignment="TOP_LEFT" layoutX="31.0" layoutY="35.0" prefHeight="51.0" prefWidth="240.0" styleClass="label-headline" text="Proxy Name" textFill="WHITE" />
             <Label alignment="TOP_LEFT" layoutX="19.0" layoutY="10.0" prefHeight="16.0" prefWidth="140.0" styleClass="label-headline" text="Good Day" textFill="WHITE" />
          </children>
@@ -46,26 +46,26 @@
             <Insets left="17.0" right="5.0" />
          </padding>
       </AnchorPane>
-      <AnchorPane layoutX="8.0" layoutY="9.0" prefHeight="202.0" prefWidth="270.0" styleClass="paneBorder">
+      <AnchorPane layoutX="8.0" layoutY="9.0" prefHeight="210.0" prefWidth="229.0" styleClass="paneBorder">
          <children>
-              <FlowPane layoutX="6.0" layoutY="76.0" prefHeight="113.0" prefWidth="254.0" vgap="7.0">
+              <FlowPane layoutX="10.0" layoutY="70.0" prefHeight="113.0" prefWidth="201.0" vgap="7.0">
                   <children>
-                      <TextField fx:id="txtUsername" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="240.0" promptText="Username" />
-                  <PasswordField fx:id="txtPassword" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="240.0" promptText="Password" styleClass="text-field" />
+                      <TextField fx:id="txtUsername" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="175.0" promptText="Username" />
+                  <PasswordField fx:id="txtPassword" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="176.0" promptText="Password" styleClass="text-field" />
                       <CheckBox fx:id="boxRemUsername" mnemonicParsing="false" text="Remember Me" textFill="WHITE" />
                   </children>
                   <padding>
                       <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
                   </padding>
               </FlowPane>
-              <ImageView fx:id="imgLogo" blendMode="HARD_LIGHT" fitHeight="85.0" fitWidth="239.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+              <ImageView fx:id="imgLogo" blendMode="HARD_LIGHT" fitHeight="51.0" fitWidth="208.0" layoutX="12.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="file:/C:/Users/Mecaa/Desktop/School/NetBeans/CA1AttendanceProgram/DATA/BASYDVEST_negativ.png" />
                </image>
               </ImageView>
-            <Label fx:id="lblConfirmation" alignment="CENTER" layoutX="10.0" layoutY="183.0" prefHeight="21.0" prefWidth="240.0" styleClass="label-small" text="Your Password has been sent" textFill="WHITE" visible="false" />
+            <Label fx:id="lblConfirmation" alignment="CENTER" layoutX="10.0" layoutY="183.0" prefHeight="21.0" prefWidth="201.0" styleClass="label-small" text="Your Password has changed" textFill="WHITE" visible="false" />
+            <Label fx:id="lblAttending" prefHeight="18.0" prefWidth="201.0" styleClass="label-headline" text="You are  attending" textFill="WHITE" visible="false" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="175.0" />
          </children>
       </AnchorPane>
-      <Label fx:id="lblAttending" layoutX="292.0" layoutY="192.0" prefHeight="18.0" prefWidth="201.0" styleClass="label-headline" text="You are now attending" textFill="WHITE" visible="false" />
     </children>
 </AnchorPane>

@@ -12,6 +12,7 @@ import ca1attendanceprogram.BE.StudentLesson;
 import ca1attendanceprogram.BE.Teacher;
 import ca1attendanceprogram.DAL.StudentLessonHandler;
 import ca1attendanceprogram.GUI.Model.LessonModel;
+import ca1attendanceprogram.GUI.Model.StudentLessonModel;
 
 import java.io.IOException;
 import java.net.URL;
@@ -31,6 +32,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleButton;
@@ -74,7 +76,7 @@ public class TeacherOverviewController implements Initializable
     private ToggleButton btnLesson;
 
     //
-    StudentLessonHandler studLessonHandler = new StudentLessonHandler();
+    private static final StudentLessonModel STUD_LESS_MODEL = new StudentLessonModel();
     //
 
     @Override
@@ -119,6 +121,11 @@ public class TeacherOverviewController implements Initializable
         addListener();
         updateFields();
         tblAllLessons.setItems(studLessons);
+
+        tblAllLessons.getSelectionModel().setSelectionMode(
+                SelectionMode.MULTIPLE
+        );
+
       }
 
     public void addListener()
@@ -129,33 +136,39 @@ public class TeacherOverviewController implements Initializable
               {
                 CBLesson.getSelectionModel().select(new_value.intValue());
                 studLessons.clear();
-                String crntCourse = CBLesson.getSelectionModel().getSelectedItem();
-                if (crntCourse.equals(allCourses))
-                  {
-
-                    btnLesson.setDisable(true);
-                    for (Course course : teacher.getCourses())
-                      {
-                        studLessons.addAll(studLessonHandler.getStudentLessonBasedOnCourse(course.getId()));
-                      }
-                  }
-                else
-                  {
-                    for (Course course : teacher.getCourses())
-                      {
-                        if (course.getName().equals(crntCourse))
-                          {
-                            studLessons.addAll(studLessonHandler.getStudentLessonBasedOnCourse(course.getId()));
-                          }
-                      }
-                    btnLesson.setDisable(false);
-                    
-                  }
-                clmDate.setSortType(TableColumn.SortType.DESCENDING);
-                tblAllLessons.getSortOrder().add(clmDate);
+                tableUpdater();
               }
 
           });
+      }
+
+    private void tableUpdater()
+      {
+        tblAllLessons.getItems().clear();
+        String crntCourse = CBLesson.getSelectionModel().getSelectedItem();
+        if (crntCourse.equals(allCourses))
+          {
+
+            btnLesson.setDisable(true);
+            for (Course course : teacher.getCourses())
+              {
+                studLessons.addAll(STUD_LESS_MODEL.getStudentLessonBasedOnCourse(course));
+              }
+          }
+        else
+          {
+            for (Course course : teacher.getCourses())
+              {
+                if (course.getName().equals(crntCourse))
+                  {
+                    studLessons.addAll(STUD_LESS_MODEL.getStudentLessonBasedOnCourse(course));
+                  }
+              }
+            btnLesson.setDisable(false);
+
+          }
+        clmDate.setSortType(TableColumn.SortType.DESCENDING);
+        tblAllLessons.getSortOrder().add(clmDate);
       }
 
     private void cbChoicer(Teacher teacher)//Sets the items in the choicebox
@@ -173,26 +186,44 @@ public class TeacherOverviewController implements Initializable
     @FXML
     private void mercyButton(ActionEvent event)
       {
-        /*Student student = tblAllLessons.getSelectionModel().getSelectedItem();
-        if (student.getAttendingTest().equals("Absent(Mercy Requested)"))
+        if (tblAllLessons.getSelectionModel().getSelectedItems().size() > 1)
           {
-            student.setAttendingTest("Attending");
-            tblAllLessons.refresh();
-          }*/
+            for (StudentLesson studLesson : tblAllLessons.getSelectionModel().getSelectedItems())
+              {
+                if (studLesson.getAttendint() == 2)
+                  {
+                    STUD_LESS_MODEL.setStudentAttendence(studLesson, 1);
+                  }
+              }
+          }
+        else if (tblAllLessons.getSelectionModel().getSelectedItems().size() == 1)
+          {
+            StudentLesson studLess = tblAllLessons.getSelectionModel().getSelectedItem();
+            STUD_LESS_MODEL.setStudentAttendence(studLess, 1);
+          }
+        tableUpdater();
       }
 
     @FXML
     private void smiteButton(ActionEvent event)
       {
-        /*
-        Student student = tblAllLessons.getSelectionModel().getSelectedItem();
-        String status = student.getAttendingTest();
-        if (status.equals("Attending") || status.equals("Absent(Mercy Requested)"))
+        if (tblAllLessons.getSelectionModel().getSelectedItems().size() > 1)
           {
-            student.setAttendingTest("Absent");
-            tblAllLessons.refresh();
+            for (StudentLesson studLesson : tblAllLessons.getSelectionModel().getSelectedItems())
+              {
+                if (studLesson.getAttendint() == 2)
+                  {
+                    STUD_LESS_MODEL.setStudentAttendence(studLesson, 0);
+                  }
+              }
           }
-         */
+        else if (tblAllLessons.getSelectionModel().getSelectedItems().size() == 1)
+          {
+            StudentLesson studLess = tblAllLessons.getSelectionModel().getSelectedItem();
+            STUD_LESS_MODEL.setStudentAttendence(studLess, 0);
+          }
+        tableUpdater();
+
       }
 
     @FXML
@@ -200,6 +231,7 @@ public class TeacherOverviewController implements Initializable
       {
         String courseName = CBLesson.getSelectionModel().getSelectedItem();
         lessonModel.createLesson(teacher, courseName);
+        tableUpdater();
       }
 
     @FXML

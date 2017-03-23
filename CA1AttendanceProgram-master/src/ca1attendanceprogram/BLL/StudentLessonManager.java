@@ -5,7 +5,10 @@
  */
 package ca1attendanceprogram.BLL;
 
+import ca1attendanceprogram.BE.Course;
+import ca1attendanceprogram.BE.Lesson;
 import ca1attendanceprogram.BE.Student;
+import ca1attendanceprogram.BE.StudentLesson;
 import ca1attendanceprogram.DAL.StudentLessonHandler;
 import java.util.ArrayList;
 
@@ -18,23 +21,23 @@ public class StudentLessonManager
 
     private final StudentLessonHandler sLHandler = new StudentLessonHandler();
 
-    public ArrayList<String> getAllStudentLesssons()
-    {
-        return sLHandler.getAllStudentLessons();
-    }
+    public ArrayList<StudentLesson> getStudentLessonBasedOnStudent(Student student)
+      {
+        return sLHandler.getStudentLessonFromStudent(student);
+      }
 
-    public ArrayList<String> getLessonId()
-    {
-        return sLHandler.getLessonId();
-    }
+    public ArrayList<StudentLesson> getStudentLessonBasedOnCourse(Course course)
+      {
+        return sLHandler.getStudentLessonBasedOnCourse(course);
+      }
 
-    ArrayList<String> getStudentId()
-    {
-        return sLHandler.getStudentId();
-    }
-
-    ArrayList<String> getAttending()
-    {
-        return sLHandler.getAttending();
-    }
+    public void setStudentAttendence(StudentLesson studLess, int attendid)
+      {
+        sLHandler.setStudentAttendence(studLess, attendid);
+      }
+    public StudentLesson getOneStudentLessonFromLessonAndStudent(Student student, Lesson lesson)
+      {
+        return sLHandler.getOneStudentLessonFromLessonAndStudent(student, lesson);
+      }
+      
 }

@@ -7,10 +7,8 @@ package ca1attendanceprogram.GUI.Controller;
 
 import ca1attendanceprogram.BE.*;
 import ca1attendanceprogram.BLL.LoginManager;
-import ca1attendanceprogram.BLL.StudentManager;
-import ca1attendanceprogram.DAL.StudentLessonHandler;
 import ca1attendanceprogram.GUI.Model.LessonModel;
-import com.sun.org.apache.bcel.internal.generic.AALOAD;
+import ca1attendanceprogram.GUI.Model.StudentLessonModel;
 
 import java.io.IOException;
 import java.net.URL;
@@ -79,7 +77,7 @@ public class LoginController implements Initializable
     private int loginState = NOT_LOGGED_IN;
     private static final LoginManager LOGIN_MANAGER = new LoginManager();
     private static final LessonModel LESSON_MODEL = new LessonModel();
-    private static final StudentLessonHandler STUD_LESS_HANDLER = new  StudentLessonHandler();
+    private static final StudentLessonModel STUD_LESS_MODEL = new StudentLessonModel();
     //private static final UsernameManager USER_MANAGER = new UsernameManager();
     Lesson lesson;
     private Person person = null;
@@ -116,6 +114,7 @@ public class LoginController implements Initializable
               {
                 //saveUsername();
                 loginState = LOGGED_IN;
+
                 activeState();
               }
             else if (person.getClass() == Teacher.class)
@@ -125,7 +124,6 @@ public class LoginController implements Initializable
                 Parent root = loader.load();
                 TeacherOverviewController tController = (TeacherOverviewController) loader.getController();
                 tController.AltInitilizer((Teacher) person);
-                System.out.println(person.getName());
 
                 Stage subStage = new Stage();
                 subStage.setScene(new Scene(root));
@@ -150,13 +148,15 @@ public class LoginController implements Initializable
               {
                 lblAttending.setVisible(true);
                 btnLogin.setText("Leave Class");
-                StudentLesson studLess = new StudentLesson((Student)person, lesson,0);
-                STUD_LESS_HANDLER.setStudentAsAttending(studLess, 1);
+                StudentLesson studLess = new StudentLesson((Student) person, lesson, 0);
+                STUD_LESS_MODEL.setStudentAttendence(studLess, 1);
               }
             else if (btnLogin.getText().equals("Leave Class"))
               {
                 lblAttending.setVisible(false);
                 btnLogin.setText("Attend Class");
+                StudentLesson studLess = new StudentLesson((Student) person, lesson, 0);
+                STUD_LESS_MODEL.setStudentAttendence(studLess, 0);
               }
 
           }
@@ -205,6 +205,15 @@ public class LoginController implements Initializable
                 lesson = getNewestLesson();
                 lblCurrentClass.setText(lesson.getLessonName());
                 lblCurrentTeacher.setText(lesson.getTeacherName());
+                lblAttendenceAll.setText(STUD_LESS_MODEL.getAllAbsenceAsPercentage((Student) person));
+                lblClassAttendance.setText(STUD_LESS_MODEL.getAbsenceForCurrentCourse((Student) person, lesson));
+                StudentLesson studLess = STUD_LESS_MODEL.getOneStudentLessonFromLessonAndStudent((Student) person, lesson);
+                if (studLess.getAttendint() == 1)
+                  {
+                    lblAttending.setVisible(true);
+                    btnLogin.setText("Leave Class");
+                    STUD_LESS_MODEL.setStudentAttendence(studLess, 1);
+                  }
                 break;
             case NOT_LOGGED_IN:
                 txtUsername.setDisable(false);
@@ -241,6 +250,8 @@ public class LoginController implements Initializable
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca1attendanceprogram/GUI/View/AbsenceOverview.fxml"));
 
             Parent root = loader.load();
+            AbsenceOverviewController AOController = (AbsenceOverviewController) loader.getController();
+            AOController.altInitialize((Student) person);
             Stage subStage = new Stage();
             subStage.setScene(new Scene(root));
             subStage.initStyle(StageStyle.UNDECORATED);

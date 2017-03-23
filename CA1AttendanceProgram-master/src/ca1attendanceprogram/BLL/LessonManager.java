@@ -7,8 +7,10 @@ package ca1attendanceprogram.BLL;
 
 import ca1attendanceprogram.BE.Course;
 import ca1attendanceprogram.BE.Lesson;
+import ca1attendanceprogram.BE.Student;
 import ca1attendanceprogram.BE.Teacher;
 import ca1attendanceprogram.DAL.LessonHandler;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,4 +32,8 @@ public class LessonManager
      public Lesson getNewestLesson(){
          return lHandler.getNewestLesson();
      }
+     public ArrayList<Lesson> getAllCourseLessonsFromLessonAndStudent(Student student, Lesson lesson)
+      {
+        return lHandler.getAllCourseLessonsFromLessonAndStudent(student, lesson);
+      }
   }

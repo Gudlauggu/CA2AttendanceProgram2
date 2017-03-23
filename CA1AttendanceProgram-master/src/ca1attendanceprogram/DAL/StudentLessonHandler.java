@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package ca1attendanceprogram.DAL;
+
+import ca1attendanceprogram.BE.Course;
 import ca1attendanceprogram.BE.Lesson;
 import ca1attendanceprogram.BE.Student;
 import ca1attendanceprogram.BE.StudentLesson;
@@ -33,7 +35,8 @@ public class StudentLessonHandler
         lessonHandler = new LessonHandler();
         conManager = new SQLConnectionManager();
       }
-    public ArrayList<String> getAllStudentLessons()
+
+    public ArrayList<StudentLesson> getAllStudentLessons()
       {
         try (Connection con = conManager.getConnection())
           {
@@ -41,15 +44,14 @@ public class StudentLessonHandler
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
 
-            ArrayList<String> studentLessons = new ArrayList<>();
+            ArrayList<StudentLesson> studentLessons = new ArrayList<>();
             while (rs.next())
               {
-                String studentLessonString = "";
-                studentLessonString += rs.getString("lessonid") + " ";
-                studentLessonString += rs.getString("studentid") + " ";
-                studentLessonString += rs.getString("attending") + " ";
+                Student student = studHandler.getStudentBasedOnId(rs.getInt("studentid"));
+                Lesson lesson = lessonHandler.getOneLessonFromID(rs.getInt("lessonid"));
+                StudentLesson studentLesson = new StudentLesson(student, lesson, rs.getInt("attending"));
 
-                studentLessons.add(studentLessonString);
+                studentLessons.add(studentLesson);
               }
             return studentLessons;
           }
@@ -60,85 +62,26 @@ public class StudentLessonHandler
           }
       }
 
-    public ArrayList<String> getLessonId()
+    public StudentLesson getOneStudentLessonFromLessonAndStudent(Student student, Lesson lesson)
       {
         try (Connection con = conManager.getConnection())
           {
-            String query = "SELECT * FROM [Studentlesson]";
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
 
-            ArrayList<String> studentLessons = new ArrayList<>();
-            while (rs.next())
-              {
-                String studentLessonString = "";
-                studentLessonString += rs.getString("lessonid") + " ";
-
-                studentLessons.add(studentLessonString);
-              }
-            return studentLessons;
+            String query = "SELECT * FROM [StudentLesson] WHERE studentid = ? AND lessonid = ? ";
+            PreparedStatement pstmt = con.prepareStatement(query);
+            pstmt.setInt(1, student.getId());
+            pstmt.setInt(2, lesson.getLessonId());
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            return new StudentLesson(student, lesson, rs.getInt("attending"));
           }
-        catch (SQLException sqle)
+        catch (Exception e)
           {
-            System.err.println(sqle);
-            return null;
           }
-
+        return null;
       }
 
-    public ArrayList<String> getStudentId()
-      {
-        try (Connection con = conManager.getConnection())
-          {
-            String query = "SELECT * FROM [Studentlesson]";
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-
-            ArrayList<String> studentLessons = new ArrayList<>();
-            while (rs.next())
-              {
-                String studentLessonString = "";
-                studentLessonString += rs.getString("studentid") + " ";
-
-                studentLessons.add(studentLessonString);
-              }
-            return studentLessons;
-          }
-        catch (SQLException sqle)
-          {
-            System.err.println(sqle);
-            return null;
-          }
-
-      }
-
-    public ArrayList<String> getAttending()
-      {
-        try (Connection con = conManager.getConnection())
-          {
-            String query = "SELECT * FROM [Studentlesson]";
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-
-            ArrayList<String> studentLessons = new ArrayList<>();
-            while (rs.next())
-              {
-                String studentLessonString = "";
-                studentLessonString += rs.getString("attending") + " ";
-
-                studentLessons.add(studentLessonString);
-              }
-            return studentLessons;
-          }
-        catch (SQLException sqle)
-          {
-            System.err.println(sqle);
-            return null;
-          }
-
-      }
-
-    public ArrayList<StudentLesson> getStudentLessonBasedOnCourse(int courseid)
+    public ArrayList<StudentLesson> getStudentLessonBasedOnCourse(Course course)
       {
         ArrayList<StudentLesson> studentlessons = new ArrayList();
         try (Connection con = conManager.getConnection())
@@ -146,7 +89,7 @@ public class StudentLessonHandler
 
             String query = "SELECT * FROM [lesson] WHERE courseID = ?";
             PreparedStatement pstmt = con.prepareStatement(query);
-            pstmt.setInt(1, courseid);
+            pstmt.setInt(1, course.getId());
             ResultSet rs = pstmt.executeQuery();
             while (rs.next())
               {
@@ -172,24 +115,52 @@ public class StudentLessonHandler
           }
         return studentlessons;
       }
-    public void setStudentAsAttending(StudentLesson studLess,int attendInt){
-         try (Connection con = conManager.getConnection())
+
+    public ArrayList<StudentLesson> getStudentLessonFromStudent(Student student)
+      {
+        ArrayList<StudentLesson> studentlessons = new ArrayList();
+        try (Connection con = conManager.getConnection())
           {
-        String query = "UPDATE [studentlesson] SET attending = ? WHERE lessonid=? AND studentid =?";
-        PreparedStatement pstmt = con.prepareStatement(query);
-        pstmt.setInt(1, attendInt);
-        int lessId=studLess.getLesson().getLessonId();
-        pstmt.setInt(2, lessId);
-        int studId = studLess.getStudent().getId();
-        pstmt.setInt(3, studId);
-        pstmt.execute();
+
+            String query = "SELECT * FROM [studentLesson] WHERE studentid = ?";
+            PreparedStatement pstmt = con.prepareStatement(query);
+            pstmt.setInt(1, student.getId());
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next())
+              {
+
+                int lessid = rs.getInt("lessonid");
+                Lesson lesson = lessonHandler.getOneLessonFromID(lessid);
+                StudentLesson studLess = new StudentLesson(student, lesson, rs.getInt("attending"));
+                studentlessons.add(studLess);
+              }
+
           }
         catch (SQLException ex)
           {
             Logger.getLogger(StudentLessonHandler.class.getName()).log(Level.SEVERE, null, ex);
           }
-    
-    }
-    
+        return studentlessons;
+      }
+
+    public void setStudentAttendence(StudentLesson studLess, int attendInt)
+      {
+        try (Connection con = conManager.getConnection())
+          {
+            String query = "UPDATE [studentlesson] SET attending = ? WHERE lessonid=? AND studentid =?";
+            PreparedStatement pstmt = con.prepareStatement(query);
+            pstmt.setInt(1, attendInt);
+            int lessId = studLess.getLesson().getLessonId();
+            pstmt.setInt(2, lessId);
+            int studId = studLess.getStudent().getId();
+            pstmt.setInt(3, studId);
+            pstmt.execute();
+          }
+        catch (SQLException ex)
+          {
+            Logger.getLogger(StudentLessonHandler.class.getName()).log(Level.SEVERE, null, ex);
+          }
+
+      }
 
   }

@@ -231,4 +231,24 @@ public class LessonHandler
         return rs.getString("name");
 
       }
+
+    public ArrayList<Lesson> getAllCourseLessonsFromLessonAndStudent(Student student, Lesson lesson)
+      {
+        ArrayList<Lesson> lessons = new ArrayList();
+        try (Connection con = conManager.getConnection())
+          {
+              String query = "SELECT * FROM [lesson] WHERE courseid = ?";
+              PreparedStatement pstmt = con.prepareStatement(query);
+              pstmt.setInt(1, lesson.getCourseId());
+              ResultSet rs = pstmt.executeQuery();
+              while(rs.next()){
+              lessons.add(getOneLessonFromID(rs.getInt("lessonid")));
+              }
+          }
+        catch (SQLException ex)
+          {
+            Logger.getLogger(LessonHandler.class.getName()).log(Level.SEVERE, null, ex);
+          }
+        return lessons;
+      }
   }

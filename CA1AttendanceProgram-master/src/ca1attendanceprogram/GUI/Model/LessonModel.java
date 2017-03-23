@@ -7,6 +7,7 @@ package ca1attendanceprogram.GUI.Model;
 
 import ca1attendanceprogram.BE.Course;
 import ca1attendanceprogram.BE.Lesson;
+import ca1attendanceprogram.BE.Student;
 import ca1attendanceprogram.BE.Teacher;
 import ca1attendanceprogram.BLL.LessonManager;
 import java.util.ArrayList;
@@ -52,5 +53,10 @@ public class LessonModel
     public Lesson getNewestLesson()
       {
         return lessonManager.getNewestLesson();
+      }
+
+    public ArrayList<Lesson> getAllCourseLessonsFromLessonAndStudent(Student student, Lesson lesson)
+      {
+        return lessonManager.getAllCourseLessonsFromLessonAndStudent(student, lesson);
       }
   }

@@ -25,6 +25,8 @@ public class StudentLesson
     private final static String ABSENT = "Absent";
     private final static String ATTENDING = "Attending";
     private final static String MERCY_REQUESTED = "Absent(Mercy Requested)";
+    private int attendint;
+    private String teacherName;
 
     public StudentLesson(Student student, Lesson lesson, int attendint)
       {
@@ -32,7 +34,9 @@ public class StudentLesson
         setStudentName();
         this.lesson = lesson;
         setLessonName();
+        teacherName = lesson.getTeacherName();
         setCal(lesson.getCal().getTime());
+        this.attendint = attendint;
         setAttendence(attendint);
       }
 
@@ -115,4 +119,16 @@ public class StudentLesson
         this.date = cal;
       }
 
+    public int getAttendint()
+      {
+        return attendint;
+      }
+
+    public void setAttendint(int attendint)
+      {
+        this.attendint = attendint;
+      }
+    public String getTeacherName(){
+    return lesson.getTeacherName();
+    }
   }
