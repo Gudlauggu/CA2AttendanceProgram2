@@ -6,7 +6,7 @@
 package ca1attendanceprogram.GUI.Controller;
 
 import ca1attendanceprogram.BE.Course;
-import ca1attendanceprogram.BE.Lesson;
+import ca1attendanceprogram.BE.Person;
 import ca1attendanceprogram.BE.Student;
 import ca1attendanceprogram.BE.StudentLesson;
 import ca1attendanceprogram.BE.Teacher;
@@ -52,6 +52,7 @@ public class TeacherOverviewController implements Initializable
     private TableColumn<StudentLesson, String> clmAttending;
     @FXML
     private TableColumn<StudentLesson, String> clmLesson;
+
     @FXML
     private ComboBox<String> CBLesson;
     @FXML
@@ -68,9 +69,7 @@ public class TeacherOverviewController implements Initializable
     @FXML
     private ToggleButton btnLesson;
 
-    //test
-    /*
-     */
+    //
     StudentLessonHandler studLessonHandler = new StudentLessonHandler();
     //
 
@@ -126,7 +125,7 @@ public class TeacherOverviewController implements Initializable
                 String crntCourse = CBLesson.getSelectionModel().getSelectedItem();
                 if (crntCourse.equals(allCourses))
                   {
-                    
+
                     btnLesson.setDisable(true);
                     for (Course course : teacher.getCourses())
                       {
@@ -164,12 +163,26 @@ public class TeacherOverviewController implements Initializable
     @FXML
     private void mercyButton(ActionEvent event)
       {
+        /*Student student = tblAllLessons.getSelectionModel().getSelectedItem();
+        if (student.getAttendingTest().equals("Absent(Mercy Requested)"))
+          {
+            student.setAttendingTest("Attending");
+            tblAllLessons.refresh();
+          }*/
       }
 
     @FXML
     private void smiteButton(ActionEvent event)
       {
-
+        /*
+        Student student = tblAllLessons.getSelectionModel().getSelectedItem();
+        String status = student.getAttendingTest();
+        if (status.equals("Attending") || status.equals("Absent(Mercy Requested)"))
+          {
+            student.setAttendingTest("Absent");
+            tblAllLessons.refresh();
+          }
+         */
       }
 
     @FXML
@@ -184,7 +197,6 @@ public class TeacherOverviewController implements Initializable
       {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca1attendanceprogram/GUI/View/ChangePasswordView.fxml"));
         Parent root = loader.load();
-        ChangePasswordViewController passController = (ChangePasswordViewController) loader.getController();
 
         Stage subStage = new Stage();
         subStage.setScene(new Scene(root));

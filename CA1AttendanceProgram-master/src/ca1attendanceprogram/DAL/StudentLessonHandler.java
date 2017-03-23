@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package ca1attendanceprogram.DAL;
-
 import ca1attendanceprogram.BE.Lesson;
 import ca1attendanceprogram.BE.Student;
 import ca1attendanceprogram.BE.StudentLesson;
@@ -34,7 +33,6 @@ public class StudentLessonHandler
         lessonHandler = new LessonHandler();
         conManager = new SQLConnectionManager();
       }
-
     public ArrayList<String> getAllStudentLessons()
       {
         try (Connection con = conManager.getConnection())
