@@ -8,7 +8,9 @@ package ca1attendanceprogram.GUI.Controller;
 import ca1attendanceprogram.BE.*;
 import ca1attendanceprogram.BLL.LoginManager;
 import ca1attendanceprogram.BLL.StudentManager;
+import ca1attendanceprogram.DAL.StudentLessonHandler;
 import ca1attendanceprogram.GUI.Model.LessonModel;
+import com.sun.org.apache.bcel.internal.generic.AALOAD;
 
 import java.io.IOException;
 import java.net.URL;
@@ -74,16 +76,16 @@ public class LoginController implements Initializable
     private static final int LOGGED_IN = 2;
     private static final int WRONG_PASSWORD = 3;
     private static final int LOGGED_IN_TEACHER = 4;
-    private static final int TRYING_LOGIN = 5;
     private int loginState = NOT_LOGGED_IN;
     private static final LoginManager LOGIN_MANAGER = new LoginManager();
-    private static final StudentManager STUDENT_MANAGER = new StudentManager();
     private static final LessonModel LESSON_MODEL = new LessonModel();
+    private static final StudentLessonHandler STUD_LESS_HANDLER = new  StudentLessonHandler();
     //private static final UsernameManager USER_MANAGER = new UsernameManager();
+    Lesson lesson;
     private Person person = null;
     @FXML
     private Label lblCurrentTeacher;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb)
       {
@@ -148,6 +150,8 @@ public class LoginController implements Initializable
               {
                 lblAttending.setVisible(true);
                 btnLogin.setText("Leave Class");
+                StudentLesson studLess = new StudentLesson((Student)person, lesson,0);
+                STUD_LESS_HANDLER.setStudentAsAttending(studLess, 1);
               }
             else if (btnLogin.getText().equals("Leave Class"))
               {
@@ -198,7 +202,7 @@ public class LoginController implements Initializable
                 lblStudentName.setText(person.getName());
                 boxRemUsername.setDisable(true);
                 btnChangePassword.setVisible(true);
-                Lesson lesson = getNewestLesson();
+                lesson = getNewestLesson();
                 lblCurrentClass.setText(lesson.getLessonName());
                 lblCurrentTeacher.setText(lesson.getTeacherName());
                 break;
@@ -299,8 +303,10 @@ public class LoginController implements Initializable
         stage.close();
 
       }
-    private Lesson getNewestLesson(){
+
+    private Lesson getNewestLesson()
+      {
         return LESSON_MODEL.getNewestLesson();
-    }
+      }
 
   }

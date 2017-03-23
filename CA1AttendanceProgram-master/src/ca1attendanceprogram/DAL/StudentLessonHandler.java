@@ -172,5 +172,24 @@ public class StudentLessonHandler
           }
         return studentlessons;
       }
+    public void setStudentAsAttending(StudentLesson studLess,int attendInt){
+         try (Connection con = conManager.getConnection())
+          {
+        String query = "UPDATE [studentlesson] SET attending = ? WHERE lessonid=? AND studentid =?";
+        PreparedStatement pstmt = con.prepareStatement(query);
+        pstmt.setInt(1, attendInt);
+        int lessId=studLess.getLesson().getLessonId();
+        pstmt.setInt(2, lessId);
+        int studId = studLess.getStudent().getId();
+        pstmt.setInt(3, studId);
+        pstmt.execute();
+          }
+        catch (SQLException ex)
+          {
+            Logger.getLogger(StudentLessonHandler.class.getName()).log(Level.SEVERE, null, ex);
+          }
+    
+    }
+    
 
   }
