@@ -5,6 +5,7 @@
  */
 package ca1attendanceprogram.DAL;
 
+import ca1attendanceprogram.BE.Student;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,7 +26,7 @@ public class StudentLessonHandler
         conManager = new SQLConnectionManager();
     }
 
-    public ArrayList<String> getAllStudentLessons()
+    public ArrayList<String> getAllStudentLessons(Student student)
     {
         try (Connection con = conManager.getConnection())
         {
