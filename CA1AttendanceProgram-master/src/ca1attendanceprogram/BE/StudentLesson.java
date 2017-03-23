@@ -5,21 +5,26 @@
  */
 package ca1attendanceprogram.BE;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  *
  * @author Mecaa
  */
 public class StudentLesson
   {
+
     private Student student;
     private Lesson lesson;
     private String attendence;
     private String studentName;
     private String lessonName;
-    
-    private final static String ABSENT= "Absent";
+    private Date date;
+    private final static String ABSENT = "Absent";
     private final static String ATTENDING = "Attending";
-    private final static String MERCY_REQUESTED ="Absent(Mercy Requested)";
+    private final static String MERCY_REQUESTED = "Absent(Mercy Requested)";
 
     public StudentLesson(Student student, Lesson lesson, int attendint)
       {
@@ -27,9 +32,10 @@ public class StudentLesson
         setStudentName();
         this.lesson = lesson;
         setLessonName();
+        setCal(lesson.getCal().getTime());
         setAttendence(attendint);
       }
-    
+
     public Student getStudent()
       {
         return student;
@@ -57,7 +63,8 @@ public class StudentLesson
 
     public void setAttendence(int attendingInt)
       {
-        switch(attendingInt){
+        switch (attendingInt)
+          {
             case 0:
                 attendence = ABSENT;
                 break;
@@ -67,9 +74,9 @@ public class StudentLesson
             case 2:
                 attendence = MERCY_REQUESTED;
                 break;
-        
-        }
-        
+
+          }
+
       }
 
     public String getStudentName()
@@ -91,11 +98,21 @@ public class StudentLesson
 
     public void setLessonName()
       {
-        
+
         lessonName = lesson.getLessonName();
       }
-    
-    
-    
-   
+
+    public String getCal()
+      {
+        Format formatter;
+        formatter = new SimpleDateFormat("dd-MMM E HH:mm");
+        String s = formatter.format(date);
+        return s;
+      }
+
+    public void setCal(Date cal)
+      {
+        this.date = cal;
+      }
+
   }

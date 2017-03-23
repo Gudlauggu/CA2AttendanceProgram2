@@ -16,6 +16,8 @@ import ca1attendanceprogram.GUI.Model.LessonModel;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -52,6 +54,8 @@ public class TeacherOverviewController implements Initializable
     private TableColumn<StudentLesson, String> clmAttending;
     @FXML
     private TableColumn<StudentLesson, String> clmLesson;
+    @FXML
+    private TableColumn<StudentLesson, String> clmDate;
 
     @FXML
     private ComboBox<String> CBLesson;
@@ -101,6 +105,9 @@ public class TeacherOverviewController implements Initializable
         clmAttending.setCellValueFactory(
                 new PropertyValueFactory("attendence"));
 
+        clmDate.setCellValueFactory(
+                new PropertyValueFactory("cal"));
+
       }
 
     public void AltInitilizer(Teacher teacher)
@@ -142,7 +149,10 @@ public class TeacherOverviewController implements Initializable
                           }
                       }
                     btnLesson.setDisable(false);
+                    
                   }
+                clmDate.setSortType(TableColumn.SortType.DESCENDING);
+                tblAllLessons.getSortOrder().add(clmDate);
               }
 
           });
