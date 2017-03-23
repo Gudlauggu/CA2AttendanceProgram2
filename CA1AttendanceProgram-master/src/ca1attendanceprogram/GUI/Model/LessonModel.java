@@ -39,12 +39,18 @@ public class LessonModel
 
     public boolean createLesson(Teacher teacher, String courseName)
       {
-          for (Course course : teacher.getCourses())
-            {
-              if(course.getName().equals(courseName)){
-              return lessonManager.createLesson(course);
+        for (Course course : teacher.getCourses())
+          {
+            if (course.getName().equals(courseName))
+              {
+                return lessonManager.createLesson(course);
               }
-            }
-          return false;
+          }
+        return false;
+      }
+
+    public Lesson getNewestLesson()
+      {
+        return lessonManager.getNewestLesson();
       }
   }

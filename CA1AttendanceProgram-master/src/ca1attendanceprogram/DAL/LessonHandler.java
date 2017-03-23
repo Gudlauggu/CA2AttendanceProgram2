@@ -14,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -124,7 +125,7 @@ public class LessonHandler
             query = "SELECT top 1 * FROM [lesson] WHERE courseID = ?  ORDER BY lessonid DESC ";
             pstmt = con.prepareStatement(query);
             pstmt.setInt(1, course.getId());
-            
+
             ResultSet rs = pstmt.executeQuery();
             rs.next();
             int lessonid = rs.getInt("lessonid");
@@ -154,5 +155,38 @@ public class LessonHandler
         ResultSet rs = pstmt.executeQuery();
         rs.next();
         return rs.getInt("classid");
+      }
+
+    public Lesson getNewestLesson()
+      {
+        try (Connection con = conManager.getConnection())
+          {
+            String query = "SELECT top 1 * FROM [lesson]  ORDER BY lessonid DESC ";
+            PreparedStatement pstmt = con.prepareStatement(query);
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            Timestamp timestamp = rs.getTimestamp("datetime");
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(timestamp.getTime());
+            Lesson lesson = new Lesson(rs.getInt("lessonid"), rs.getInt("courseid"), cal);
+            query = "SELECT * FROM [course] WHERE id = ?";
+            pstmt = con.prepareStatement(query);
+            pstmt.setInt(1, lesson.getCourseId());  
+            rs = pstmt.executeQuery();
+            rs.next();
+            lesson.setLessonName(rs.getString("name"));
+            query = "SELECT * FROM [teacher] WHERE id = ?";
+            pstmt = con.prepareStatement(query);
+            pstmt.setInt(1, rs.getInt("teacherid"));
+            rs = pstmt.executeQuery();
+            rs.next();
+            lesson.setTeacherName(rs.getString("name"));
+            return lesson;
+          }
+        catch (SQLException ex)
+          {
+            Logger.getLogger(LessonHandler.class.getName()).log(Level.SEVERE, null, ex);
+          }
+        return null;
       }
   }

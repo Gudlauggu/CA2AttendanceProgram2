@@ -11,13 +11,16 @@ package ca1attendanceprogram.BE;
  */
 public class StudentLesson
   {
-    Student student;
-    Lesson lesson;
-    String Attending;
+    private Student student;
+    private Lesson lesson;
+    private String attendence;
+    private String studentName;
+    private String lessonName;
+    
     private final static String ABSENT= "Absent";
     private final static String ATTENDING = "Attending";
     private final static String MERCY_REQUESTED ="Absent(Mercy Requested)";
-
+    
     public Student getStudent()
       {
         return student;
@@ -38,15 +41,51 @@ public class StudentLesson
         this.lesson = lesson;
       }
 
-    public String getAttending()
+    public String getAttendence()
       {
-        return Attending;
+        return attendence;
       }
 
-    public void setAttending(String Attending)
+    public void setAttendence(int attendingInt)
       {
-        this.Attending = Attending;
+        switch(attendingInt){
+            case 0:
+                attendence = ABSENT;
+                break;
+            case 1:
+                attendence = ATTENDING;
+                break;
+            case 2:
+                attendence = MERCY_REQUESTED;
+                break;
+        
+        }
+        
       }
+
+    public String getStudentName()
+      {
+        studentName = student.getName();
+        return studentName;
+      }
+
+    public void setStudentName()
+      {
+        studentName = student.getName();
+      }
+
+    public String getLessonName()
+      {
+        lessonName = lesson.getLessonName();
+        return lessonName;
+      }
+
+    public void setLessonName()
+      {
+        
+        lessonName = lesson.getLessonName();
+      }
+    
     
     
    
