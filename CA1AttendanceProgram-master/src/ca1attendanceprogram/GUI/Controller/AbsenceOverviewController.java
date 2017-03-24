@@ -24,6 +24,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -64,6 +65,11 @@ public class AbsenceOverviewController implements Initializable
       {
 
         tblAllAbsence.setItems(studentLessons);
+        tblAllAbsence.getSelectionModel().setSelectionMode(
+                SelectionMode.MULTIPLE
+        );
+        clmDate.setSortType(TableColumn.SortType.DESCENDING);
+        tblAllAbsence.getSortOrder().add(clmDate);
       }
 
     public void altInitialize(Student student)

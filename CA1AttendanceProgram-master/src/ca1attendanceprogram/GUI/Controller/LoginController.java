@@ -150,6 +150,8 @@ public class LoginController implements Initializable
                 btnLogin.setText("Leave Class");
                 StudentLesson studLess = new StudentLesson((Student) person, lesson, 0);
                 STUD_LESS_MODEL.setStudentAttendence(studLess, 1);
+                lblAttendenceAll.setText(STUD_LESS_MODEL.getAllAbsenceAsPercentage((Student) person));
+                lblClassAttendance.setText(STUD_LESS_MODEL.getAbsenceForCurrentCourse((Student) person, lesson));
               }
             else if (btnLogin.getText().equals("Leave Class"))
               {
@@ -157,6 +159,8 @@ public class LoginController implements Initializable
                 btnLogin.setText("Attend Class");
                 StudentLesson studLess = new StudentLesson((Student) person, lesson, 0);
                 STUD_LESS_MODEL.setStudentAttendence(studLess, 0);
+                lblAttendenceAll.setText(STUD_LESS_MODEL.getAllAbsenceAsPercentage((Student) person));
+                lblClassAttendance.setText(STUD_LESS_MODEL.getAbsenceForCurrentCourse((Student) person, lesson));
               }
 
           }

@@ -66,6 +66,7 @@ public class StudentLessonModel
         ArrayList<Lesson> lessons = new LessonModel().getAllCourseLessonsFromLessonAndStudent(student, lesson);
         ArrayList<StudentLesson> studLessons = getStudentLessonBasedOnStudent(student);
         double absentNumber = 0;
+        double lessNumber = 0;
         for (StudentLesson studentLesson : studLessons)
           {
             for (Lesson les : lessons)
@@ -74,15 +75,16 @@ public class StudentLessonModel
                   {
                     if (studentLesson.getAttendint() != 1)
                       {
-                        absentNumber += 1;
+                        absentNumber +=1;
                       }
+                      lessNumber+=1;
                   }
               }
 
           }
 
         double percent;
-        percent = (absentNumber / studLessons.size()) * 100;
+        percent = (absentNumber / lessNumber) * 100;
         percent = (double) Math.round(percent * 10d) / 10d;
         return percent + "%";
       }
