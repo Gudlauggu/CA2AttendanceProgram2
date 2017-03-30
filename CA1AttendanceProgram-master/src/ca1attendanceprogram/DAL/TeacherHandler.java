@@ -20,11 +20,11 @@ import java.util.ArrayList;
 public class TeacherHandler
   {
 
-    SQLConnectionManager conManager;
+    SQLConnectionHandler conManager;
 
     public TeacherHandler()
       {
-        conManager = new SQLConnectionManager();
+        conManager = new SQLConnectionHandler();
       }
 
     public ArrayList<String> getAllTeachers()

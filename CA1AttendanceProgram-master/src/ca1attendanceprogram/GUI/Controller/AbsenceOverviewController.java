@@ -5,10 +5,8 @@
  */
 package ca1attendanceprogram.GUI.Controller;
 
-import ca1attendanceprogram.BE.Lesson;
 import ca1attendanceprogram.BE.Student;
 import ca1attendanceprogram.BE.StudentLesson;
-import ca1attendanceprogram.BE.Teacher;
 import ca1attendanceprogram.GUI.Model.StudentLessonModel;
 
 import java.io.IOException;
@@ -48,9 +46,8 @@ public class AbsenceOverviewController implements Initializable
     @FXML
     private Button btnLogOff;
     @FXML
-    private TableColumn<StudentLesson, Date> clmDate;
+    private TableColumn<StudentLesson, String> clmDate;
 
-//    LessonManager lessonManager = new LessonManager();
     private ObservableList<StudentLesson> studentLessons
             = FXCollections.observableArrayList();
     Student student;
@@ -59,7 +56,6 @@ public class AbsenceOverviewController implements Initializable
     /**
      * Initializes the controller class.
      */
-
     @Override
     public void initialize(URL url, ResourceBundle rb)
       {
@@ -75,23 +71,22 @@ public class AbsenceOverviewController implements Initializable
     public void altInitialize(Student student)
       {
         this.student = student;
-        
         updateFields();
-
       }
 
     @FXML
     private void sendRequest(ActionEvent event)
       {
-          for (StudentLesson studentLesson : tblAllAbsence.getSelectionModel().getSelectedItems())
-            {
-              if(studentLesson.getAttendint()==0){
-                 STUD_LESS_MODEL.setStudentAttendence(studentLesson, 2);
-                 }
-            }
-          studentLessons.clear();
-           studentLessons.addAll(STUD_LESS_MODEL.getStudentLessonBasedOnStudent(student));
-        
+        for (StudentLesson studentLesson : tblAllAbsence.getSelectionModel().getSelectedItems())
+          {
+            if (studentLesson.getAttendint() == 0)
+              {
+                STUD_LESS_MODEL.setStudentAttendence(studentLesson, 2);
+              }
+          }
+        studentLessons.clear();
+        studentLessons.addAll(STUD_LESS_MODEL.getStudentLessonBasedOnStudent(student));
+
       }
 
     @FXML
@@ -110,15 +105,13 @@ public class AbsenceOverviewController implements Initializable
     private void updateFields()
       {
         studentLessons.addAll(STUD_LESS_MODEL.getStudentLessonBasedOnStudent(student));
-        clmStatus.setCellValueFactory(
-                new PropertyValueFactory("attendence"));
-//        clmTeacher.setCellValueFactory(
-//                cellData-> cellData.getValue().getLessonId());
-        clmDate.setCellValueFactory(
-                new PropertyValueFactory("cal"));
-        clmClass.setCellValueFactory(
-                new PropertyValueFactory("lessonName"));
 
+        clmStatus.setCellValueFactory(
+                cellData -> cellData.getValue().attendenceProperty());
+        clmClass.setCellValueFactory(
+                cellData -> cellData.getValue().lessonNameProperty());
+        clmDate.setCellValueFactory(
+                cellData -> cellData.getValue().dateStringProperty());
       }
 
   }

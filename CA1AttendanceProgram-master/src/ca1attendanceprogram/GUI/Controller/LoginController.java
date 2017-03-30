@@ -7,11 +7,14 @@ package ca1attendanceprogram.GUI.Controller;
 
 import ca1attendanceprogram.BE.*;
 import ca1attendanceprogram.BLL.LoginManager;
+import ca1attendanceprogram.BLL.SettingManager;
 import ca1attendanceprogram.GUI.Model.LessonModel;
+import ca1attendanceprogram.GUI.Model.LoginModel;
 import ca1attendanceprogram.GUI.Model.StudentLessonModel;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
@@ -52,7 +55,6 @@ public class LoginController implements Initializable
     private Button btnClose;
     @FXML
     private Button btnHiddenButton;
-    @FXML
     private AnchorPane ancAttendence;
     @FXML
     private Label lblAttendenceAll;
@@ -75,14 +77,20 @@ public class LoginController implements Initializable
     private static final int WRONG_PASSWORD = 3;
     private static final int LOGGED_IN_TEACHER = 4;
     private int loginState = NOT_LOGGED_IN;
-    private static final LoginManager LOGIN_MANAGER = new LoginManager();
+    private static final LoginModel LOGIN_MODEL = new LoginModel();
     private static final LessonModel LESSON_MODEL = new LessonModel();
     private static final StudentLessonModel STUD_LESS_MODEL = new StudentLessonModel();
-    //private static final UsernameManager USER_MANAGER = new UsernameManager();
+    private static final SettingManager SETTING_MANAGER = new SettingManager();
     Lesson lesson;
     private Person person = null;
     @FXML
     private Label lblCurrentTeacher;
+    @FXML
+    private AnchorPane ancLogin;
+    @FXML
+    private AnchorPane ancStudentInfo;
+    @FXML
+    private ImageView imgLogo1;
 
     @Override
     public void initialize(URL url, ResourceBundle rb)
@@ -90,13 +98,14 @@ public class LoginController implements Initializable
         // TODO
         Image logo = new Image("file:DATA/BASYDVEST_negativ.png");
         imgLogo.setImage(logo);
-        boxRemUsername.setVisible(false);
-        //ArrayList<String> strings = USER_MANAGER.loadProp();
-//        if (!strings.isEmpty()) {
-//            txtUsername.setText(strings.get(0));
-//            txtPassword.setText(strings.get(1));
-//            boxRemUsername.setSelected(true);
-//        }
+        ArrayList<String> strings = SETTING_MANAGER.getSettings();
+        if (!strings.isEmpty())
+          {
+            txtUsername.setText(strings.get(0));
+            txtPassword.setText(strings.get(1));
+            boxRemUsername.setSelected(true);
+          }
+
       }
 
     @FXML
@@ -104,7 +113,7 @@ public class LoginController implements Initializable
       {
         if (person == null)
           {
-            person = LOGIN_MANAGER.LoginChecker(txtUsername.getText().trim(), txtPassword.getText().trim());
+            person = LOGIN_MODEL.LoginChecker(txtUsername.getText().trim(), txtPassword.getText().trim());
           }
         if (loginState != LOGGED_IN
                 && person != null)
@@ -112,14 +121,14 @@ public class LoginController implements Initializable
 
             if (person.getClass() == Student.class)
               {
-                //saveUsername();
+                rememberSettings(); //saveUsername();
                 loginState = LOGGED_IN;
 
                 activeState();
               }
             else if (person.getClass() == Teacher.class)
               {
-                //saveUsername();
+                rememberSettings(); //saveUsername();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca1attendanceprogram/GUI/View/TeacherOverview.fxml"));
                 Parent root = loader.load();
                 TeacherOverviewController tController = (TeacherOverviewController) loader.getController();
@@ -163,6 +172,18 @@ public class LoginController implements Initializable
                 lblClassAttendance.setText(STUD_LESS_MODEL.getAbsenceForCurrentCourse((Student) person, lesson));
               }
 
+          }
+      }
+
+    public void rememberSettings()
+      {
+        if (boxRemUsername.isSelected())
+          {
+            SETTING_MANAGER.rememberUsername(txtUsername.getText(), txtPassword.getText());
+          }
+        else
+          {
+            SETTING_MANAGER.resetSettings();
           }
       }
 

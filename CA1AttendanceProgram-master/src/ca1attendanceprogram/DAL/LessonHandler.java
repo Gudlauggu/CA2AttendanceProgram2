@@ -29,14 +29,14 @@ import java.util.logging.Logger;
 public class LessonHandler
   {
 
-    SQLConnectionManager conManager;
+    SQLConnectionHandler conManager;
     Calendar cal;
 
     StudentHandler sh = new StudentHandler();
 
     public LessonHandler()
       {
-        this.conManager = new SQLConnectionManager();
+        this.conManager = new SQLConnectionHandler();
       }
 
     public List<Course> getLessonsFromTeacher(Teacher teacher)

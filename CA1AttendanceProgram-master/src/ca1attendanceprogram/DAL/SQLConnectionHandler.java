@@ -13,11 +13,11 @@ import java.sql.Connection;
  *
  * @author gudla
  */
-public class SQLConnectionManager
+public class SQLConnectionHandler
 {
     private static SQLServerDataSource DS = new SQLServerDataSource();
 
-    public SQLConnectionManager()
+    public SQLConnectionHandler()
       {
         setupDataSource();
       }

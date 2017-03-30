@@ -20,11 +20,11 @@ import java.util.ArrayList;
 public class StudentHandler
   {
 
-    SQLConnectionManager conManager;
+    SQLConnectionHandler conManager;
 
     public StudentHandler()
       {
-        conManager = new SQLConnectionManager();
+        conManager = new SQLConnectionHandler();
       }
 
     public ArrayList<String> getAllStudents()
@@ -198,21 +198,21 @@ public class StudentHandler
             return false;
           }
       }
-    
+
     public void changePassword(String password, String username)
       {
         try (Connection con = conManager.getConnection())
           {
             String sqlQuery = "UPDATE Student SET password=? WHERE username=?";
             PreparedStatement pstmt = con.prepareStatement(sqlQuery);
-            
+
             pstmt.setString(1, password);
             pstmt.setString(2, username);
             pstmt.execute();
           }
-        catch(SQLException sqle)
+        catch (SQLException sqle)
           {
-              System.err.println(sqle);
+            System.err.println(sqle);
           }
       }
 
@@ -263,16 +263,19 @@ public class StudentHandler
         Student student = new Student(usernameStud, emailStud, idStud, passwordStud, nameStud, classId);
         return student;
       }
-    public ArrayList<Integer> getAllStudentIdBasedOnClass(int classid, Connection con) throws SQLException{
-        String  query = "SELECT * FROM [student] WHERE classid = ?";
+
+    public ArrayList<Integer> getAllStudentIdBasedOnClass(int classid, Connection con) throws SQLException
+      {
+        String query = "SELECT * FROM [student] WHERE classid = ?";
         PreparedStatement pstmt = con.prepareStatement(query);
         pstmt.setInt(1, classid);
         ResultSet rs = pstmt.executeQuery();
-       ArrayList<Integer> studentsId = new ArrayList();
-        while(rs.next()){
+        ArrayList<Integer> studentsId = new ArrayList();
+        while (rs.next())
+          {
             studentsId.add(rs.getInt("id"));
-        }
+          }
         return studentsId;
-    }
+      }
 
   }

@@ -27,13 +27,13 @@ public class StudentLessonHandler
 
     LessonHandler lessonHandler;
     StudentHandler studHandler;
-    SQLConnectionManager conManager;
+    SQLConnectionHandler conManager;
 
     public StudentLessonHandler()
       {
         studHandler = new StudentHandler();
         lessonHandler = new LessonHandler();
-        conManager = new SQLConnectionManager();
+        conManager = new SQLConnectionHandler();
       }
 
     public ArrayList<StudentLesson> getAllStudentLessons()

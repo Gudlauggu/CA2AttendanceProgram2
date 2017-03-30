@@ -3,35 +3,83 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="587.0" prefWidth="603.0" stylesheets="@../View/MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca1attendanceprogram.GUI.Controller.TeacherOverviewController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="758.0" prefWidth="997.0" stylesheets="@../View/MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca1attendanceprogram.GUI.Controller.TeacherOverviewController">
    <children>
+      <BorderPane layoutY="531.0" prefHeight="173.0" prefWidth="997.0">
+         <center>
+            <TableView fx:id="tblAllLessons" prefHeight="158.0" prefWidth="603.0" BorderPane.alignment="CENTER">
+              <columns>
+                  <TableColumn fx:id="clmLesson" prefWidth="96.0" text="Lesson" />
+                <TableColumn fx:id="clmName" maxWidth="1.7976931348623157E308" prefWidth="522.0" text="Name" />
+                  <TableColumn fx:id="clmAttending" maxWidth="1.7976931348623157E308" prefWidth="174.0" text="Attending" />
+                  <TableColumn fx:id="clmDate" prefWidth="204.0" text="Date" />
+              </columns>
+            </TableView>
+         </center>
+      </BorderPane>
       <HBox layoutY="654.0" prefHeight="0.0" prefWidth="534.0" styleClass="hBox" />
-      <TableView fx:id="tblAllLessons" layoutX="11.0" layoutY="70.0" prefHeight="442.0" prefWidth="581.0">
-        <columns>
-            <TableColumn fx:id="clmLesson" prefWidth="96.0" text="Lesson" />
-          <TableColumn fx:id="clmName" maxWidth="1.7976931348623157E308" prefWidth="208.0" text="Name" />
-            <TableColumn fx:id="clmAttending" maxWidth="1.7976931348623157E308" prefWidth="158.0" text="Attending" />
-            <TableColumn fx:id="clmDate" prefWidth="118.0" text="Date" />
-        </columns>
-      </TableView>
-      <ComboBox fx:id="CBLesson" layoutX="36.0" layoutY="23.0" prefHeight="31.0" prefWidth="201.0" promptText="Choose a course" />
-      <HBox layoutY="533.0" prefHeight="54.0" prefWidth="603.0" styleClass="hBox">
+      <ComboBox fx:id="CBLesson" layoutX="22.0" layoutY="24.0" prefHeight="31.0" prefWidth="201.0" promptText="Choose a course" />
+      <HBox layoutY="533.0" maxWidth="1.7976931348623157E308" prefHeight="54.0" prefWidth="997.0" styleClass="hBox" AnchorPane.bottomAnchor="0.0">
          <children>
             <Button mnemonicParsing="false" onAction="#mercyButton" prefHeight="37.0" prefWidth="98.0" text="Mercy!" textFill="WHITE" />
             <Button mnemonicParsing="false" onAction="#smiteButton" prefHeight="37.0" prefWidth="102.0" text="Smite!" textFill="WHITE" />
             <Button fx:id="btnChangePass" layoutX="346.0" layoutY="17.0" mnemonicParsing="false" onAction="#openChangePass" prefHeight="40.0" prefWidth="201.0" text="Change Password" textFill="WHITE" />
-            <Button fx:id="btnLogOff" mnemonicParsing="false" onAction="#logOff" prefHeight="40.0" prefWidth="157.0" text="Log off" textFill="WHITE" />
+            <Button fx:id="btnLogOff" mnemonicParsing="false" onAction="#logOff" prefHeight="37.0" prefWidth="115.0" text="Log off" textFill="WHITE" />
          </children>
          <padding>
-            <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
+            <Insets bottom="7.0" left="15.0" right="15.0" top="7.0" />
          </padding>
       </HBox>
-      <ToggleButton fx:id="btnLesson" disable="true" layoutX="276.0" layoutY="22.0" mnemonicParsing="false" onAction="#startLesson" prefHeight="37.0" prefWidth="250.0" text="Start Lesson" textFill="WHITE" />
+      <ToggleButton fx:id="btnLesson" disable="true" layoutX="422.0" layoutY="21.0" mnemonicParsing="false" onAction="#startLesson" prefHeight="37.0" prefWidth="167.0" text="Start Lesson" textFill="WHITE" />
+      <DatePicker fx:id="datePicker" layoutX="241.0" layoutY="26.0" prefHeight="28.0" prefWidth="167.0" />
+      <ScrollPane layoutY="91.0" prefHeight="431.0" prefWidth="997.0">
+         <content>
+            <GridPane prefHeight="145.0" prefWidth="995.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="1000.0" minHeight="10.0" prefHeight="176.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <ImageView fitHeight="118.0" fitWidth="132.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../DATA/765-default-avatar.png" />
+                           </image>
+                        </ImageView>
+                        <Label text="Name" />
+                     </children>
+                     <padding>
+                        <Insets top="7.0" />
+                     </padding>
+                  </VBox>
+               </children>
+            </GridPane>
+         </content>
+      </ScrollPane>
+      <Label layoutX="14.0" layoutY="70.0" text="Students Attending:" textFill="WHITE" />
    </children>
 </AnchorPane>

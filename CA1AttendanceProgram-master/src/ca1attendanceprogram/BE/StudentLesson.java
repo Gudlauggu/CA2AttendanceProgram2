@@ -7,7 +7,12 @@ package ca1attendanceprogram.BE;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.Date;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 /**
  *
@@ -18,24 +23,24 @@ public class StudentLesson
 
     private Student student;
     private Lesson lesson;
-    private String attendence;
-    private String studentName;
-    private String lessonName;
-    private Date date;
     private final static String ABSENT = "Absent";
     private final static String ATTENDING = "Attending";
     private final static String MERCY_REQUESTED = "Absent(Mercy Requested)";
     private int attendint;
     private String teacherName;
+    private final StringProperty lessonName = new SimpleStringProperty();
+    private final StringProperty attendence = new SimpleStringProperty();
+    private final StringProperty studentName = new SimpleStringProperty();
 
     public StudentLesson(Student student, Lesson lesson, int attendint)
       {
         this.student = student;
-        setStudentName();
+        setStudentName(student.getName());
         this.lesson = lesson;
-        setLessonName();
+        setLessonName(lesson.getLessonName());
         teacherName = lesson.getTeacherName();
-        setCal(lesson.getCal().getTime());
+
+        setDateString(lesson.getCal().getTime());
         this.attendint = attendint;
         setAttendence(attendint);
       }
@@ -62,6 +67,11 @@ public class StudentLesson
 
     public String getAttendence()
       {
+        return attendence.get();
+      }
+
+    public StringProperty attendenceProperty()
+      {
         return attendence;
       }
 
@@ -70,53 +80,58 @@ public class StudentLesson
         switch (attendingInt)
           {
             case 0:
-                attendence = ABSENT;
+                attendence.set(ABSENT);
                 break;
             case 1:
-                attendence = ATTENDING;
+                attendence.set(ATTENDING);
                 break;
             case 2:
-                attendence = MERCY_REQUESTED;
+                attendence.set(MERCY_REQUESTED);
                 break;
 
           }
 
       }
 
-    public String getStudentName()
-      {
-        studentName = student.getName();
-        return studentName;
-      }
-
-    public void setStudentName()
-      {
-        studentName = student.getName();
-      }
-
     public String getLessonName()
       {
-        lessonName = lesson.getLessonName();
+        return lessonName.get();
+      }
+
+    public void setLessonName(String value)
+      {
+        lessonName.set(value);
+      }
+
+    public StringProperty lessonNameProperty()
+      {
         return lessonName;
       }
+    private final StringProperty dateString = new SimpleStringProperty();
 
-    public void setLessonName()
+    public String getDateString()
       {
-
-        lessonName = lesson.getLessonName();
+        return dateString.get();
       }
 
-    public String getCal()
+    public void setDateString(Date date)
       {
+
         Format formatter;
         formatter = new SimpleDateFormat("dd-MMM E HH:mm");
         String s = formatter.format(date);
-        return s;
+        dateString.set(s);
       }
 
-    public void setCal(Date cal)
+    public LocalDate getDateForSort()
       {
-        this.date = cal;
+        LocalDate lDate = lesson.getCal().getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        return lDate;
+      }
+
+    public StringProperty dateStringProperty()
+      {
+        return dateString;
       }
 
     public int getAttendint()
@@ -128,7 +143,25 @@ public class StudentLesson
       {
         this.attendint = attendint;
       }
-    public String getTeacherName(){
-    return lesson.getTeacherName();
-    }
+
+    public String getTeacherName()
+      {
+        return lesson.getTeacherName();
+      }
+
+    public String getStudentName()
+      {
+        return studentName.get();
+      }
+
+    public void setStudentName(String value)
+      {
+        studentName.set(value);
+      }
+
+    public StringProperty studentNameProperty()
+      {
+        return studentName;
+      }
+
   }

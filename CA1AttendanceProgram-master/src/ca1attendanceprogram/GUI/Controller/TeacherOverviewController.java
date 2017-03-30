@@ -6,19 +6,16 @@
 package ca1attendanceprogram.GUI.Controller;
 
 import ca1attendanceprogram.BE.Course;
-import ca1attendanceprogram.BE.Person;
-import ca1attendanceprogram.BE.Student;
 import ca1attendanceprogram.BE.StudentLesson;
 import ca1attendanceprogram.BE.Teacher;
-import ca1attendanceprogram.DAL.StudentLessonHandler;
 import ca1attendanceprogram.GUI.Model.LessonModel;
 import ca1attendanceprogram.GUI.Model.StudentLessonModel;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -32,11 +29,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -78,10 +75,13 @@ public class TeacherOverviewController implements Initializable
     //
     private static final StudentLessonModel STUD_LESS_MODEL = new StudentLessonModel();
     //
+    @FXML
+    private DatePicker datePicker;
 
     @Override
     public void initialize(URL url, ResourceBundle rb)
       {
+        datePicker.setValue(LocalDate.now());
 
       }
 
@@ -100,15 +100,10 @@ public class TeacherOverviewController implements Initializable
 
     private void updateFields()
       {
-        clmName.setCellValueFactory(
-                new PropertyValueFactory("studentName"));
-        clmLesson.setCellValueFactory(
-                new PropertyValueFactory("lessonName"));
-        clmAttending.setCellValueFactory(
-                new PropertyValueFactory("attendence"));
-
-        clmDate.setCellValueFactory(
-                new PropertyValueFactory("cal"));
+        clmName.setCellValueFactory(cellData -> cellData.getValue().studentNameProperty());
+        clmLesson.setCellValueFactory(cellData -> cellData.getValue().lessonNameProperty());
+        clmAttending.setCellValueFactory(cellData -> cellData.getValue().attendenceProperty());
+        clmDate.setCellValueFactory(cellData -> cellData.getValue().dateStringProperty());
 
       }
 
@@ -161,7 +156,7 @@ public class TeacherOverviewController implements Initializable
               {
                 if (course.getName().equals(crntCourse))
                   {
-                    studLessons.addAll(STUD_LESS_MODEL.getStudentLessonBasedOnCourse(course));
+                    studLessons.addAll(STUD_LESS_MODEL.SortByDate(datePicker.getValue(), course));
                   }
               }
             btnLesson.setDisable(false);

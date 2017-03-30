@@ -10,6 +10,7 @@ import ca1attendanceprogram.BE.Lesson;
 import ca1attendanceprogram.BE.Student;
 import ca1attendanceprogram.BE.StudentLesson;
 import ca1attendanceprogram.BLL.StudentLessonManager;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -75,9 +76,9 @@ public class StudentLessonModel
                   {
                     if (studentLesson.getAttendint() != 1)
                       {
-                        absentNumber +=1;
+                        absentNumber += 1;
                       }
-                      lessNumber+=1;
+                    lessNumber += 1;
                   }
               }
 
@@ -87,5 +88,19 @@ public class StudentLessonModel
         percent = (absentNumber / lessNumber) * 100;
         percent = (double) Math.round(percent * 10d) / 10d;
         return percent + "%";
+      }
+
+    public ArrayList<StudentLesson> SortByDate(LocalDate date, Course course)
+      {
+        ArrayList<StudentLesson> studReturn = new ArrayList();
+        ArrayList<StudentLesson> studLess = getStudentLessonBasedOnCourse(course);
+        for (StudentLesson studLes : studLess)
+          {
+            if (studLes.getDateForSort().equals(date))
+              {
+                studReturn.add(studLes);
+              }
+          }
+        return studReturn;
       }
   }
