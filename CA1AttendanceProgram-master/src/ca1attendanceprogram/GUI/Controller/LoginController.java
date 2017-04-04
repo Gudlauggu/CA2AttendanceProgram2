@@ -221,7 +221,7 @@ public class LoginController implements Initializable
             case LOGGED_IN:
                 ancPicture.getChildren().clear();
                 Student stud = (Student) person;
-
+                ancStudentInfo.setVisible(true);
                 txtUsername.setDisable(true);
                 txtPassword.setDisable(true);
                 btnLogin.setText("Attend Class");
@@ -287,6 +287,7 @@ public class LoginController implements Initializable
                 btnClose.setText("Quit");
                 boxRemUsername.setDisable(false);
                 aLogin.doAsTold(false).play();
+                
                 break;
             case WRONG_PASSWORD:
                 btnHiddenButton.setVisible(true);
@@ -333,19 +334,11 @@ public class LoginController implements Initializable
               }
             else
               {
-                // ... user chose CANCEL or closed the dialog
-                //Do nothing
+
               }
           }
       }
 
-//    public void saveUsername() {
-//        if (boxRemUsername.isSelected()) {
-//            USER_MANAGER.saveUsername(txtUsername.getText().trim(), txtPassword.getText().trim());
-//        } else {
-//            USER_MANAGER.resetFile();
-//        }
-//    }
     public void onKeyPressed(KeyCode code) throws IOException
       {
         if (code.equals(KeyCode.ENTER))

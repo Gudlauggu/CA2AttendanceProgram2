@@ -27,7 +27,6 @@ public class StudentLoginHandler
       {
         for (String string : sh.getStudUsername())
           {
-            System.out.println(string);
             if (string.equals(username))
               {
                 if (sh.checkRightPassword(string, password))

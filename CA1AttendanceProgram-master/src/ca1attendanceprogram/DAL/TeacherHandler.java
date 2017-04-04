@@ -182,8 +182,6 @@ public class TeacherHandler
             stmt.setString(1, username);
             ResultSet rs = stmt.executeQuery();
             rs.next();
-
-            System.out.println(rs.getString("password"));
             return password.equals(rs.getString("password"));
           } catch (SQLException sqle)
           {

@@ -195,7 +195,6 @@ public class StudentHandler
             ResultSet rs = stmt.executeQuery();
             rs.next();
 
-            System.out.println(rs.getString("password"));
             return password.equals(rs.getString("password"));
           }
         catch (SQLException sqle)
@@ -216,12 +215,6 @@ public class StudentHandler
             pstmt.setString(2, username);
             pstmt.execute();
 
-            sqlQuery = "UPDATE Student SET image = ? WHERE username=?";
-            pstmt = con.prepareStatement(sqlQuery);
-            ImageConverter imgConverter = new ImageConverter();
-            pstmt.setBytes(1, imgConverter.getAImageAsBytesForTest());
-            pstmt.setString(2, username);
-            pstmt.execute();
           }
         catch (SQLException sqle)
           {
