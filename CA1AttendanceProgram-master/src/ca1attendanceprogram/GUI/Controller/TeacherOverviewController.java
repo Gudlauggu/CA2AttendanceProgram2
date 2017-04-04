@@ -6,6 +6,7 @@
 package ca1attendanceprogram.GUI.Controller;
 
 import ca1attendanceprogram.BE.Course;
+import ca1attendanceprogram.BE.Student;
 import ca1attendanceprogram.BE.StudentLesson;
 import ca1attendanceprogram.BE.Teacher;
 import ca1attendanceprogram.GUI.Model.LessonModel;
@@ -14,9 +15,10 @@ import ca1attendanceprogram.GUI.Model.StudentLessonModel;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -25,6 +27,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -34,6 +37,10 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -77,6 +84,8 @@ public class TeacherOverviewController implements Initializable
     //
     @FXML
     private DatePicker datePicker;
+    @FXML
+    private GridPane grdPane;
 
     @Override
     public void initialize(URL url, ResourceBundle rb)
@@ -115,8 +124,11 @@ public class TeacherOverviewController implements Initializable
         cbChoicer(teacher);
         addListener();
         updateFields();
-        tblAllLessons.setItems(studLessons);
-
+        tblAllLessons.setItems(STUD_LESS_MODEL.getStudLessonForView());
+        for (Course course : teacher.getCourses())
+              {
+                STUD_LESS_MODEL.getStudentLessonBasedOnCourse(course);
+              }
         tblAllLessons.getSelectionModel().setSelectionMode(
                 SelectionMode.MULTIPLE
         );
@@ -139,16 +151,12 @@ public class TeacherOverviewController implements Initializable
 
     private void tableUpdater()
       {
-        tblAllLessons.getItems().clear();
+       
         String crntCourse = CBLesson.getSelectionModel().getSelectedItem();
         if (crntCourse.equals(allCourses))
           {
-
+            STUD_LESS_MODEL.dontSortforView();
             btnLesson.setDisable(true);
-            for (Course course : teacher.getCourses())
-              {
-                studLessons.addAll(STUD_LESS_MODEL.getStudentLessonBasedOnCourse(course));
-              }
           }
         else
           {
@@ -156,9 +164,11 @@ public class TeacherOverviewController implements Initializable
               {
                 if (course.getName().equals(crntCourse))
                   {
-                    studLessons.addAll(STUD_LESS_MODEL.SortByDate(datePicker.getValue(), course));
+                    STUD_LESS_MODEL.sortByDate(datePicker.getValue(), course);
+                    
                   }
               }
+            imgHolderSetter();
             btnLesson.setDisable(false);
 
           }
@@ -233,6 +243,7 @@ public class TeacherOverviewController implements Initializable
     private void openChangePass(ActionEvent event) throws IOException
       {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca1attendanceprogram/GUI/View/ChangePasswordView.fxml"));
+
         Parent root = loader.load();
 
         Stage subStage = new Stage();
@@ -243,6 +254,46 @@ public class TeacherOverviewController implements Initializable
         subStage.show();
         Stage stage = (Stage) btnChangePass.getScene().getWindow();
         stage.close();
+      }
+
+    private void imgHolderSetter()
+      {
+        RowConstraints con = grdPane.getRowConstraints().get(0);
+        con.setMinHeight(145);
+        
+        int clm = 0;
+        int row = 0;
+        for (StudentLesson studLesson : STUD_LESS_MODEL.getStudLessonForView())
+          {
+
+            Student student = studLesson.getStudent();
+            if (studLesson.getAttendint() == 1)
+              {
+                try
+                  {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca1attendanceprogram/GUI/View/ImageHolderView.fxml"));
+                    Parent root;
+                    root = loader.load();
+                    grdPane.add(root, clm, row);
+                    ImageHolderViewController imgController = loader.getController();
+                    imgController.altInitialize(student);
+                  }
+                catch (IOException ex)
+                  {
+                    Logger.getLogger(TeacherOverviewController.class.getName()).log(Level.SEVERE, null, ex);
+                  }
+                clm++;
+                if (clm >= grdPane.getColumnConstraints().size())
+                  {
+                    row++;
+                    con = new RowConstraints();
+                    con.setMinHeight(145);
+                    grdPane.getRowConstraints().add(con);
+                    clm = 0;
+                  }
+              }
+          }
+
       }
 
   }

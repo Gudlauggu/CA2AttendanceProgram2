@@ -8,7 +8,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -17,7 +16,8 @@ import javafx.stage.StageStyle;
  *
  * @author Mecaa
  */
-public class Main extends Application {
+public class Main extends Application
+  {
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -36,14 +36,12 @@ public class Main extends Application {
             }
         });
     }
-
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args)
+      {
         launch(args);
-    }
+      }
 
-}
-
-
+  }

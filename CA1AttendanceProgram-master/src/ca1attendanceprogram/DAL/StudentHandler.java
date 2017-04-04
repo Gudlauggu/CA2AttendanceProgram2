@@ -6,12 +6,18 @@
 package ca1attendanceprogram.DAL;
 
 import ca1attendanceprogram.BE.Student;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -209,6 +215,13 @@ public class StudentHandler
             pstmt.setString(1, password);
             pstmt.setString(2, username);
             pstmt.execute();
+
+            sqlQuery = "UPDATE Student SET image = ? WHERE username=?";
+            pstmt = con.prepareStatement(sqlQuery);
+            ImageConverter imgConverter = new ImageConverter();
+            pstmt.setBytes(1, imgConverter.getAImageAsBytesForTest());
+            pstmt.setString(2, username);
+            pstmt.execute();
           }
         catch (SQLException sqle)
           {
@@ -259,8 +272,28 @@ public class StudentHandler
         String emailStud = rs.getString("email");
         String passwordStud = rs.getString("password");
         int classId = rs.getInt("classid");
+        byte[] bytes = rs.getBytes("image");
+        BufferedImage newImage;
+        if (bytes != null)
+          {
+            try
+              {
+                ByteArrayInputStream bais;
+                bais = new ByteArrayInputStream(rs.getBytes("image"));
 
-        Student student = new Student(usernameStud, emailStud, idStud, passwordStud, nameStud, classId);
+                newImage = ImageIO.read(bais);
+              }
+            catch (IOException ex)
+              {
+                Logger.getLogger(StudentHandler.class.getName()).log(Level.SEVERE, null, ex);
+                newImage = null;
+              }
+          }
+        else
+          {
+            newImage = null;
+          }
+        Student student = new Student(usernameStud, emailStud, idStud, passwordStud, nameStud, classId, newImage);
         return student;
       }
 

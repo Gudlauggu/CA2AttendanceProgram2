@@ -31,6 +31,11 @@ public class StudentLesson
     private final StringProperty lessonName = new SimpleStringProperty();
     private final StringProperty attendence = new SimpleStringProperty();
     private final StringProperty studentName = new SimpleStringProperty();
+//
+//    public static enum attending
+//      {
+//        ATTENDING, ABSENT, MERCY;
+//      }
 
     public StudentLesson(Student student, Lesson lesson, int attendint)
       {

@@ -9,15 +9,12 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.ToggleButton?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
 
 <AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="758.0" prefWidth="997.0" stylesheets="@../View/MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca1attendanceprogram.GUI.Controller.TeacherOverviewController">
    <children>
@@ -48,9 +45,9 @@
       </HBox>
       <ToggleButton fx:id="btnLesson" disable="true" layoutX="422.0" layoutY="21.0" mnemonicParsing="false" onAction="#startLesson" prefHeight="37.0" prefWidth="167.0" text="Start Lesson" textFill="WHITE" />
       <DatePicker fx:id="datePicker" layoutX="241.0" layoutY="26.0" prefHeight="28.0" prefWidth="167.0" />
-      <ScrollPane layoutY="91.0" prefHeight="431.0" prefWidth="997.0">
+      <ScrollPane layoutY="91.0" prefHeight="431.0" prefWidth="997.0" stylesheets="@MainLayout.css">
          <content>
-            <GridPane prefHeight="145.0" prefWidth="995.0">
+            <GridPane fx:id="grdPane" prefHeight="145.0" prefWidth="995.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -62,21 +59,6 @@
               <rowConstraints>
                 <RowConstraints maxHeight="1000.0" minHeight="10.0" prefHeight="176.0" vgrow="SOMETIMES" />
               </rowConstraints>
-               <children>
-                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
-                     <children>
-                        <ImageView fitHeight="118.0" fitWidth="132.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../../DATA/765-default-avatar.png" />
-                           </image>
-                        </ImageView>
-                        <Label text="Name" />
-                     </children>
-                     <padding>
-                        <Insets top="7.0" />
-                     </padding>
-                  </VBox>
-               </children>
             </GridPane>
          </content>
       </ScrollPane>

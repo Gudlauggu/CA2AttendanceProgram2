@@ -10,9 +10,7 @@ and open the template in the editor.
 
 .root{
     -fx-font-family: 'Calibri';
-
     -fx-background-color:#333333
-
 }
 .button{
     -fx-background-color: #666666;
@@ -115,4 +113,10 @@ and open the template in the editor.
     -fx-font-size: 20px;
     -fx-font-weight: bold;
 }
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
 
+.scroll-pane {
+    -fx-background-color: transparent;
+}

@@ -6,7 +6,6 @@
 package ca1attendanceprogram.GUI.Controller;
 
 import ca1attendanceprogram.BE.*;
-import ca1attendanceprogram.BLL.LoginManager;
 import ca1attendanceprogram.BLL.SettingManager;
 import ca1attendanceprogram.GUI.Model.LessonModel;
 import ca1attendanceprogram.GUI.Model.LoginModel;
@@ -15,8 +14,13 @@ import ca1attendanceprogram.GUI.Model.StudentLessonModel;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.animation.Animation;
+import javafx.animation.Transition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,9 +34,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 /**
  *
@@ -55,7 +61,6 @@ public class LoginController implements Initializable
     private Button btnClose;
     @FXML
     private Button btnHiddenButton;
-    private AnchorPane ancAttendence;
     @FXML
     private Label lblAttendenceAll;
     @FXML
@@ -65,12 +70,17 @@ public class LoginController implements Initializable
     @FXML
     private Label lblConfirmation;
     @FXML
-    private Label lblStudentName;
-    @FXML
     private Label lblAttending;
     @FXML
     private Button btnChangePassword;
-
+    @FXML
+    private Label lblCurrentTeacher;
+    @FXML
+    private AnchorPane ancLogin;
+    @FXML
+    private AnchorPane ancStudentInfo;
+    @FXML
+    private ImageView imgLogo1;
     // 0 = not logged int // 1 = logged in // 2 = wrong password, not logged in
     private static final int NOT_LOGGED_IN = 1;
     private static final int LOGGED_IN = 2;
@@ -84,13 +94,7 @@ public class LoginController implements Initializable
     Lesson lesson;
     private Person person = null;
     @FXML
-    private Label lblCurrentTeacher;
-    @FXML
-    private AnchorPane ancLogin;
-    @FXML
-    private AnchorPane ancStudentInfo;
-    @FXML
-    private ImageView imgLogo1;
+    private VBox ancPicture;
 
     @Override
     public void initialize(URL url, ResourceBundle rb)
@@ -123,7 +127,6 @@ public class LoginController implements Initializable
               {
                 rememberSettings(); //saveUsername();
                 loginState = LOGGED_IN;
-
                 activeState();
               }
             else if (person.getClass() == Teacher.class)
@@ -211,36 +214,67 @@ public class LoginController implements Initializable
 
     public void activeState()
       {
+
+        AnimateLogin aLogin = new AnimateLogin();
         switch (loginState)
           {
             case LOGGED_IN:
+                ancPicture.getChildren().clear();
+                Student stud = (Student) person;
+
                 txtUsername.setDisable(true);
                 txtPassword.setDisable(true);
                 btnLogin.setText("Attend Class");
                 btnClose.setText("Log Off");
-                ancAttendence.setVisible(true);
                 btnHiddenButton.getStyleClass().remove("button-small");
                 btnHiddenButton.getStyleClass().add("button");
                 btnHiddenButton.setVisible(true);
                 btnHiddenButton.setText("See Absense");
                 lblConfirmation.setVisible(false);
-                lblStudentName.setText(person.getName());
                 boxRemUsername.setDisable(true);
                 btnChangePassword.setVisible(true);
                 lesson = getNewestLesson();
-                lblCurrentClass.setText(lesson.getLessonName());
-                lblCurrentTeacher.setText(lesson.getTeacherName());
-                lblAttendenceAll.setText(STUD_LESS_MODEL.getAllAbsenceAsPercentage((Student) person));
-                lblClassAttendance.setText(STUD_LESS_MODEL.getAbsenceForCurrentCourse((Student) person, lesson));
-                StudentLesson studLess = STUD_LESS_MODEL.getOneStudentLessonFromLessonAndStudent((Student) person, lesson);
-                if (studLess.getAttendint() == 1)
+                if (lesson != null && lesson.getCal().DAY_OF_YEAR == Calendar.DAY_OF_YEAR)
                   {
-                    lblAttending.setVisible(true);
-                    btnLogin.setText("Leave Class");
-                    STUD_LESS_MODEL.setStudentAttendence(studLess, 1);
+                    lblCurrentClass.setText(lesson.getLessonName());
+                    lblCurrentTeacher.setText(lesson.getTeacherName());
+                    lblAttendenceAll.setText(STUD_LESS_MODEL.getAllAbsenceAsPercentage(stud));
+                    lblClassAttendance.setText(STUD_LESS_MODEL.getAbsenceForCurrentCourse(stud, lesson));
+                    StudentLesson studLess = STUD_LESS_MODEL.getOneStudentLessonFromLessonAndStudent(stud, lesson);
+                    if (studLess.getAttendint() == 1)
+                      {
+                        lblAttending.setVisible(true);
+                        btnLogin.setText("Leave Class");
+                      }
+
                   }
+                else
+                  {
+
+                    lblCurrentClass.setText("No Class is running");
+                    lblCurrentTeacher.setText("N/A");
+                    lblAttendenceAll.setText(STUD_LESS_MODEL.getAllAbsenceAsPercentage(stud));
+                    lblClassAttendance.setText("N/");
+
+                  }
+                try
+                  {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca1attendanceprogram/GUI/View/ImageHolderView.fxml"));
+                    Parent root;
+                    root = loader.load();
+                    ancPicture.getChildren().add(root);
+                    ImageHolderViewController imgController = loader.getController();
+                    imgController.altInitialize(stud);
+                  }
+                catch (IOException ex)
+                  {
+                    Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+                  }
+
+                aLogin.doAsTold(true).play();
                 break;
             case NOT_LOGGED_IN:
+
                 txtUsername.setDisable(false);
                 txtPassword.setDisable(false);
                 if (!boxRemUsername.isSelected())
@@ -248,12 +282,11 @@ public class LoginController implements Initializable
                     txtUsername.clear();
                     txtPassword.clear();
                   }
-
-                ancAttendence.setVisible(false);
                 btnHiddenButton.setVisible(false);
                 btnLogin.setText("Login");
                 btnClose.setText("Quit");
                 boxRemUsername.setDisable(false);
+                aLogin.doAsTold(false).play();
                 break;
             case WRONG_PASSWORD:
                 btnHiddenButton.setVisible(true);
@@ -343,6 +376,56 @@ public class LoginController implements Initializable
     private Lesson getNewestLesson()
       {
         return LESSON_MODEL.getNewestLesson();
+      }
+
+    private class AnimateLogin
+      {
+
+        final double startWidth = ancLogin.getWidth();
+        final double studStartWidth = ancStudentInfo.getWidth();
+
+        private Animation doAsTold(Boolean bool)
+          {
+
+            final Animation hideLogin = new Transition()
+              {
+                  {
+                    setCycleDuration(Duration.millis(1_000));
+                  }
+
+                protected void interpolate(double frac)
+                  {
+                    //look here
+                    final double curWidth = startWidth * (1.0 - frac);
+                    ancLogin.setTranslateX(-startWidth + curWidth);
+                    final double studCurWidth = studStartWidth * (1.0 - frac);
+                    ancStudentInfo.setTranslateX(-studStartWidth + studCurWidth);
+                  }
+              };
+            final Animation showLogin = new Transition()
+              {
+                  {
+                    setCycleDuration(Duration.millis(1_000));
+                  }
+
+                protected void interpolate(double frac)
+                  {
+                    //look here
+                    final double curWidth = startWidth * frac;
+                    ancLogin.setTranslateX(-startWidth + curWidth);
+                    final double studCurWidth = studStartWidth * frac;
+                    ancStudentInfo.setTranslateX(-studStartWidth + studCurWidth);
+                  }
+              };
+            if (bool)
+              {
+                return hideLogin;
+              }
+            else
+              {
+                return showLogin;
+              }
+          }
       }
 
   }

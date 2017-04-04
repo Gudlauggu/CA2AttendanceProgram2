@@ -12,6 +12,7 @@ import ca1attendanceprogram.BE.StudentLesson;
 import ca1attendanceprogram.BLL.StudentLessonManager;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -21,6 +22,10 @@ import javafx.collections.ObservableList;
  */
 public class StudentLessonModel
   {
+
+    private ArrayList<StudentLesson> allLessonsForTeacher = new ArrayList<>();
+
+    private ObservableList<StudentLesson> studLessonForView = FXCollections.observableArrayList();
 
     private final StudentLessonManager studentLessonManager = new StudentLessonManager();
 
@@ -34,9 +39,9 @@ public class StudentLessonModel
         return studentLessonManager.getStudentLessonBasedOnStudent(student);
       }
 
-    public ArrayList<StudentLesson> getStudentLessonBasedOnCourse(Course course)
+    public void getStudentLessonBasedOnCourse(Course course)
       {
-        return studentLessonManager.getStudentLessonBasedOnCourse(course);
+        allLessonsForTeacher.addAll(studentLessonManager.getStudentLessonBasedOnCourse(course));
       }
 
     public void setStudentAttendence(StudentLesson studLess, int attendid)
@@ -47,19 +52,26 @@ public class StudentLessonModel
     public String getAllAbsenceAsPercentage(Student student)
       {
         ArrayList<StudentLesson> studLessons = getStudentLessonBasedOnStudent(student);
-        double absentNumber = 0;
-        for (StudentLesson studentLesson : studLessons)
+        if (!studLessons.isEmpty())
           {
-            if (studentLesson.getAttendint() != 1)
+            double absentNumber = 0;
+            for (StudentLesson studentLesson : studLessons)
               {
-                absentNumber += 1;
+                if (studentLesson.getAttendint() != 1)
+                  {
+                    absentNumber += 1;
+                  }
               }
-          }
 
-        double percent;
-        percent = (absentNumber / studLessons.size()) * 100;
-        percent = (double) Math.round(percent * 10d) / 10d;
-        return percent + "%";
+            double percent;
+            percent = (absentNumber / studLessons.size()) * 100;
+            percent = (double) Math.round(percent * 10d) / 10d;
+            return percent + "%";
+          }
+        else
+          {
+            return "No Classes exist";
+          }
       }
 
     public String getAbsenceForCurrentCourse(Student student, Lesson lesson)
@@ -90,17 +102,43 @@ public class StudentLessonModel
         return percent + "%";
       }
 
-    public ArrayList<StudentLesson> SortByDate(LocalDate date, Course course)
+    public void sortByDate(LocalDate date, Course course)
       {
-        ArrayList<StudentLesson> studReturn = new ArrayList();
-        ArrayList<StudentLesson> studLess = getStudentLessonBasedOnCourse(course);
+        ArrayList<StudentLesson> studLess = new ArrayList();
+        studLess.addAll(sortByCourse(course));
+        studLessonForView.clear();
         for (StudentLesson studLes : studLess)
           {
             if (studLes.getDateForSort().equals(date))
               {
-                studReturn.add(studLes);
+                studLessonForView.add(studLes);
               }
           }
-        return studReturn;
+
       }
+
+    public List<StudentLesson> sortByCourse(Course course)
+      {
+        studLessonForView.clear();
+        for (StudentLesson studentLesson : allLessonsForTeacher)
+          {
+            if (studentLesson.getLesson().getCourseId() == course.getId())
+              {
+                studLessonForView.add(studentLesson);
+              }
+          }
+        return studLessonForView;
+      }
+
+    public void dontSortforView()
+      {
+        studLessonForView.clear();
+        studLessonForView.addAll(allLessonsForTeacher);
+      }
+
+    public ObservableList<StudentLesson> getStudLessonForView()
+      {
+        return studLessonForView;
+      }
+
   }
