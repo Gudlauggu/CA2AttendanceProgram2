@@ -242,7 +242,6 @@ public class LoginController implements Initializable
                 boxRemUsername.setDisable(true);
                 btnChangePassword.setVisible(true);
                 lesson = getNewestLesson();
-                System.out.println(lesson.getCal().get(Calendar.DAY_OF_YEAR) + " " + Calendar.getInstance().get(Calendar.DAY_OF_YEAR));
                 if (lesson != null && lesson.getCal().get(Calendar.DAY_OF_YEAR) == Calendar.getInstance().get(Calendar.DAY_OF_YEAR))
                   {
                     lblCurrentClass.setText(lesson.getLessonName());

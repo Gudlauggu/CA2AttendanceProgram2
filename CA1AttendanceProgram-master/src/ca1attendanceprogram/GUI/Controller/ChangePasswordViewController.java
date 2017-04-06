@@ -98,14 +98,12 @@ public class ChangePasswordViewController implements Initializable
                   {
                     STUDENT_MODEL.changePassword(txtNewPass.getText().trim(), txtUsername.getText().trim());
                     loginState = LOGGED_IN;
-                    System.out.println("Student password has been changed!");
                     showLoginWindow();
 
                   } else if (person.getClass() == Teacher.class)
                   {
                     TEACHER_MODEL.changePassword(txtNewPass.getText().trim(), txtUsername.getText().trim());
                     loginState = LOGGED_IN;
-                    System.out.println("Teacher password has been changed!");
                     showLoginWindow();
                   }
               } else if (checkIfSame() == false)

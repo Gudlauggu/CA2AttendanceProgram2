@@ -37,7 +37,6 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
@@ -145,6 +144,7 @@ public class TeacherOverviewController implements Initializable
                   {
                     btnLesson.setText("Lesson has Started");
                     btnLesson.setDisable(true);
+
                   }
                 else
                   {
@@ -181,7 +181,7 @@ public class TeacherOverviewController implements Initializable
           }
         clmDate.setSortType(TableColumn.SortType.DESCENDING);
         tblAllLessons.getSortOrder().add(clmDate);
-        checkNewestLesson();
+
       }
 
     private void cbChoicer(Teacher teacher)//Sets the items in the choicebox
@@ -243,14 +243,19 @@ public class TeacherOverviewController implements Initializable
     private void startLesson(ActionEvent event)
       {
         Lesson crntLesson = lessonModel.getNewestLesson();
-        if (checkNewestLesson())
+        if (!checkNewestLesson())
           {
             String courseName = CBLesson.getSelectionModel().getSelectedItem();
             lessonModel.createLesson(teacher, courseName);
+            datePicker.setValue(LocalDate.now());
+            STUD_LESS_MODEL.getStudLessonForView().clear();
+            for (Course course : teacher.getCourses())
+              {
+                STUD_LESS_MODEL.getStudentLessonBasedOnCourse(course);
+              }
             tableUpdater();
             btnLesson.setText("Lesson has Started");
             btnLesson.setDisable(true);
-            AltInitilizer(teacher);
           }
       }
 
@@ -321,6 +326,7 @@ public class TeacherOverviewController implements Initializable
     @FXML
     private void refreshEvent(ActionEvent event)
       {
+        STUD_LESS_MODEL.getStudLessonForView().clear();
         for (Course course : teacher.getCourses())
           {
             STUD_LESS_MODEL.getStudentLessonBasedOnCourse(course);
@@ -331,7 +337,8 @@ public class TeacherOverviewController implements Initializable
       {
         Lesson crntLesson = lessonModel.getNewestLesson();
 
-        if (crntLesson == null || crntLesson.getCal().get(Calendar.DAY_OF_YEAR) != Calendar.getInstance().get(Calendar.DAY_OF_YEAR) || crntLesson.getLessonName().equals(CBLesson.getSelectionModel().getSelectedItem()))
+        if (crntLesson == null || (crntLesson.getCal().get(Calendar.DAY_OF_YEAR) == Calendar.getInstance().get(Calendar.DAY_OF_YEAR) && crntLesson.getLessonName().equals(CBLesson.getSelectionModel().getSelectedItem())))
+
           {
             return true;
           }
