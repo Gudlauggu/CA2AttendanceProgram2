@@ -262,7 +262,7 @@ public class LoginController implements Initializable
                     lblCurrentClass.setText("No Class is running");
                     lblCurrentTeacher.setText("N/A");
                     lblAttendenceAll.setText(STUD_LESS_MODEL.getAllAbsenceAsPercentage(stud));
-                    lblClassAttendance.setText("N/");
+                    lblClassAttendance.setText("N/A");
 
                   }
                 try

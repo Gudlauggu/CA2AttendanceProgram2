@@ -176,8 +176,6 @@ public class TeacherOverviewController implements Initializable
                   }
               }
             imgHolderSetter();
-            btnLesson.setDisable(false);
-
           }
         clmDate.setSortType(TableColumn.SortType.DESCENDING);
         tblAllLessons.getSortOrder().add(clmDate);
