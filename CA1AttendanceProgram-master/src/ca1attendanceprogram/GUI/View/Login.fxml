@@ -23,7 +23,7 @@
                </opaqueInsets>
             </Button>
             <Button fx:id="btnClose" mnemonicParsing="false" onAction="#closeEvent" prefHeight="44.0" prefWidth="116.0" text="Quit" textFill="WHITE" />
-                <Button id="hiddenButton" fx:id="btnHiddenButton" alignment="CENTER" mnemonicParsing="false" onAction="#HiddenButtonEvent" prefHeight="37.0" prefWidth="139.0" styleClass="button-small" text="Forgotten Password?" textFill="WHITE" visible="false" />
+                <Button id="hiddenButton" fx:id="btnSeeAbsence" alignment="CENTER" mnemonicParsing="false" onAction="#HiddenButtonEvent" prefHeight="37.0" prefWidth="139.0" styleClass="button-small" text="See Absence" textFill="WHITE" visible="false" />
             <Button id="hiddenButton" fx:id="btnChangePassword" alignment="CENTER" layoutX="311.0" layoutY="17.0" mnemonicParsing="false" onAction="#ChangePassword" prefHeight="44.0" prefWidth="160.0" styleClass="button-small" text="Change password" textFill="WHITE" visible="false" />
          </children>
          <padding>
@@ -36,7 +36,15 @@
                   <children>
                       <TextField fx:id="txtUsername" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="445.0" promptText="Username" />
                   <PasswordField fx:id="txtPassword" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="446.0" promptText="Password" styleClass="text-field" />
-                      <CheckBox fx:id="boxRemUsername" mnemonicParsing="false" text="Remember Me" textFill="WHITE" />
+                      <CheckBox fx:id="boxRemUsername" mnemonicParsing="false" prefHeight="21.0" prefWidth="526.0" text="Remember Me" textFill="WHITE" />
+                  <Label fx:id="btnWrong" prefHeight="18.0" prefWidth="461.0" text="You have entered the wrong username or password" textFill="WHITE">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </Label>
                   </children>
                   <padding>
                       <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
@@ -47,7 +55,6 @@
                   <Image url="file:/C:/Users/Mecaa/Desktop/School/NetBeans/CA1AttendanceProgram/DATA/BASYDVEST_negativ.png" />
                </image>
               </ImageView>
-            <Label fx:id="lblConfirmation" alignment="CENTER" layoutX="10.0" layoutY="183.0" prefHeight="21.0" prefWidth="201.0" styleClass="label-small" text="Your Password has changed" textFill="WHITE" visible="false" />
             <Label fx:id="lblAttending" prefHeight="18.0" prefWidth="201.0" styleClass="label-headline" text="You are  attending" textFill="WHITE" visible="false" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="175.0" />
          </children>
       </AnchorPane>

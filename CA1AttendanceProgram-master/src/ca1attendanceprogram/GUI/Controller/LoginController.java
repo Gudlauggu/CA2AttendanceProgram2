@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,7 +28,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.*;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -60,14 +58,13 @@ public class LoginController implements Initializable
     @FXML
     private Button btnClose;
     @FXML
-    private Button btnHiddenButton;
+    private Button btnSeeAbsence;
     @FXML
     private Label lblAttendenceAll;
     @FXML
     private Label lblCurrentClass;
     @FXML
     private Label lblClassAttendance;
-    @FXML
     private Label lblConfirmation;
     @FXML
     private Label lblAttending;
@@ -81,6 +78,11 @@ public class LoginController implements Initializable
     private AnchorPane ancStudentInfo;
     @FXML
     private ImageView imgLogo1;
+    @FXML
+    private VBox ancPicture;
+    @FXML
+    private Label btnWrong;
+
     // 0 = not logged int // 1 = logged in // 2 = wrong password, not logged in
     private static final int NOT_LOGGED_IN = 1;
     private static final int LOGGED_IN = 2;
@@ -93,8 +95,6 @@ public class LoginController implements Initializable
     private static final SettingManager SETTING_MANAGER = new SettingManager();
     Lesson lesson;
     private Person person = null;
-    @FXML
-    private VBox ancPicture;
 
     @Override
     public void initialize(URL url, ResourceBundle rb)
@@ -103,6 +103,7 @@ public class LoginController implements Initializable
         Image logo = new Image("file:DATA/BASYDVEST_negativ.png");
         imgLogo.setImage(logo);
         ArrayList<String> strings = SETTING_MANAGER.getSettings();
+        btnWrong.setVisible(false);
         if (!strings.isEmpty())
           {
             txtUsername.setText(strings.get(0));
@@ -143,7 +144,7 @@ public class LoginController implements Initializable
                 subStage.initStyle(StageStyle.UNDECORATED);
 
                 subStage.show();
-                Stage stage = (Stage) btnHiddenButton.getScene().getWindow();
+                Stage stage = (Stage) btnSeeAbsence.getScene().getWindow();
                 stage.close();
 
               }
@@ -234,11 +235,7 @@ public class LoginController implements Initializable
                 txtPassword.setDisable(true);
                 btnLogin.setText("Attend Class");
                 btnClose.setText("Log Off");
-                btnHiddenButton.getStyleClass().remove("button-small");
-                btnHiddenButton.getStyleClass().add("button");
-                btnHiddenButton.setVisible(true);
-                btnHiddenButton.setText("See Absense");
-                lblConfirmation.setVisible(false);
+                btnSeeAbsence.setVisible(true);
                 boxRemUsername.setDisable(true);
                 btnChangePassword.setVisible(true);
                 lesson = getNewestLesson();
@@ -290,7 +287,7 @@ public class LoginController implements Initializable
                     txtUsername.clear();
                     txtPassword.clear();
                   }
-                btnHiddenButton.setVisible(false);
+                btnSeeAbsence.setVisible(false);
                 btnLogin.setText("Login");
                 btnClose.setText("Quit");
                 boxRemUsername.setDisable(false);
@@ -298,10 +295,7 @@ public class LoginController implements Initializable
 
                 break;
             case WRONG_PASSWORD:
-                btnHiddenButton.setVisible(true);
-                btnHiddenButton.setText("Forgotten password?");
-                btnHiddenButton.getStyleClass().remove("button");
-                btnHiddenButton.getStyleClass().add("button-small");
+                btnWrong.setVisible(true);
                 break;
             case LOGGED_IN_TEACHER:
                 break;
@@ -309,8 +303,7 @@ public class LoginController implements Initializable
           }
       }
 
-    @FXML
-    private void HiddenButtonEvent(ActionEvent event) throws IOException
+    private void seeAbsenceEvent(ActionEvent event) throws IOException
       {
         if (loginState == LOGGED_IN)
           {
@@ -323,28 +316,11 @@ public class LoginController implements Initializable
             subStage.setScene(new Scene(root));
             subStage.initStyle(StageStyle.UNDECORATED);
             subStage.show();
-            Stage stage = (Stage) btnHiddenButton.getScene().getWindow();
+            Stage stage = (Stage) btnSeeAbsence.getScene().getWindow();
             stage.close();
 
           }
-        else if (loginState == WRONG_PASSWORD)
-          {
-            Alert alert = new Alert(AlertType.CONFIRMATION);
-            alert.setTitle("Forgotten Password");
-            alert.setHeaderText("Email: " + txtUsername.getText() + "@easv365.dk");
-            alert.setContentText("Send password to this email");
 
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == ButtonType.OK)
-              {
-                lblConfirmation.setVisible(true);
-                lblConfirmation.setText("A password has been send to your e-mail.");
-              }
-            else
-              {
-
-              }
-          }
       }
 
     public void onKeyPressed(KeyCode code) throws IOException
@@ -377,6 +353,11 @@ public class LoginController implements Initializable
     private Lesson getNewestLesson()
       {
         return LESSON_MODEL.getNewestLesson();
+      }
+
+    @FXML
+    private void HiddenButtonEvent(ActionEvent event)
+      {
       }
 
     private class AnimateLogin
