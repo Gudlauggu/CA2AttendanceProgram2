@@ -156,23 +156,31 @@ public class LoginController implements Initializable
           }
         else if (loginState == LOGGED_IN)
           {
-            if (btnLogin.getText().equals("Attend Class"))
+            if (lesson.getCal().DAY_OF_YEAR == Calendar.DAY_OF_YEAR)
               {
-                lblAttending.setVisible(true);
-                btnLogin.setText("Leave Class");
-                StudentLesson studLess = new StudentLesson((Student) person, lesson, 0);
-                STUD_LESS_MODEL.setStudentAttendence(studLess, 1);
-                lblAttendenceAll.setText(STUD_LESS_MODEL.getAllAbsenceAsPercentage((Student) person));
-                lblClassAttendance.setText(STUD_LESS_MODEL.getAbsenceForCurrentCourse((Student) person, lesson));
+                if (btnLogin.getText().equals("Attend Class"))
+                  {
+                    lblAttending.setVisible(true);
+                    btnLogin.setText("Leave Class");
+                    StudentLesson studLess = new StudentLesson((Student) person, lesson, 0);
+                    STUD_LESS_MODEL.setStudentAttendence(studLess, 1);
+                    lblAttendenceAll.setText(STUD_LESS_MODEL.getAllAbsenceAsPercentage((Student) person));
+                    lblClassAttendance.setText(STUD_LESS_MODEL.getAbsenceForCurrentCourse((Student) person, lesson));
+                  }
+                else if (btnLogin.getText().equals("Leave Class"))
+                  {
+                    lblAttending.setVisible(false);
+                    btnLogin.setText("Attend Class");
+                    StudentLesson studLess = new StudentLesson((Student) person, lesson, 0);
+                    STUD_LESS_MODEL.setStudentAttendence(studLess, 0);
+                    lblAttendenceAll.setText(STUD_LESS_MODEL.getAllAbsenceAsPercentage((Student) person));
+                    lblClassAttendance.setText(STUD_LESS_MODEL.getAbsenceForCurrentCourse((Student) person, lesson));
+                  }
               }
-            else if (btnLogin.getText().equals("Leave Class"))
+            else
               {
-                lblAttending.setVisible(false);
-                btnLogin.setText("Attend Class");
-                StudentLesson studLess = new StudentLesson((Student) person, lesson, 0);
-                STUD_LESS_MODEL.setStudentAttendence(studLess, 0);
-                lblAttendenceAll.setText(STUD_LESS_MODEL.getAllAbsenceAsPercentage((Student) person));
-                lblClassAttendance.setText(STUD_LESS_MODEL.getAbsenceForCurrentCourse((Student) person, lesson));
+                btnLogin.setText("No Lesson");
+
               }
 
           }
@@ -234,7 +242,8 @@ public class LoginController implements Initializable
                 boxRemUsername.setDisable(true);
                 btnChangePassword.setVisible(true);
                 lesson = getNewestLesson();
-                if (lesson != null && lesson.getCal().DAY_OF_YEAR == Calendar.DAY_OF_YEAR)
+                System.out.println(lesson.getCal().get(Calendar.DAY_OF_YEAR) + " " + Calendar.getInstance().get(Calendar.DAY_OF_YEAR));
+                if (lesson != null && lesson.getCal().get(Calendar.DAY_OF_YEAR) == Calendar.getInstance().get(Calendar.DAY_OF_YEAR))
                   {
                     lblCurrentClass.setText(lesson.getLessonName());
                     lblCurrentTeacher.setText(lesson.getTeacherName());
@@ -287,7 +296,7 @@ public class LoginController implements Initializable
                 btnClose.setText("Quit");
                 boxRemUsername.setDisable(false);
                 aLogin.doAsTold(false).play();
-                
+
                 break;
             case WRONG_PASSWORD:
                 btnHiddenButton.setVisible(true);
@@ -374,8 +383,9 @@ public class LoginController implements Initializable
     private class AnimateLogin
       {
 
-        final double startWidth = ancLogin.getWidth();
-        final double studStartWidth = ancStudentInfo.getWidth();
+        private final double startWidth = ancLogin.getWidth();
+        private final double studStartWidth = ancStudentInfo.getWidth();
+        private Duration dur = Duration.millis(1_500);
 
         private Animation doAsTold(Boolean bool)
           {
@@ -383,7 +393,7 @@ public class LoginController implements Initializable
             final Animation hideLogin = new Transition()
               {
                   {
-                    setCycleDuration(Duration.millis(1_000));
+                    setCycleDuration(dur);
                   }
 
                 protected void interpolate(double frac)
@@ -392,13 +402,13 @@ public class LoginController implements Initializable
                     final double curWidth = startWidth * (1.0 - frac);
                     ancLogin.setTranslateX(-startWidth + curWidth);
                     final double studCurWidth = studStartWidth * (1.0 - frac);
-                    ancStudentInfo.setTranslateX(-studStartWidth + studCurWidth);
+                    ancStudentInfo.setTranslateX((-studStartWidth + 25) + studCurWidth);
                   }
               };
             final Animation showLogin = new Transition()
               {
                   {
-                    setCycleDuration(Duration.millis(1_000));
+                    setCycleDuration(dur);
                   }
 
                 protected void interpolate(double frac)
@@ -407,7 +417,7 @@ public class LoginController implements Initializable
                     final double curWidth = startWidth * frac;
                     ancLogin.setTranslateX(-startWidth + curWidth);
                     final double studCurWidth = studStartWidth * frac;
-                    ancStudentInfo.setTranslateX(-studStartWidth + studCurWidth);
+                    ancStudentInfo.setTranslateX((-studStartWidth + 20) + studCurWidth);
                   }
               };
             if (bool)

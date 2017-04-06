@@ -51,27 +51,31 @@ public class StudentLessonModel
 
     public String getAllAbsenceAsPercentage(Student student)
       {
-        ArrayList<StudentLesson> studLessons = getStudentLessonBasedOnStudent(student);
-        if (!studLessons.isEmpty())
+        if (student != null)
           {
-            double absentNumber = 0;
-            for (StudentLesson studentLesson : studLessons)
+            ArrayList<StudentLesson> studLessons = getStudentLessonBasedOnStudent(student);
+            if (!studLessons.isEmpty())
               {
-                if (studentLesson.getAttendint() != 1)
+                double absentNumber = 0;
+                for (StudentLesson studentLesson : studLessons)
                   {
-                    absentNumber += 1;
+                    if (studentLesson.getAttendint() != 1)
+                      {
+                        absentNumber += 1;
+                      }
                   }
-              }
 
-            double percent;
-            percent = (absentNumber / studLessons.size()) * 100;
-            percent = (double) Math.round(percent * 10d) / 10d;
-            return percent + "%";
+                double percent;
+                percent = (absentNumber / studLessons.size()) * 100;
+                percent = (double) Math.round(percent * 10d) / 10d;
+                return percent + "%";
+              }
+            else
+              {
+                return "No Classes exist";
+              }
           }
-        else
-          {
-            return "No Classes exist";
-          }
+        return "Error";
       }
 
     public String getAbsenceForCurrentCourse(Student student, Lesson lesson)

@@ -17,14 +17,14 @@
     <children>
       <HBox layoutY="219.0" prefHeight="51.0" prefWidth="584.0" spacing="7.0" styleClass="hBox">
          <children>
-            <Button fx:id="btnLogin" mnemonicParsing="false" onAction="#loginEvent" prefHeight="37.0" prefWidth="174.0" text="Login" textFill="WHITE">
+            <Button fx:id="btnLogin" mnemonicParsing="false" onAction="#loginEvent" prefHeight="37.0" prefWidth="154.0" text="Login" textFill="WHITE">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
             </Button>
-            <Button fx:id="btnClose" mnemonicParsing="false" onAction="#closeEvent" prefHeight="37.0" prefWidth="193.0" text="Quit" textFill="WHITE" />
-                <Button id="hiddenButton" fx:id="btnHiddenButton" alignment="CENTER" mnemonicParsing="false" onAction="#HiddenButtonEvent" prefHeight="37.0" prefWidth="182.0" text="Forgotten Password?" textFill="WHITE" visible="false" />
-            <Button id="hiddenButton" fx:id="btnChangePassword" alignment="CENTER" layoutX="311.0" layoutY="17.0" mnemonicParsing="false" onAction="#ChangePassword" prefHeight="37.0" prefWidth="182.0" text="Change password" textFill="WHITE" visible="false" />
+            <Button fx:id="btnClose" mnemonicParsing="false" onAction="#closeEvent" prefHeight="44.0" prefWidth="116.0" text="Quit" textFill="WHITE" />
+                <Button id="hiddenButton" fx:id="btnHiddenButton" alignment="CENTER" mnemonicParsing="false" onAction="#HiddenButtonEvent" prefHeight="37.0" prefWidth="139.0" styleClass="button-small" text="Forgotten Password?" textFill="WHITE" visible="false" />
+            <Button id="hiddenButton" fx:id="btnChangePassword" alignment="CENTER" layoutX="311.0" layoutY="17.0" mnemonicParsing="false" onAction="#ChangePassword" prefHeight="44.0" prefWidth="160.0" styleClass="button-small" text="Change password" textFill="WHITE" visible="false" />
          </children>
          <padding>
             <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
@@ -67,7 +67,7 @@
             <Label layoutX="22.0" layoutY="129.0" text="Teacher:" textFill="WHITE" />
             <Label fx:id="lblCurrentTeacher" layoutX="92.0" layoutY="129.0" prefHeight="18.0" prefWidth="244.0" text="Jeppe Moritz Led" textFill="WHITE" />
             <Label alignment="TOP_LEFT" layoutX="22.0" layoutY="60.0" prefHeight="16.0" prefWidth="140.0" styleClass="label-headline" text="Good Day" textFill="WHITE" />
-            <VBox fx:id="ancPicture" alignment="CENTER" layoutX="374.0" layoutY="49.0" prefHeight="157.0" prefWidth="140.0" />
+            <VBox fx:id="ancPicture" alignment="CENTER" layoutX="372.0" layoutY="19.0" prefHeight="157.0" prefWidth="140.0" />
          </children>
       </AnchorPane>
     </children>

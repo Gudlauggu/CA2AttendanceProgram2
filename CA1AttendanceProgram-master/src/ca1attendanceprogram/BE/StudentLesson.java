@@ -147,6 +147,7 @@ public class StudentLesson
     public void setAttendint(int attendint)
       {
         this.attendint = attendint;
+          setAttendence(attendint);
       }
 
     public String getTeacherName()

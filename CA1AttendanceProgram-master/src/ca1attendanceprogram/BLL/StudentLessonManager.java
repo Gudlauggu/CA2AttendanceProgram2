@@ -39,5 +39,5 @@ public class StudentLessonManager
       {
         return sLHandler.getOneStudentLessonFromLessonAndStudent(student, lesson);
       }
-      
+     
 }

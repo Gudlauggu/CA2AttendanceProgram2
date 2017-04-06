@@ -6,6 +6,7 @@
 package ca1attendanceprogram.GUI.Controller;
 
 import ca1attendanceprogram.BE.Course;
+import ca1attendanceprogram.BE.Lesson;
 import ca1attendanceprogram.BE.Student;
 import ca1attendanceprogram.BE.StudentLesson;
 import ca1attendanceprogram.BE.Teacher;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,7 +29,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -37,10 +38,8 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -75,9 +74,8 @@ public class TeacherOverviewController implements Initializable
     private String allCourses = "All Courses";
     @FXML
     private Button btnChangePass;
-
     @FXML
-    private ToggleButton btnLesson;
+    private Button btnLesson;
 
     //
     private static final StudentLessonModel STUD_LESS_MODEL = new StudentLessonModel();
@@ -118,6 +116,7 @@ public class TeacherOverviewController implements Initializable
 
     public void AltInitilizer(Teacher teacher)
       {
+        STUD_LESS_MODEL.getStudLessonForView().clear();
         this.teacher = teacher;
         lessonModel.setCoursesForTeacher(teacher);
         lessonModel.LessonIntoObservable(teacher);
@@ -126,12 +125,10 @@ public class TeacherOverviewController implements Initializable
         updateFields();
         tblAllLessons.setItems(STUD_LESS_MODEL.getStudLessonForView());
         for (Course course : teacher.getCourses())
-              {
-                STUD_LESS_MODEL.getStudentLessonBasedOnCourse(course);
-              }
-        tblAllLessons.getSelectionModel().setSelectionMode(
-                SelectionMode.MULTIPLE
-        );
+          {
+            STUD_LESS_MODEL.getStudentLessonBasedOnCourse(course);
+          }
+        tblAllLessons.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
       }
 
@@ -144,6 +141,16 @@ public class TeacherOverviewController implements Initializable
                 CBLesson.getSelectionModel().select(new_value.intValue());
                 studLessons.clear();
                 tableUpdater();
+                if (checkNewestLesson())
+                  {
+                    btnLesson.setText("Lesson has Started");
+                    btnLesson.setDisable(true);
+                  }
+                else
+                  {
+                    btnLesson.setText("Start Lesson");
+                    btnLesson.setDisable(false);
+                  }
               }
 
           });
@@ -151,7 +158,7 @@ public class TeacherOverviewController implements Initializable
 
     private void tableUpdater()
       {
-       
+
         String crntCourse = CBLesson.getSelectionModel().getSelectedItem();
         if (crntCourse.equals(allCourses))
           {
@@ -165,7 +172,7 @@ public class TeacherOverviewController implements Initializable
                 if (course.getName().equals(crntCourse))
                   {
                     STUD_LESS_MODEL.sortByDate(datePicker.getValue(), course);
-                    
+
                   }
               }
             imgHolderSetter();
@@ -174,6 +181,7 @@ public class TeacherOverviewController implements Initializable
           }
         clmDate.setSortType(TableColumn.SortType.DESCENDING);
         tblAllLessons.getSortOrder().add(clmDate);
+        checkNewestLesson();
       }
 
     private void cbChoicer(Teacher teacher)//Sets the items in the choicebox
@@ -234,9 +242,16 @@ public class TeacherOverviewController implements Initializable
     @FXML
     private void startLesson(ActionEvent event)
       {
-        String courseName = CBLesson.getSelectionModel().getSelectedItem();
-        lessonModel.createLesson(teacher, courseName);
-        tableUpdater();
+        Lesson crntLesson = lessonModel.getNewestLesson();
+        if (checkNewestLesson())
+          {
+            String courseName = CBLesson.getSelectionModel().getSelectedItem();
+            lessonModel.createLesson(teacher, courseName);
+            tableUpdater();
+            btnLesson.setText("Lesson has Started");
+            btnLesson.setDisable(true);
+            AltInitilizer(teacher);
+          }
       }
 
     @FXML
@@ -258,9 +273,10 @@ public class TeacherOverviewController implements Initializable
 
     private void imgHolderSetter()
       {
+        grdPane.getChildren().clear();
         RowConstraints con = grdPane.getRowConstraints().get(0);
-        con.setMinHeight(145);
-        
+        con.setMinHeight(180);
+
         int clm = 0;
         int row = 0;
         for (StudentLesson studLesson : STUD_LESS_MODEL.getStudLessonForView())
@@ -287,7 +303,7 @@ public class TeacherOverviewController implements Initializable
                   {
                     row++;
                     con = new RowConstraints();
-                    con.setMinHeight(145);
+                    con.setMinHeight(180);
                     grdPane.getRowConstraints().add(con);
                     clm = 0;
                   }
@@ -296,4 +312,29 @@ public class TeacherOverviewController implements Initializable
 
       }
 
+    @FXML
+    private void dateRefresher(ActionEvent event)
+      {
+        tableUpdater();
+      }
+
+    @FXML
+    private void refreshEvent(ActionEvent event)
+      {
+        for (Course course : teacher.getCourses())
+          {
+            STUD_LESS_MODEL.getStudentLessonBasedOnCourse(course);
+          }
+      }
+
+    private Boolean checkNewestLesson()
+      {
+        Lesson crntLesson = lessonModel.getNewestLesson();
+
+        if (crntLesson == null || crntLesson.getCal().get(Calendar.DAY_OF_YEAR) != Calendar.getInstance().get(Calendar.DAY_OF_YEAR) || crntLesson.getLessonName().equals(CBLesson.getSelectionModel().getSelectedItem()))
+          {
+            return true;
+          }
+        return false;
+      }
   }

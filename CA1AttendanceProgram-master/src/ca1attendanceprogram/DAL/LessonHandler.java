@@ -127,18 +127,19 @@ public class LessonHandler
             pstmt.setInt(1, course.getId());
 
             ResultSet rs = pstmt.executeQuery();
-            rs.next();
-            int lessonid = rs.getInt("lessonid");
-            for (Integer integer : sh.getAllStudentIdBasedOnClass(classid, con))
+            if (rs.next())
               {
-                query = "INSERT INTO [studentlesson] (lessonid,studentid,attending)VALUES(?,?,?)";
-                pstmt = con.prepareStatement(query);
-                pstmt.setInt(1, lessonid);
-                pstmt.setInt(2, integer);
-                pstmt.setInt(3, 0);
-                pstmt.execute();
+                int lessonid = rs.getInt("lessonid");
+                for (Integer integer : sh.getAllStudentIdBasedOnClass(classid, con))
+                  {
+                    query = "INSERT INTO [studentlesson] (lessonid,studentid,attending)VALUES(?,?,?)";
+                    pstmt = con.prepareStatement(query);
+                    pstmt.setInt(1, lessonid);
+                    pstmt.setInt(2, integer);
+                    pstmt.setInt(3, 0);
+                    pstmt.execute();
+                  }
               }
-            ;
           }
         catch (SQLException ex)
           {
@@ -159,28 +160,35 @@ public class LessonHandler
 
     public Lesson getNewestLesson()
       {
+        Lesson lesson = null;
         try (Connection con = conManager.getConnection())
           {
             String query = "SELECT top 1 * FROM [lesson]  ORDER BY lessonid DESC ";
             PreparedStatement pstmt = con.prepareStatement(query);
             ResultSet rs = pstmt.executeQuery();
-            rs.next();
-            Timestamp timestamp = rs.getTimestamp("datetime");
-            Calendar cal = Calendar.getInstance();
-            cal.setTimeInMillis(timestamp.getTime());
-            Lesson lesson = new Lesson(rs.getInt("lessonid"), rs.getInt("courseid"), cal);
-            query = "SELECT * FROM [course] WHERE id = ?";
-            pstmt = con.prepareStatement(query);
-            pstmt.setInt(1, lesson.getCourseId());
-            rs = pstmt.executeQuery();
-            rs.next();
-            lesson.setLessonName(rs.getString("name"));
-            query = "SELECT * FROM [teacher] WHERE id = ?";
-            pstmt = con.prepareStatement(query);
-            pstmt.setInt(1, rs.getInt("teacherid"));
-            rs = pstmt.executeQuery();
-            rs.next();
-            lesson.setTeacherName(rs.getString("name"));
+            if (rs.next())
+              {
+                Timestamp timestamp = rs.getTimestamp("datetime");
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(timestamp.getTime());
+                lesson = new Lesson(rs.getInt("lessonid"), rs.getInt("courseid"), cal);
+                query = "SELECT * FROM [course] WHERE id = ?";
+                pstmt = con.prepareStatement(query);
+                pstmt.setInt(1, lesson.getCourseId());
+                rs = pstmt.executeQuery();
+                if (rs.next())
+                  {
+                    lesson.setLessonName(rs.getString("name"));
+                    query = "SELECT * FROM [teacher] WHERE id = ?";
+                    pstmt = con.prepareStatement(query);
+                    pstmt.setInt(1, rs.getInt("teacherid"));
+                    rs = pstmt.executeQuery();
+                    if (rs.next())
+                      {
+                        lesson.setTeacherName(rs.getString("name"));
+                      }
+                  }
+              }
             return lesson;
           }
         catch (SQLException ex)
@@ -210,14 +218,17 @@ public class LessonHandler
 
     private Lesson getLessonFromResult(PreparedStatement pstmt) throws SQLException
       {
+        Lesson lesson = null;
         ResultSet rs = pstmt.executeQuery();
-        rs.next();
-        int lessonid = rs.getInt("lessonid");
-        int courseid = rs.getInt("courseid");
-        Timestamp timestamp = rs.getTimestamp("datetime");
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(timestamp.getTime());
-        Lesson lesson = new Lesson(lessonid, courseid, calendar);
+        if (rs.next())
+          {
+            int lessonid = rs.getInt("lessonid");
+            int courseid = rs.getInt("courseid");
+            Timestamp timestamp = rs.getTimestamp("datetime");
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(timestamp.getTime());
+            lesson = new Lesson(lessonid, courseid, calendar);
+          }
         return lesson;
       }
 
@@ -227,9 +238,11 @@ public class LessonHandler
         PreparedStatement pstmt = con.prepareStatement(query);
         pstmt.setInt(1, lesson.getCourseId());
         ResultSet rs = pstmt.executeQuery();
-        rs.next();
-        return rs.getString("name");
-
+        if (rs.next())
+          {
+            return rs.getString("name");
+          }
+        return null;
       }
 
     public ArrayList<Lesson> getAllCourseLessonsFromLessonAndStudent(Student student, Lesson lesson)
@@ -237,12 +250,13 @@ public class LessonHandler
         ArrayList<Lesson> lessons = new ArrayList();
         try (Connection con = conManager.getConnection())
           {
-              String query = "SELECT * FROM [lesson] WHERE courseid = ?";
-              PreparedStatement pstmt = con.prepareStatement(query);
-              pstmt.setInt(1, lesson.getCourseId());
-              ResultSet rs = pstmt.executeQuery();
-              while(rs.next()){
-              lessons.add(getOneLessonFromID(rs.getInt("lessonid")));
+            String query = "SELECT * FROM [lesson] WHERE courseid = ?";
+            PreparedStatement pstmt = con.prepareStatement(query);
+            pstmt.setInt(1, lesson.getCourseId());
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next())
+              {
+                lessons.add(getOneLessonFromID(rs.getInt("lessonid")));
               }
           }
         catch (SQLException ex)

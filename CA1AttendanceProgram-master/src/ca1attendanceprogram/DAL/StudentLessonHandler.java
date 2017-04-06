@@ -155,6 +155,7 @@ public class StudentLessonHandler
             int studId = studLess.getStudent().getId();
             pstmt.setInt(3, studId);
             pstmt.execute();
+            studLess.setAttendint(attendInt);
           }
         catch (SQLException ex)
           {
