@@ -38,13 +38,13 @@ public class ImageConverter
           }, null), false, null);
       }
 
-    public byte[] getAImageAsBytesForTest()
+    public static byte[] getAImageAsBytes(File file)
       {
         try
           {
 
             BufferedImage originalImage
-                    = ImageIO.read(new File("DATA/Tester.jpg"));
+                    = ImageIO.read(file);
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream(64000);
             ImageIO.write(originalImage, "jpg", baos);

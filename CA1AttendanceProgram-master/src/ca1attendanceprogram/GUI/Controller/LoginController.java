@@ -303,6 +303,7 @@ public class LoginController implements Initializable
           }
       }
 
+    @FXML
     private void seeAbsenceEvent(ActionEvent event) throws IOException
       {
         if (loginState == LOGGED_IN)

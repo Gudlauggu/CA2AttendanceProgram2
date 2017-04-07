@@ -23,7 +23,7 @@
                </opaqueInsets>
             </Button>
             <Button fx:id="btnClose" mnemonicParsing="false" onAction="#closeEvent" prefHeight="44.0" prefWidth="116.0" text="Quit" textFill="WHITE" />
-                <Button id="hiddenButton" fx:id="btnSeeAbsence" alignment="CENTER" mnemonicParsing="false" onAction="#HiddenButtonEvent" prefHeight="37.0" prefWidth="139.0" styleClass="button-small" text="See Absence" textFill="WHITE" visible="false" />
+                <Button id="hiddenButton" fx:id="btnSeeAbsence" alignment="CENTER" mnemonicParsing="false" onAction="#seeAbsenceEvent" prefHeight="37.0" prefWidth="139.0" styleClass="button-small" text="See Absence" textFill="WHITE" visible="false" />
             <Button id="hiddenButton" fx:id="btnChangePassword" alignment="CENTER" layoutX="311.0" layoutY="17.0" mnemonicParsing="false" onAction="#ChangePassword" prefHeight="44.0" prefWidth="160.0" styleClass="button-small" text="Change password" textFill="WHITE" visible="false" />
          </children>
          <padding>
