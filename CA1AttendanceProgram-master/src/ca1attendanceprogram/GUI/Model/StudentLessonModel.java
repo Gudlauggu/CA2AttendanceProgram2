@@ -145,4 +145,9 @@ public class StudentLessonModel
         return studLessonForView;
       }
 
+    public ArrayList<StudentLesson> getAllLessonForTeacher()
+      {
+        return allLessonsForTeacher;
+      }
+
   }

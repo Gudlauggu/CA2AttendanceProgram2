@@ -332,8 +332,9 @@ public class TeacherOverviewController implements Initializable
     @FXML
     private void refreshEvent(ActionEvent event)
       {
-
+        grdPane.getChildren().clear();
         STUD_LESS_MODEL.getStudLessonForView().clear();
+        STUD_LESS_MODEL.getAllLessonForTeacher().clear();
         for (Course course : teacher.getCourses())
           {
             STUD_LESS_MODEL.getStudentLessonBasedOnCourse(course);
