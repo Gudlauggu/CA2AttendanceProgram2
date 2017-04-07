@@ -160,10 +160,12 @@ public class TeacherOverviewController implements Initializable
       {
 
         String crntCourse = CBLesson.getSelectionModel().getSelectedItem();
+        STUD_LESS_MODEL.getStudLessonForView().clear();
         if (crntCourse != null)
           {
             if (crntCourse.equals(allCourses))
               {
+                grdPane.getChildren().clear();
                 STUD_LESS_MODEL.dontSortforView();
                 btnLesson.setDisable(true);
               }
@@ -307,9 +309,12 @@ public class TeacherOverviewController implements Initializable
                 if (clm >= grdPane.getColumnConstraints().size())
                   {
                     row++;
-                    con = new RowConstraints();
-                    con.setMinHeight(180);
-                    grdPane.getRowConstraints().add(con);
+                    if (grdPane.getRowConstraints().size() - 1 >= row)
+                      {
+                        con = new RowConstraints();
+                        con.setMinHeight(180);
+                        grdPane.getRowConstraints().add(con);
+                      }
                     clm = 0;
                   }
               }
@@ -320,17 +325,32 @@ public class TeacherOverviewController implements Initializable
     @FXML
     private void dateRefresher(ActionEvent event)
       {
+
         tableUpdater();
       }
 
     @FXML
     private void refreshEvent(ActionEvent event)
       {
+
         STUD_LESS_MODEL.getStudLessonForView().clear();
         for (Course course : teacher.getCourses())
           {
             STUD_LESS_MODEL.getStudentLessonBasedOnCourse(course);
           }
+        tableUpdater();
+        if (checkNewestLesson())
+          {
+            btnLesson.setText("Lesson has Started");
+            btnLesson.setDisable(true);
+
+          }
+        else
+          {
+            btnLesson.setText("Start Lesson");
+            btnLesson.setDisable(false);
+          }
+
       }
 
     private Boolean checkNewestLesson()
