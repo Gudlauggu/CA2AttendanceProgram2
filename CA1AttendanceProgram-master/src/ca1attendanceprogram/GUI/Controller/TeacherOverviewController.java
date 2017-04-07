@@ -160,26 +160,28 @@ public class TeacherOverviewController implements Initializable
       {
 
         String crntCourse = CBLesson.getSelectionModel().getSelectedItem();
-        if (crntCourse.equals(allCourses))
+        if (crntCourse != null)
           {
-            STUD_LESS_MODEL.dontSortforView();
-            btnLesson.setDisable(true);
-          }
-        else
-          {
-            for (Course course : teacher.getCourses())
+            if (crntCourse.equals(allCourses))
               {
-                if (course.getName().equals(crntCourse))
-                  {
-                    STUD_LESS_MODEL.sortByDate(datePicker.getValue(), course);
-
-                  }
+                STUD_LESS_MODEL.dontSortforView();
+                btnLesson.setDisable(true);
               }
-            imgHolderSetter();
-          }
-        clmDate.setSortType(TableColumn.SortType.DESCENDING);
-        tblAllLessons.getSortOrder().add(clmDate);
+            else
+              {
+                for (Course course : teacher.getCourses())
+                  {
+                    if (course.getName().equals(crntCourse))
+                      {
+                        STUD_LESS_MODEL.sortByDate(datePicker.getValue(), course);
 
+                      }
+                  }
+                imgHolderSetter();
+              }
+            clmDate.setSortType(TableColumn.SortType.DESCENDING);
+            tblAllLessons.getSortOrder().add(clmDate);
+          }
       }
 
     private void cbChoicer(Teacher teacher)//Sets the items in the choicebox
